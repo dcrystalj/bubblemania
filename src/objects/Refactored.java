@@ -11,7 +11,7 @@ public class Refactored extends BaseWindow
   float posX = 0, posY = 0, posZ = 0, rotX = 0, rotY = 0, scale = 1;
   float posX3 = 0, posY3 = 0, posZ3 = 0, rotX3 = 0, rotY3 = 0, scale3 = 1;
   
-  Pyramid m_pUser, m_pUser2, m_pUser3;
+  Cube m_pUser, m_pUser2, m_pUser3;
 
 	/**
 	 * Initial setup of projection of the scene onto screen, lights etc.
@@ -52,9 +52,9 @@ public class Refactored extends BaseWindow
    */
   protected void initializeModels()
   {
-    m_pUser = new Pyramid();
-    m_pUser2 = new  Pyramid();
-    m_pUser3 = new  Pyramid();
+    m_pUser = new Cube();
+    m_pUser2 = new  Cube();
+    m_pUser3 = new  Cube();
   }
   /**
    * Resets the view of current frame
