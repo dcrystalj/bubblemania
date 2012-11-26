@@ -64,7 +64,7 @@ public class BaseWindow
    */
   protected void setupView()
   {
-
+	  System.out.println("dsad");
   }
 
   /**
@@ -72,7 +72,7 @@ public class BaseWindow
    */
   protected void resetView()
   {
-
+	  
   }
 
   /**
