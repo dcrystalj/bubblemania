@@ -73,7 +73,7 @@ public class BaseWindow
    */
   protected void resetView()
   {
-
+	  System.out.println("koadsa");
   }
 
   /**
