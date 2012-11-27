@@ -1,6 +1,5 @@
 package objects;
 import org.lwjgl.opengl.GL11;
-import window.BaseWindow;
 
 public class Cube extends Model3D
 {
