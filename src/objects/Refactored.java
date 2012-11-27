@@ -52,7 +52,7 @@ public class Refactored extends BaseWindow
    */
   protected void initializeModels()
   {
-    t_bg = new Terrain();
+    t_bg = new Terrain(WIDTH);
     c_begin= new Cube(WIDTH);
     c_end = new Cube(WIDTH); 
   }

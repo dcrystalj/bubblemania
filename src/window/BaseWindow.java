@@ -6,7 +6,7 @@ import java.nio.*;
 
 public class BaseWindow
 {
-  public float WIDTH = 100;
+  public float WIDTH = 200;
   protected static boolean isRunning = false;
   public static void main(String[] args)
   {

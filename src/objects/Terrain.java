@@ -1,10 +1,21 @@
 package objects;
 import org.lwjgl.opengl.GL11;
 
+import window.BaseWindow;
+
 
 public class Terrain extends Model3D
 {
- public float tW=100;
+
+
+
+public float tW;
+
+public Terrain(float w) {
+		super(w);
+		this.tW=w;
+}
+
   public void render3D()
   {
     // model view stack 
@@ -48,45 +59,45 @@ public class Terrain extends Model3D
     GL11.glColor3f(0, 0, 1);
     
     //right
-    GL11.glVertex3f( 100.0f,0.0f,0.0f);    // lower right vertex
-    GL11.glVertex3f( 100.0f,0.0f, 100.0f);    // upper right vertex
-    GL11.glVertex3f( 100.0f, 100.0f, 100.0f);    // upper left vertex
-    GL11.glVertex3f( 100.0f, 100.0f,0.0f);    // lower left vertex
+    GL11.glVertex3f( tW,0.0f,0.0f);    // lower right vertex
+    GL11.glVertex3f( tW,0.0f, tW);    // upper right vertex
+    GL11.glVertex3f( tW, tW, tW);    // upper left vertex
+    GL11.glVertex3f( tW, tW,0.0f);    // lower left vertex
 
     //left
     GL11.glVertex3f(0.0f,0.0f,0.0f);    // lower right vertex
-    GL11.glVertex3f(0.0f, 100.0f,0.0f);    // lower left vertex
-    GL11.glVertex3f(0.0f, 100.0f, 100.0f);    // upper left vertex
-    GL11.glVertex3f(0.0f,0.0f, 100.0f);    // upper right vertex
+    GL11.glVertex3f(0.0f, tW,0.0f);    // lower left vertex
+    GL11.glVertex3f(0.0f, tW, tW);    // upper left vertex
+    GL11.glVertex3f(0.0f,0.0f, tW);    // upper right vertex
     
     //bottom
     GL11.glColor3f(0, 1, 0.9f);
     GL11.glVertex3f(0.0f,0.0f,0.0f);    // lower right vertex
-    GL11.glVertex3f(0.0f,0.0f, 100.0f);    // lower left vertex
-    GL11.glVertex3f( 100.0f,0.0f, 100.0f);    // upper left vertex
-    GL11.glVertex3f( 100.0f,0.0f,0.0f);    // upper right vertex
+    GL11.glVertex3f(0.0f,0.0f, tW);    // lower left vertex
+    GL11.glVertex3f( tW,0.0f, tW);    // upper left vertex
+    GL11.glVertex3f( tW,0.0f,0.0f);    // upper right vertex
     
     //back
     GL11.glColor3f(0, 0, 0.5f);
     GL11.glColor3f(0, 0, 0.5f);
     GL11.glVertex3f(0.0f,0.0f,0.0f);    // lower right vertex
-    GL11.glVertex3f( 100.0f,0.0f,0.0f);    // upper right vertex
-    GL11.glVertex3f( 100.0f, 100.0f,0.0f);    // lower left vertex
-    GL11.glVertex3f(0.0f, 100.0f,0.0f);    // upper left vertex
+    GL11.glVertex3f( tW,0.0f,0.0f);    // upper right vertex
+    GL11.glVertex3f( tW, tW,0.0f);    // lower left vertex
+    GL11.glVertex3f(0.0f, tW,0.0f);    // upper left vertex
   
     
     //front
     GL11.glColor3f(0, 0, 0.5f);
-    GL11.glVertex3f(0.0f,0.0f, 100.0f);    // lower right vertex
-    GL11.glVertex3f(0.0f, 100.0f, 100.0f);    // upper right vertex
-    GL11.glVertex3f( 100.0f, 100.0f, 100.0f);    // lower left vertex
-    GL11.glVertex3f( 100.0f,0.0f, 100.0f);    // upper left vertex
+    GL11.glVertex3f(0.0f,0.0f, tW);    // lower right vertex
+    GL11.glVertex3f(0.0f, tW, tW);    // upper right vertex
+    GL11.glVertex3f( tW, tW, tW);    // lower left vertex
+    GL11.glVertex3f( tW,0.0f, tW);    // upper left vertex
     
     //top
-    GL11.glVertex3f(0.0f, 100.0f, 100.0f);    // lower right vertex
-    GL11.glVertex3f(0.0f, 100.0f,0.0f);    // upper right vertex
-    GL11.glVertex3f( 100.0f, 100.0f,0.0f);    // lower left vertex
-    GL11.glVertex3f( 100.0f, 100.0f, 100.0f);    // upper left vertex
+    GL11.glVertex3f(0.0f, tW, tW);    // lower right vertex
+    GL11.glVertex3f(0.0f, tW,0.0f);    // upper right vertex
+    GL11.glVertex3f( tW, tW,0.0f);    // lower left vertex
+    GL11.glVertex3f( tW, tW, tW);    // upper left vertex
     GL11.glEnd();
     
   }

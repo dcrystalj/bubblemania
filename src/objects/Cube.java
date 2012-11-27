@@ -4,11 +4,11 @@ import window.BaseWindow;
 
 public class Cube extends Model3D
 {
-  public float cW=10;
-  public float WIDTH;
-  public Cube(float w){
-	  this.WIDTH = w;
-  }
+  public Cube(float w) {
+		super(w);
+	}
+
+public float cW=10;
   
   public void render3D()
   {
