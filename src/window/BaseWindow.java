@@ -6,9 +6,8 @@ import java.nio.*;
 
 public class BaseWindow
 {
-
+  public float WIDTH = 100;
   protected static boolean isRunning = false;
-
   public static void main(String[] args)
   {
     // What version of OpenGL is supported?

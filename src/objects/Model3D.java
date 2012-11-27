@@ -2,6 +2,7 @@ package objects;
 
 public abstract class Model3D
 {
+  protected float deltax, deltay, deltaz;
   protected float m_nX, m_nY, m_nZ;
   protected float m_rX, m_rY, m_rZ;
   protected float m_sX=1, m_sY=1, m_sZ=1;
