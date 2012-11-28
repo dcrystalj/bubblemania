@@ -6,7 +6,7 @@ import java.nio.*;
 
 public class BaseWindow
 {
-  public float WIDTH = 200;
+  public float WIDTH = 500;
   protected static boolean isRunning = false;
   public static void main(String[] args)
   {
@@ -72,7 +72,6 @@ public class BaseWindow
    */
   protected void resetView()
   {
-	  System.out.println("koadsa");
   }
 
   /**

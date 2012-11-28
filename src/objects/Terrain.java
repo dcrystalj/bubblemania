@@ -4,8 +4,6 @@ import org.lwjgl.opengl.GL11;
 public class Terrain extends Model3D
 {
 
-
-
 public float tW;
 
 public Terrain(float w) {
@@ -17,10 +15,7 @@ public Terrain(float w) {
   {
     // model view stack 
     GL11.glMatrixMode(GL11.GL_MODELVIEW);
-    
-    
-
-    
+   /* 
     // save current matrix
     GL11.glPushMatrix();
     
@@ -41,7 +36,8 @@ public Terrain(float w) {
     
 
 
-
+    System.out.println("terain x "+ m_nX +"   "+ m_nY +"  "+ m_nZ);
+*/
     renderModel();
 
     GL11.glPopMatrix();
