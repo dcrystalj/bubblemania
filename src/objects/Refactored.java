@@ -9,7 +9,7 @@ import window.BaseWindow;
 public class Refactored extends BaseWindow 
 {
 
-  float scale = 1,angle=0, lx=0,lz=0, fraction=0.1f, x=100,y=100,z=100,ly=0,angley=0;
+  float scale = 1,speed=0.5f, x=WIDTH/2,y=WIDTH/4,z=WIDTH, lx=-x,ly=-y,lz=-z, angley=0, angle=-0.1f ;
   public static Vector3f rotation = new Vector3f(0, 0, 0);
   public static float mouseSpeed = 0.01f;
   public static final int maxLookUp = 85;
@@ -50,7 +50,7 @@ public class Refactored extends BaseWindow
     // translate to 0,2,4 and rotate 30 degrees along x 
 //    glTranslatef(-WIDTH/2, -WIDTH/4, -WIDTH);
     //glRotatef(15.0f, 1.0f, 0.0f, 0.0f);   
-    GLU.gluLookAt(WIDTH/2, WIDTH/4, -WIDTH, 0.0f, 0.0f, 0.0f,           0.0f, 1.0f, 0.0f);
+    GLU.gluLookAt(WIDTH/2, WIDTH/4, -WIDTH, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
   }
 
   /** 
@@ -62,7 +62,9 @@ public class Refactored extends BaseWindow
     c_begin= new Cube(WIDTH);
     c_end = new Cube(WIDTH);
     
-    
+    //set ending cube position
+    c_end.m_nX=WIDTH-c_end.cW;
+    c_end.m_nZ=WIDTH-c_end.cW;
   }
   /**
    * Resets the view of current frame
@@ -98,6 +100,7 @@ public class Refactored extends BaseWindow
   c_begin.m_nX+=0.01; 
   glDisable(GL_CULL_FACE);
   c_begin.render3D();
+  c_end.render3D();
   glEnable(GL_CULL_FACE);
 	 
   }
@@ -113,14 +116,14 @@ public class Refactored extends BaseWindow
 		angle += 0.01f;
     }
     if (Keyboard.isKeyDown(Keyboard.KEY_UP)){
-    	x += lx * fraction;
-		z += lz * fraction;
-		y += ly * fraction;
+    	x += lx * speed;
+		z += lz * speed;
+		y += ly * speed;
     }
     if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)){
-    	x -= lx * fraction;
-    	z -= lz * fraction;
-		y -= ly * fraction;
+    	x -= lx * speed;
+    	z -= lz * speed;
+		y -= ly * speed;
     }
     if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)){
     	y += 0.1;
@@ -155,7 +158,7 @@ public class Refactored extends BaseWindow
     }
 	lx = (float) Math.sin(angle);
 	ly = (float) Math.tan(angley);
-	lz = (float) - Math.cos(angle);
+	lz = (float) -Math.cos(angle);
             
     super.processInput();
   }
