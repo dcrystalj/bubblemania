@@ -23,6 +23,8 @@ public abstract class Model3D
   {
     m_sX=p_X; m_sY=p_Y; m_sZ=p_Z;
   }
-  
+  public String toString(){	//toString return current position of model
+	  return "("+m_nX+","+m_nY+","+m_nZ+")";
+  }
   public abstract void render3D();
 }
