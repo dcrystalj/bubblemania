@@ -7,6 +7,7 @@ public abstract class Model3D
   protected float m_rX, m_rY, m_rZ;
   protected float m_sX=1, m_sY=1, m_sZ=1;
   public float WIDTH;
+  public boolean show=true; //Options for 3D rendering, if false it wont show
   
   public Model3D(float w){
 	  this.WIDTH = w;	  

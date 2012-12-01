@@ -11,7 +11,7 @@ public class Bubble extends Model3D
   public float radius = 1;
   public float[] speed = {5f, 0.01f, 0.01f};
   public float[] color = {1, 1, 1};
-  public boolean showBubble=true; //Options for 3D rendering, if false it wont show
+  public float safetyDistance=20;	//Distance between this and next bubble
   public int checkpoint=0;  //checkPoint, which is next point on path
 
   public Bubble(float r) {
@@ -33,9 +33,9 @@ public class Bubble extends Model3D
     m_nZ = pos[2];
   }
   public void move(int timeMilis) {
-	  Vector3f v1=Refactored.bubblesPath.get(0);
-	  Vector3f v2=Refactored.bubblesPath.get(1);
-	  Vector3f v3=Refactored.bubblesPath.get(2);
+	  Vector3f v1=GameState.bubblesPath.get(0);
+	  Vector3f v2=GameState.bubblesPath.get(1);
+	  Vector3f v3=GameState.bubblesPath.get(2);
 	  Vector3f t=new Vector3f(m_nX, m_nY, m_nZ);
 	  if(checkpoint==0){
 		  m_nX += 5.f*timeMilis/100;
@@ -55,11 +55,7 @@ public class Bubble extends Model3D
 	  else if(checkpoint==3){
 		  m_nZ += 5.f*timeMilis/100;
 	  }
-	  System.out.println("-+-+---");
-	  System.out.println(v3.toString());
-	  System.out.println(t.toString());
-	  System.out.println("DISR"+distanceBetween(v3,t)+","+checkpoint);
-//	  Vector3 next=Refactored.bubblesPath.get(checkpoint);
+ //	  Vector3 next=Refactored.bubblesPath.get(checkpoint);
 //	  Vector3 direction=new Vector3(next.x-this.m_nX,next.y-this.m_nY,next.z-this.m_nZ);
 //	  if(checkpoint<(Refactored.bubblesPath.path.size()-1)){
 //		  if(Math.abs(direction.len())<1){
@@ -88,7 +84,7 @@ public class Bubble extends Model3D
   }
   public void render3D()
   {
-	  if(showBubble){
+	  if(show){
 		  // model view stack 
 		  GL11.glMatrixMode(GL11.GL_MODELVIEW);
 

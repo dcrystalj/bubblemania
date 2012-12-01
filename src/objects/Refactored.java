@@ -1,9 +1,7 @@
 package objects;
 
 
-import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.Set;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -20,11 +18,6 @@ public class Refactored extends BaseWindow
   public static float mouseSpeed = 0.01f;
   public static final int maxLookUp = 85;
   public static final int maxLookDown = -85;
-  public static int numberOfBubbles = 5;
-  public static Set<Bubble> bubbles;
-  public static Set<Bubble> points;
-  public static BubblePath bubblesPath;
-  public static boolean running=true;	//Running thread for moving bubbles 	
   int xOrigin = -1;
   
   static Terrain t_bg;
@@ -48,9 +41,8 @@ public class Refactored extends BaseWindow
 	  glMatrixMode(GL_PROJECTION);
 	  glLoadIdentity();
 	  GLU.gluPerspective(45, 1024 / (float)768, 1.0f, 1000.0f);
-	  Vector3f start=new Vector3f(c_begin.m_nX,c_begin.m_nY+c_begin.cW,c_begin.m_nZ+c_begin.cW/2);
-	  Vector3f end=new Vector3f(c_end.m_nX+c_end.cW,c_end.m_nY+c_end.cW,c_end.m_nZ+c_end.cW/2);
-	  bubblesPath=new BubblePath(start, end);
+	  
+	  GameState.bubblesPath=new BubblePath(GameState.startPoint, GameState.endPoint);
 	  setCameraMatrix();    
   }
  
@@ -80,41 +72,48 @@ public class Refactored extends BaseWindow
     c_end.m_nX=WIDTH-c_end.cW;
     c_end.m_nZ=WIDTH-c_end.cW;
     
+    //Set start and end point for bubbles
+    GameState.startPoint=new Vector3f(c_begin.m_nX,c_begin.m_nY+c_begin.cW,c_begin.m_nZ+c_begin.cW/2);
+    GameState.endPoint=new Vector3f(c_end.m_nX+c_end.cW,c_end.m_nY+c_end.cW,c_end.m_nZ+c_end.cW/2);
     //Radius of bubble
     float radius=3.f;
     //Create n bubbles
-    bubbles=new HashSet<Bubble>();
-    for(int i=0; i<numberOfBubbles;i++){
+    for(int i=0; i<GameState.numberOfBubbles;i++){
     	Bubble b = new Bubble(radius);
-    	float[] start={c_begin.m_nX-20*(i+2),c_begin.m_nY+c_begin.cW,c_begin.m_nZ+c_begin.cW/2};
+    	float[] start={c_begin.m_nX-b.safetyDistance*(i+2), c_begin.m_nY+c_begin.cW, c_begin.m_nZ+c_begin.cW/2};
     	b.setPos(start);
 //    	System.out.println(b.toString()+", Begin: "+c_begin.toString());
-    	bubbles.add(b);
-    	
+    	GameState.bubbles.add(b);
     }
+    Tower to = new Tower(radius*1.5f);
+    to.setPosition(GameState.startPoint.x+223, 0, GameState.startPoint.z+200);
+    GameState.towers.add(to);
     
     Thread t = new Thread(new Runnable()	//Deffining new thread for drawing bubbles
     {
-      
-      @Override
-      public void run()
-      {
-        while (running) {
-          try {
-            for (Bubble b : bubbles){
-              b.move(20);
-              if(b.isOut(t_bg)){	//If bubble gets out of terrain
-            	  //TODO remove bubble from list, this just hides it!!!
-            	  b.showBubble=false;
-              }
-            }
-           	print(bubblesPath.path);
-            Thread.sleep(20);
-          } catch (Exception e) {
-          }
-        }
-      }
+
+    	@Override
+    	public void run()
+    	{
+    		while (GameState.running) {
+    			try {
+    				for (Bubble b : GameState.bubbles){
+    					b.move(20);
+    					if(b.isOut(t_bg)){	//If bubble gets out of terrain
+    						//TODO remove bubble from list, this just hides it!!!
+    						b.show=false;
+    					}
+    				}
+    				for(Tower t : GameState.towers){
+    					t.popBubble();
+    				}
+    				Thread.sleep(20);
+    			} catch (Exception e) {
+    			}
+    		}
+    	}
     });
+    
     t.start();	//Run thread
   }
   public void print(LinkedList<Vector3f> l){
@@ -161,8 +160,11 @@ public class Refactored extends BaseWindow
 	  glEnable(GL_CULL_FACE);
 
 	  //Draw bubbles
-	  for (Bubble b : bubbles)
+	  for (Bubble b : GameState.bubbles)
 		  b.render3D();
+	  //Draw towers
+	  for (Tower t : GameState.towers)
+		  t.render3D();
 
   }
   
