@@ -2,6 +2,7 @@ package objects;
 
 
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Set;
 
 import org.lwjgl.input.Keyboard;
@@ -21,6 +22,7 @@ public class Refactored extends BaseWindow
   public static final int maxLookDown = -85;
   public static int numberOfBubbles = 5;
   public static Set<Bubble> bubbles;
+  public static Set<Bubble> points;
   public static BubblePath bubblesPath;
   public static boolean running=true;	//Running thread for moving bubbles 	
   int xOrigin = -1;
@@ -46,8 +48,8 @@ public class Refactored extends BaseWindow
 	  glMatrixMode(GL_PROJECTION);
 	  glLoadIdentity();
 	  GLU.gluPerspective(45, 1024 / (float)768, 1.0f, 1000.0f);
-	  Point start=new Point(c_begin.m_nX,c_begin.m_nY+c_begin.cW,c_begin.m_nZ+c_begin.cW/2);
-	  Point end=new Point(c_end.m_nX+c_end.cW,c_end.m_nY+c_end.cW,c_begin.m_nZ+c_begin.cW/2);
+	  Vector3f start=new Vector3f(c_begin.m_nX,c_begin.m_nY+c_begin.cW,c_begin.m_nZ+c_begin.cW/2);
+	  Vector3f end=new Vector3f(c_end.m_nX+c_end.cW,c_end.m_nY+c_end.cW,c_end.m_nZ+c_end.cW/2);
 	  bubblesPath=new BubblePath(start, end);
 	  setCameraMatrix();    
   }
@@ -84,9 +86,9 @@ public class Refactored extends BaseWindow
     bubbles=new HashSet<Bubble>();
     for(int i=0; i<numberOfBubbles;i++){
     	Bubble b = new Bubble(radius);
-    	float[] start={c_begin.m_nX-20*i,c_begin.m_nY+c_begin.cW/2,c_begin.m_nZ+c_begin.cW/2};
+    	float[] start={c_begin.m_nX-20*(i+2),c_begin.m_nY+c_begin.cW,c_begin.m_nZ+c_begin.cW/2};
     	b.setPos(start);
-    	System.out.println(b.toString()+", Begin: "+c_begin.toString());
+//    	System.out.println(b.toString()+", Begin: "+c_begin.toString());
     	bubbles.add(b);
     	
     }
@@ -106,7 +108,7 @@ public class Refactored extends BaseWindow
             	  b.showBubble=false;
               }
             }
-            	
+           	print(bubblesPath.path);
             Thread.sleep(20);
           } catch (Exception e) {
           }
@@ -115,6 +117,12 @@ public class Refactored extends BaseWindow
     });
     t.start();	//Run thread
   }
+  public void print(LinkedList<Vector3f> l){
+  	  System.out.println(".............");
+  	  for (Vector3f p : l){
+  		  System.out.println("("+p.x+","+p.y+","+p.z+")");
+  	  }
+    }
   /**
    * Resets the view of current frame
    */
@@ -156,7 +164,6 @@ public class Refactored extends BaseWindow
 	  for (Bubble b : bubbles)
 		  b.render3D();
 
-	  System.out.println(bubbles.size());
   }
   
   

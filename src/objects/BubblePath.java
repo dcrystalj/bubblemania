@@ -1,18 +1,18 @@
 package objects;
 
 import java.util.LinkedList;
+import org.lwjgl.util.vector.Vector3f;
 
 public class BubblePath {
-	LinkedList<Point> path;	//list of point on path for bubbles
-	public BubblePath(Point start, Point end){
+	LinkedList<Vector3f> path;	//list of point on path for bubbles
+	public BubblePath(Vector3f start, Vector3f end){
 		//Generate simple path for bubbles
-		path=new LinkedList<Point>();
-		path.add(start);
-		path.add(new Point(start.x+200,start.y,start.z));
-		path.add(new Point(start.x+200,start.y+200,start.z));
-		path.add(end);
+		path=new LinkedList<Vector3f>();
+		path.add(new Vector3f(start.x+250,start.y,start.z));
+		path.add(new Vector3f(start.x+250,start.y,start.z+250));
+		path.add(new Vector3f(end.x,end.y,start.z+250));
 	}
-	public Point get(int index){	//Returns point on path
+	public Vector3f get(int index){	//Returns point on path
 		return path.get(index);
 	}
 }

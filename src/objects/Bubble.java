@@ -1,7 +1,9 @@
 package objects;
 
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.Sphere;
+import org.lwjgl.util.vector.Vector3f;
 
 public class Bubble extends Model3D
 {
@@ -13,8 +15,16 @@ public class Bubble extends Model3D
   public int checkpoint=0;  //checkPoint, which is next point on path
 
   public Bubble(float r) {
-    super(r);
-    radius = r;
+	  super(r);
+	  radius = r;
+  }
+  public Bubble(float r, Vector3f p){
+	  super(r);
+	  radius = r;
+	  m_nX = p.x;
+	  m_nY = p.y;
+	  m_nZ = p.z;
+
   }
   
   public void setPos(float[] pos) {
@@ -22,21 +32,54 @@ public class Bubble extends Model3D
     m_nY = pos[1];
     m_nZ = pos[2];
   }
-
   public void move(int timeMilis) {
-	  Point next=Refactored.bubblesPath.get(checkpoint);
-	  Point direction=new Point(next.x-m_nX,next.y-m_nY,next.z-m_nZ);
-	  if(checkpoint<(Refactored.bubblesPath.path.size()-1)){
-		  if(direction.sum()<0.1){
+	  Vector3f v1=Refactored.bubblesPath.get(0);
+	  Vector3f v2=Refactored.bubblesPath.get(1);
+	  Vector3f v3=Refactored.bubblesPath.get(2);
+	  Vector3f t=new Vector3f(m_nX, m_nY, m_nZ);
+	  if(checkpoint==0){
+		  m_nX += 5.f*timeMilis/100;
+		  if(distanceBetween(v1,t)<1)
 			  checkpoint++;
-			  next=Refactored.bubblesPath.get(checkpoint);
-			  direction=new Point(next.x-m_nX,next.y-m_nY,next.z-m_nZ);
-		  }
-		  direction.normalize();	//Get direction vector and normalize it
-		  m_nX += direction.x*speed[0]*timeMilis;
-		  m_nY += direction.y*speed[1]*timeMilis;
-		  m_nZ += direction.z*speed[2]*timeMilis;
 	  }
+	  else if(checkpoint==1){
+		  m_nZ += 5.f*timeMilis/100;
+		  if(distanceBetween(v2,t)<10)
+			  checkpoint++;
+	  }
+	  else if(checkpoint==2){
+		  m_nX += 5.f*timeMilis/100;
+		  if(distanceBetween(v3,t)<15)
+			  checkpoint++;
+	  }
+	  else if(checkpoint==3){
+		  m_nZ += 5.f*timeMilis/100;
+	  }
+	  System.out.println("-+-+---");
+	  System.out.println(v3.toString());
+	  System.out.println(t.toString());
+	  System.out.println("DISR"+distanceBetween(v3,t)+","+checkpoint);
+//	  Vector3 next=Refactored.bubblesPath.get(checkpoint);
+//	  Vector3 direction=new Vector3(next.x-this.m_nX,next.y-this.m_nY,next.z-this.m_nZ);
+//	  if(checkpoint<(Refactored.bubblesPath.path.size()-1)){
+//		  if(Math.abs(direction.len())<1){
+//			  checkpoint++;
+//			  next=Refactored.bubblesPath.get(checkpoint);
+//			  direction=new Vector3(next.x-m_nX,next.y-m_nY,next.z-m_nZ);
+//		  }
+//		  direction.nor();	//Get direction vector and normalize it
+//		  System.out.println("Dolzina: "+direction.toString());
+//		  m_nX += direction.x*(speed[0]*timeMilis);
+//		  m_nY += direction.y*(speed[1]*timeMilis);
+//		  m_nZ += direction.z*(speed[2]*timeMilis);
+//	  }
+//	  Vector3 thisVec=new Vector3(m_nX,m_nY,m_nZ);
+//	  thisVec = thisVec.slerp(next, 0.5f);
+//	  m_nX += 5.f;
+//	   //make object look towards currentTarget
+  }
+  public float distanceBetween(Vector3f v1, Vector3f v2){
+	  return (float)Math.sqrt(Math.pow(v1.x-v2.x,2)+Math.pow(v1.y-v2.y,2)+Math.pow(v1.z-v2.z,2));
   }
   public void reverseSpeed(){
     speed[0]=-speed[0];
