@@ -1,6 +1,6 @@
 package objects;
 
-
+import main.*;	//Import of main package
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.Sphere;
 import org.lwjgl.util.vector.Vector3f;
@@ -44,17 +44,18 @@ public class Bubble extends Model3D
 	  }
 	  else if(checkpoint==1){
 		  m_nZ += 5.f*timeMilis/100;
-		  if(distanceBetween(v2,t)<10)
+		  if(distanceBetween(v2,t)<2)
 			  checkpoint++;
 	  }
 	  else if(checkpoint==2){
 		  m_nX += 5.f*timeMilis/100;
-		  if(distanceBetween(v3,t)<15)
+		  if(distanceBetween(v3,t)<3)
 			  checkpoint++;
 	  }
 	  else if(checkpoint==3){
 		  m_nZ += 5.f*timeMilis/100;
 	  }
+	  //Direction using direction vector, deprecated :) :D
  //	  Vector3 next=Refactored.bubblesPath.get(checkpoint);
 //	  Vector3 direction=new Vector3(next.x-this.m_nX,next.y-this.m_nY,next.z-this.m_nZ);
 //	  if(checkpoint<(Refactored.bubblesPath.path.size()-1)){
@@ -75,13 +76,10 @@ public class Bubble extends Model3D
 //	   //make object look towards currentTarget
   }
   public float distanceBetween(Vector3f v1, Vector3f v2){
-	  return (float)Math.sqrt(Math.pow(v1.x-v2.x,2)+Math.pow(v1.y-v2.y,2)+Math.pow(v1.z-v2.z,2));
+	  //We DO NOT consider y coordinates
+	  return (float)Math.sqrt(Math.pow(v1.x-v2.x,2)+Math.pow(v1.z-v2.z,2));
   }
-  public void reverseSpeed(){
-    speed[0]=-speed[0];
-    speed[1]=-speed[1];
-    speed[2]=-speed[2];
-  }
+
   public void render3D()
   {
 	  if(show){
@@ -119,7 +117,7 @@ public class Bubble extends Model3D
     s.draw(radius, 64, 64);
   }
   //Method is checking whether the bubble gets out of visible terrain area, terrain
-  boolean isOut(Terrain t){
+  public boolean isOut(Terrain t){
 	  //TODO
 	  if(m_nX>t.m_nX+t.tW) //Checking x is not optimal
 		  return true;

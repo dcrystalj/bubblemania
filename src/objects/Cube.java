@@ -7,7 +7,7 @@ public class Cube extends Model3D
 		super(w);
 	}
 
-public float cW=10;
+public float cW=50;
   
   public void render3D()
   {

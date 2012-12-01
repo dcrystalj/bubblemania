@@ -1,19 +1,17 @@
 package objects;
 
+import main.*;	//Import of main package
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.Timer;
-import org.lwjgl.util.glu.GLU;
 
 //Class for saving object tower
 public class Tower extends Model3D {
   
 	public float[] color = {0, 1, 0};
-	public float shootingRadius = 35;
+	public float shootingRadius = 50;
 	public float cW=10;
 	
 	public Tower(float w) {
 		super(w);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -53,7 +51,7 @@ public class Tower extends Model3D {
 	{
 		//Drawing shooting range of tower
 	    GL11.glBegin(GL11.GL_LINE_LOOP);
-	    GL11.glColor3f(color[0],color[0],color[0]);
+	    GL11.glColor3f(0,0,0);		//BLACK COLOR for radius of tower
 	    float DEG2RAD = 3.14159f/180.f;
 	    for (int i=0; i<360; i++)
 	    {
@@ -122,12 +120,6 @@ public class Tower extends Model3D {
 				if(dToBubble<=shootingRadius){
 					b.show=false;	//If we popped one bubble we quit function
 					
-					try {
-						wait(300);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
 					return;
 				}
 			}
