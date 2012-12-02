@@ -2,13 +2,18 @@ package objects;
 
 import main.*;	//Import of main package
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.vector.Matrix2f;
+import org.lwjgl.util.vector.Vector2f;
+import org.lwjgl.util.vector.Vector3f;
 
 //Class for saving object tower
 public class Tower extends Model3D {
   
 	public float[] color = {0, 1, 0};
 	public float shootingRadius = 50;
-	public float cW=10;
+	//Default shooting direction is to negative on z axis
+	public Vector2f shootingDirection=new Vector2f(0,-1);
+	public float cW=WIDTH;
 	
 	public Tower(float w) {
 		super(w);
@@ -17,7 +22,7 @@ public class Tower extends Model3D {
 	@Override
 	public void render3D()
 	  {
-		  if(show){
+//		  if(show){
 			// model view stack 
 			    GL11.glMatrixMode(GL11.GL_MODELVIEW);
 			    
@@ -28,24 +33,24 @@ public class Tower extends Model3D {
 			    GL11.glTranslatef(m_nX, m_nY, m_nZ);
 
 			    // ROTATE and SCALE
-//			    GL11.glTranslatef(cW/2, cW/2, cW/2);
+//			    GL11.glTranslatef(cW/2, 0, cW/2);
 			    GL11.glTranslatef(WIDTH/2-deltax, WIDTH/2-deltay, WIDTH/2-deltaz);
 			    if (m_rZ!=0)
 			      GL11.glRotatef(m_rZ, 0, 0, 1);
 			    if (m_rY!=0)
-			      GL11.glRotatef(m_rY, 0, 1, 0);
+			    	GL11.glRotatef(m_rY, 0, 1, 0);
 			    if (m_rX!=0)
 			      GL11.glRotatef(m_rX, 1, 0, 0);
 			    if (m_sX!=1 || m_sY!=1 || m_sZ!=1)
-			      GL11.glScalef(m_sX, m_sY*50, m_sZ);	//SCALING ON Y!!!
+			      GL11.glScalef(m_sX, m_sY, m_sZ);	//SCALING ON Y!!!
 			    
-//			    GL11.glTranslatef(-cW/2, -cW/2, -cW/2);    
+//			    GL11.glTranslatef(-cW/2, 0, -cW/2);    
 			    GL11.glTranslatef(-WIDTH/2+deltax, -WIDTH/2+deltay, -WIDTH/2+deltaz);
 			    renderModel();
 			    
 			    // discard current matrix
 			    GL11.glPopMatrix();
-		  }
+//		  }
 	  }
 	private void renderModel()
 	{
@@ -97,6 +102,13 @@ public class Tower extends Model3D {
 	    GL11.glVertex3f(0.0f, cW, cW);    // upper right vertex
 	    GL11.glVertex3f( cW, cW, cW);    // lower left vertex
 	    GL11.glVertex3f( cW,0.0f, cW);    // upper left vertex
+	    //"GUN"
+	    float wG=cW/2;
+	    GL11.glColor3f(1,0,0);
+	    GL11.glVertex3f(cW-wG/2,wG/2, -0.01f);    // lower right vertex
+	    GL11.glVertex3f( wG/2, wG/2, -0.01f);    // lower left vertex
+	    GL11.glVertex3f( wG/2,cW-wG/2, -0.01f);    // upper left vertex
+	    GL11.glVertex3f(cW-wG/2, cW-wG/2, -0.01f);    // upper right vertex
 	    
 	    
 	    //top
@@ -118,13 +130,33 @@ public class Tower extends Model3D {
 				float z = b.m_nZ-this.m_nZ;
 				float dToBubble=(float)Math.sqrt(x*x + y*y + z*z)-b.radius; //distance from tower to bubble
 				if(dToBubble<=shootingRadius){
+					rotateOnShoot(b);
 					b.show=false;	//If we popped one bubble we quit function
-					
+					GameState.money+=10;
 					return;
 				}
 			}
 		}
 		
+		
+	}
+	public void rotateOnShoot(Bubble b){
+		//We don't consider height, y coordinate
+		
+		Vector2f toBubble=new Vector2f(b.m_nX-this.m_nX, b.m_nZ-this.m_nZ);
+		toBubble.normalise();
+		float alpha = Vector2f.dot(toBubble,shootingDirection);
+		alpha = (float)Math.toDegrees(Math.acos(alpha));
+		shootingDirection=new Vector2f(toBubble);
+		if(toBubble.x<shootingDirection.x){
+			if(toBubble.y>0)
+				this.m_rY-=alpha;
+			else
+				this.m_rY+=alpha;
+		}
+		else if(toBubble.y>0)
+			this.m_rY-=alpha;
+		else this.m_rY-=alpha;
 	}
 
 	

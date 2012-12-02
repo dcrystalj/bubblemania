@@ -11,7 +11,7 @@ public class Bubble extends Model3D
   public float radius = 1;
   public float[] speed = {5f, 0.01f, 0.01f};
   public float[] color = {1, 1, 1};
-  public float safetyDistance=20;	//Distance between this and next bubble
+  public float safetyDistance=25;	//Distance between this and next bubble
   public int checkpoint=0;  //checkPoint, which is next point on path
 
   public Bubble(float r) {

@@ -15,7 +15,7 @@ import org.lwjgl.util.vector.Vector3f;
 //Class which has saved state of current game
 public class GameState {
 	//Bubbles+towers
-	public static int numberOfBubbles = 10;
+	public static int numberOfBubbles = 15;
 	public static Set<Bubble> bubbles=new HashSet<Bubble>();
 	public static Set<Bubble> points=new HashSet<Bubble>();
 	public static Set<Tower> towers=new HashSet<Tower>();
@@ -30,7 +30,11 @@ public class GameState {
 	public static float WIDTH;	//BaseWindow width
 	public static Terrain t_bg;
 	public static Cube c_begin, c_end;
-
+	
+	//Current game state: lives, money,..
+	public static int lives=30;
+	public static int money=100;
+	
 	public static void startingObjects(){
 		
 		//Create n bubbles
@@ -44,11 +48,13 @@ public class GameState {
 			bubbles.add(b);
 		}
 		//Create towers
-		Tower to = new Tower(radius*1.5f);
+		Tower to = new Tower(10);
 		to.setPosition(startPoint.x+225, 0.01f, startPoint.z+180);
+		to.setScaling(1, 5, 1);
 		towers.add(to);
-		to = new Tower(radius*1.5f);
+		to = new Tower(10);
 		to.setPosition(startPoint.x+410, 0.01f, startPoint.z+270);
+		to.setScaling(1, 5, 1);
 		towers.add(to);
 	}
 }

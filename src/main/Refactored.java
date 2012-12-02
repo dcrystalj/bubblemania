@@ -117,7 +117,7 @@ public class Refactored extends BaseWindow
     				for(Tower t : GameState.towers){
     					t.popBubble();
     				}
-    				Thread.sleep(800);
+    				Thread.sleep(500);
     			} catch (Exception e) {
     			}
     		}
@@ -125,6 +125,7 @@ public class Refactored extends BaseWindow
     });
     pop.start();
     t.start();	//Run thread
+   
   }
   /**
    * Resets the view of current frame
@@ -157,11 +158,9 @@ public class Refactored extends BaseWindow
 	  GameState.t_bg.render3D();
 
 	  //draw beginning and ending of bubbles
-	  GameState.c_begin.m_nX+=0.01; 
 	  glDisable(GL_CULL_FACE);
 	  GameState.c_begin.render3D();
 	  GameState.c_end.render3D();
-	  glEnable(GL_CULL_FACE);
 
 	  //Draw path
 	  GameState.bubblesPath.render3D();
@@ -171,6 +170,7 @@ public class Refactored extends BaseWindow
 	  //Draw towers
 	  for (Tower t : GameState.towers)
 		  t.render3D();
+	  glEnable(GL_CULL_FACE);
 
   }
   
@@ -230,7 +230,7 @@ public class Refactored extends BaseWindow
 	lx = (float) Math.sin(angle);
 	ly = (float) Math.tan(angley);
 	lz = (float) -Math.cos(angle);
-            
+	 System.out.println(GameState.money);
     super.processInput();
   }
   public static void main(String[] args) {
