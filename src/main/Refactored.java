@@ -1,8 +1,5 @@
 package main;
 
-
-import java.util.LinkedList;
-
 import objects.Bubble;
 import objects.BubblePath;
 import objects.Cube;
@@ -11,9 +8,11 @@ import objects.Tower;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 import org.lwjgl.util.vector.Vector3f;
 import static org.lwjgl.opengl.GL11.*;
+import text.BitmapText;
 import window.BaseWindow;
 
 public class Refactored extends BaseWindow 
@@ -25,7 +24,7 @@ public class Refactored extends BaseWindow
   public static final int maxLookUp = 85;
   public static final int maxLookDown = -85;
   int xOrigin = -1;
-  
+  BitmapText t_money, t_lives;
   
 	/**
 	 * Initial setup of projection of the scene onto screen, lights etc.
@@ -83,7 +82,11 @@ public class Refactored extends BaseWindow
     GameState.bubblesPath=new BubblePath(GameState.startPoint, GameState.endPoint);
     GameState.startingObjects();
    
-    
+    //set text
+    t_money = new BitmapText();
+    t_lives = new BitmapText();
+    t_lives.charPos[1]+=30;
+    System.out.println(t_lives.charPos[1]);
     Thread t = new Thread(new Runnable()	//Deffining new thread for drawing bubbles
     {
 
@@ -147,8 +150,14 @@ public class Refactored extends BaseWindow
 
 	  // Reset transformations
 	  glLoadIdentity();
+	  
+	  //draw text
+	  this.startHUD();
+	  this.t_money.renderString("Money:"+GameState.money,20);
+	  this.t_lives.renderString("Lives:"+GameState.lives,20);
+	  this.endHUD();
+	  	  
 	  // Set the camera
-	  //      glTranslatef(position.x, position.y, position.z);
 	  GLU.gluLookAt(
 			  x, y,  z,
 			  x+lx, y+ly,  z+lz,
@@ -174,6 +183,23 @@ public class Refactored extends BaseWindow
 
   }
   
+  protected void startHUD() {
+	    GL11.glMatrixMode(GL11.GL_PROJECTION);
+	    GL11.glPushMatrix();
+	    GL11.glLoadIdentity();
+	    GL11.glOrtho(0, 1024, 0, 768, -1, 1);
+	    GL11.glMatrixMode(GL11.GL_MODELVIEW);
+	    GL11.glPushMatrix();
+	    GL11.glLoadIdentity();
+	  }
+	  
+	  protected void endHUD() {
+	    GL11.glMatrixMode(GL11.GL_PROJECTION);
+	    GL11.glPopMatrix();
+	    GL11.glMatrixMode(GL11.GL_MODELVIEW);
+	    GL11.glPopMatrix();
+	  }
+	 
   
   /**
    * Processes Keyboard and Mouse input and spawns actions
@@ -232,7 +258,6 @@ public class Refactored extends BaseWindow
 	lx = (float) Math.sin(angle);
 	ly = (float) Math.tan(angley);
 	lz = (float) -Math.cos(angle);
-	 System.out.println(GameState.money);
     super.processInput();
   }
   public static void main(String[] args) {

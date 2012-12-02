@@ -12,6 +12,9 @@ public abstract class Model3D
   public Model3D(float w){
 	  this.WIDTH = w;	  
   }
+  public Model3D(){
+	  
+  }
   public void setPosition(float p_X, float p_Y, float p_Z)
   {
     m_nX=p_X; m_nY=p_Y; m_nZ=p_Z;
