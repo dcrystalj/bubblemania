@@ -180,13 +180,15 @@ public class Refactored extends BaseWindow
    */  
   protected void processInput()
   {
-    if (Keyboard.isKeyDown(Keyboard.KEY_D)){
-    	x += speed;
-    }
-    if (Keyboard.isKeyDown(Keyboard.KEY_A)){
-    	x -= speed;
-    }
-    if (Keyboard.isKeyDown(Keyboard.KEY_W)){
+	  if (Keyboard.isKeyDown(Keyboard.KEY_D)){
+	   	 x += speed * (float)Math.sin(angle+Math.PI/2);
+	     z -= speed * (float)Math.cos(angle+Math.PI/2);
+	  }
+	  if (Keyboard.isKeyDown(Keyboard.KEY_A)){     
+    	x -= speed * (float)Math.sin(angle+Math.PI/2);
+    	z += speed * (float)Math.cos(angle+Math.PI/2);
+	  }
+	  if (Keyboard.isKeyDown(Keyboard.KEY_W)){
     	x += lx * speed;
 		z += lz * speed;
 		y += ly * speed;
