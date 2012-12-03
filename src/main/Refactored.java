@@ -1,8 +1,5 @@
 package main;
 
-
-import java.util.LinkedList;
-
 import objects.Bubble;
 import objects.BubblePath;
 import objects.Cube;
@@ -11,9 +8,11 @@ import objects.Tower;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 import org.lwjgl.util.vector.Vector3f;
 import static org.lwjgl.opengl.GL11.*;
+import text.BitmapText;
 import window.BaseWindow;
 
 public class Refactored extends BaseWindow 
@@ -25,7 +24,9 @@ public class Refactored extends BaseWindow
   public static final int maxLookUp = 85;
   public static final int maxLookDown = -85;
   int xOrigin = -1;
-  
+  BitmapText t_money, t_lives, t_startgame, t_exit, t_lvl, t_gameover, t_finishedlvl;
+  public static int[] menuitemsx= {240,760};
+  public static int[] menuitemsy= {580,500,480,400};
   
 	/**
 	 * Initial setup of projection of the scene onto screen, lights etc.
@@ -45,7 +46,7 @@ public class Refactored extends BaseWindow
 	  // setup projection matrix stack
 	  glMatrixMode(GL_PROJECTION);
 	  glLoadIdentity();
-	  GLU.gluPerspective(45, 1024 / (float)768, 1.0f, 1000.0f);
+	  GLU.gluPerspective(45, 1024 / (float)768, 1.0f, 1500.0f);
 	  
 	  
 	  
@@ -57,11 +58,6 @@ public class Refactored extends BaseWindow
     // model view stack 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    // setup view space; 
-    // translate to 0,2,4 and rotate 30 degrees along x 
-//    glTranslatef(-WIDTH/2, -WIDTH/4, -WIDTH);
-    //glRotatef(15.0f, 1.0f, 0.0f, 0.0f);   
-//    GLU.gluLookAt(WIDTH/2, WIDTH/4, -WIDTH, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
     GLU.gluLookAt(WIDTH/2, WIDTH/4, -WIDTH, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
   }
 
@@ -83,24 +79,46 @@ public class Refactored extends BaseWindow
     GameState.bubblesPath=new BubblePath(GameState.startPoint, GameState.endPoint);
     GameState.startingObjects();
    
+    //set text
+    t_money = new BitmapText();
+    t_lives = new BitmapText();
+    t_lvl = new BitmapText();
+    t_lives.charPos[1]+=30;
+    t_lvl.charPos[1]+=60;
+    
+    //setmenutext
+    t_startgame = new BitmapText();
+    t_exit = new BitmapText();
+    t_finishedlvl = new BitmapText();
+    t_gameover = new BitmapText();
+    
+    t_startgame.charPos[0]=(int)(WIDTH-t_startgame.textWidth("Start Game", 80)/2);
+    t_startgame.charPos[1]=500;
+    
+    t_exit.charPos[0]=(int)(WIDTH-t_startgame.textWidth("EXIT", 80)/2);
+    t_exit.charPos[1]=400;
+    
+    t_finishedlvl.charPos[0] = (int)(WIDTH-t_startgame.textWidth("Congratulations, you have finished lvl 8", 35)/2);
+    t_finishedlvl.charPos[1] = menuitemsy[1]+20;
     
     Thread t = new Thread(new Runnable()	//Deffining new thread for drawing bubbles
     {
-
     	@Override
     	public void run()
     	{
     		while (GameState.running) {
     			try {
     				for (Bubble b : GameState.bubbles){
-    					b.move(20);
+    					b.move();
+    					if(GameState.state==1)
+    						b.move();
     					if(b.isOut(GameState.t_bg)){	//If bubble gets out of terrain
     						//TODO remove bubble from list, this just hides it!!!
     						b.show=false;
     					}
     				}
     				
-    				Thread.sleep(10);
+    				Thread.sleep(20);
     			} catch (Exception e) {
     			}
     		}
@@ -108,7 +126,6 @@ public class Refactored extends BaseWindow
     });
     Thread pop = new Thread(new Runnable()	//Deffining new thread for drawing bubbles
     {
-
     	@Override
     	public void run()
     	{
@@ -117,7 +134,8 @@ public class Refactored extends BaseWindow
     				for(Tower t : GameState.towers){
     					t.popBubble();
     				}
-    				Thread.sleep(500);
+    				Thread.sleep(600);
+    				System.out.println(GameState.lives);
     			} catch (Exception e) {
     			}
     		}
@@ -125,55 +143,169 @@ public class Refactored extends BaseWindow
     });
     pop.start();
     t.start();	//Run thread
-   
   }
+  
   /**
    * Resets the view of current frame
    */
+  
   protected void resetView()
   {
     // clear color and depth buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    //renderFramefirst();
+    if(GameState.lives<=0)
+    	GameState.state=3;
+    else if(allBublesAreOut()){
+    	GameState.state=2;
+    }
   }
-  
+  protected boolean allBublesAreOut(){
+	  for (Bubble b : GameState.bubbles){
+		  if(b.show)
+			  return false;
+	  }
+	  return true;
+  }
   /**
    * Renders current frame
    */
   
   protected void renderFrame()
   {
+
 	  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	  // Reset transformations
 	  glLoadIdentity();
-	  // Set the camera
-	  //      glTranslatef(position.x, position.y, position.z);
-	  GLU.gluLookAt(
-			  x, y,  z,
-			  x+lx, y+ly,  z+lz,
-			  0.0f, 1.0f,  0.0f);
-
-	  //draw terrain
-	  GameState.t_bg.render3D();
-
-	  //draw beginning and ending of bubbles
-	  glDisable(GL_CULL_FACE);
-	  GameState.c_begin.render3D();
-	  GameState.c_end.render3D();
-
-	  //Draw path
-	  GameState.bubblesPath.render3D();
-	  //Draw bubbles
-	  for (Bubble b : GameState.bubbles)
-		  b.render3D();
-	  //Draw towers
-	  for (Tower t : GameState.towers)
-		  t.render3D();
-	  glEnable(GL_CULL_FACE);
+	  
+	  if(GameState.state==0){
+		  renderFrameMainMenu();
+	  }
+	  else{
+	  
+		  //draw text
+		  this.startHUD();
+		  this.t_money.renderString("Money:"+GameState.money,20);
+		  this.t_lives.renderString("Lives:"+GameState.lives,20);
+		  this.t_lvl.renderString("Level:"+GameState.lvl,20);		  
+		  this.endHUD();
+		  	  
+		  // Set the camera
+		  GLU.gluLookAt(
+				  x, y,  z,
+				  x+lx, y+ly,  z+lz,
+				  0.0f, 1.0f,  0.0f);
+	
+		  //draw terrain
+		  GameState.t_bg.render3D();
+	
+		  //draw beginning and ending of bubbles
+		  glDisable(GL_CULL_FACE);
+		  GameState.c_begin.render3D();
+		  GameState.c_end.render3D();
+	
+		  //Draw path
+		  GameState.bubblesPath.render3D();
+		  //Draw bubbles
+		  for (Bubble b : GameState.bubbles)
+			  b.render3D();
+		  //Draw towers
+		  for (Tower t : GameState.towers)
+			  t.render3D();
+		  glEnable(GL_CULL_FACE);
+		  if(GameState.state==2){ //lvl done
+			  renderFrameLvlDone();
+		  }
+		  else if(GameState.state==3){ //gameover
+			  renderFrameGameOver();
+		  }
+	  }
 
   }
   
+  protected void renderFrameMainMenu(){
+	  this.startHUD();
+	  
+	  //draw rectangle
+	  GL11.glBegin(GL11.GL_QUADS);
+	  GL11.glColor3f(0.3f, 0.2f, 0.4f);
+	  for (int i = 0; i < menuitemsy.length; i+=2) {
+		  GL11.glVertex2f(menuitemsx[0], menuitemsy[i]);
+		  GL11.glVertex2f(menuitemsx[0], menuitemsy[i+1]);
+		  GL11.glVertex2f(menuitemsx[1], menuitemsy[i+1]);
+		  GL11.glVertex2f(menuitemsx[1], menuitemsy[i]);
+	 }
+	  GL11.glEnd();
+	  
+	  GL11.glColor3f(0.9f, 0.9f, 0.9f);
+	  this.t_startgame.renderString("START GAME",80);
+	  this.t_exit.renderString("EXIT",80);
+
+	  this.endHUD();
+	  
+  }
+   
+  private void renderFrameGameOver() {
+	  this.startHUD();
+	  
+	  //draw rectangle
+	  GL11.glBegin(GL11.GL_QUADS);
+	  GL11.glColor3f(0.3f, 0.2f, 0.4f);
+	  for (int i = 0; i < menuitemsy.length; i+=2) {
+		  GL11.glVertex2f(menuitemsx[0], menuitemsy[i]);
+		  GL11.glVertex2f(menuitemsx[0], menuitemsy[i+1]);
+		  GL11.glVertex2f(menuitemsx[1], menuitemsy[i+1]);
+		  GL11.glVertex2f(menuitemsx[1], menuitemsy[i]);
+	 }
+	  GL11.glEnd();
+	  
+	  GL11.glColor3f(0.9f, 0.9f, 0.9f);
+	  this.t_startgame.renderString("START GAME",80);
+	  this.t_exit.renderString("EXIT",80);
+
+	  this.endHUD();
+	
+}
+
+private void renderFrameLvlDone() {
+	this.startHUD();
+	  //draw rectangle
+	  glEnable (GL_BLEND);
+	  glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	  GL11.glBegin(GL11.GL_QUADS);
+	  GL11.glColor4f(0.3f, 0.2f, 0.4f,0.5f);
+	  int i=2;
+		  GL11.glVertex2f(menuitemsx[0], menuitemsy[i]);
+		  GL11.glVertex2f(menuitemsx[0], menuitemsy[i+1]);
+		  GL11.glVertex2f(menuitemsx[1], menuitemsy[i+1]);
+		  GL11.glVertex2f(menuitemsx[1], menuitemsy[i]);
+	 
+	  GL11.glEnd();
+	  
+	  GL11.glColor3f(0.9f, 0.9f, 0.9f);
+	  this.t_finishedlvl.renderString("Congratulations, you have finished lvl "+GameState.lvl,35);
+	  this.t_exit.renderString("Next",80);
+
+	  this.endHUD();
+}
+
+protected void startHUD() {
+	    GL11.glMatrixMode(GL11.GL_PROJECTION);
+	    GL11.glPushMatrix();
+	    GL11.glLoadIdentity();
+	    GL11.glOrtho(0, 1024, 0, 768, -1, 1);
+	    GL11.glMatrixMode(GL11.GL_MODELVIEW);
+	    GL11.glPushMatrix();
+	    GL11.glLoadIdentity();
+	  }
+	  
+	  protected void endHUD() {
+	    GL11.glMatrixMode(GL11.GL_PROJECTION);
+	    GL11.glPopMatrix();
+	    GL11.glMatrixMode(GL11.GL_MODELVIEW);
+	    GL11.glPopMatrix();
+	  }
+	 
   
   /**
    * Processes Keyboard and Mouse input and spawns actions
@@ -200,11 +332,23 @@ public class Refactored extends BaseWindow
     }
     if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)){
     	y += 0.1;
-    }    
-    if (Mouse.isGrabbed()) {
-        float mouseDX = Mouse.getDX()* mouseSpeed * 0.16f;;
-        float mouseDY = Mouse.getDY()* mouseSpeed * 0.16f;;
-        
+    }   
+    //mouse in menu
+    if(Mouse.isGrabbed() && GameState.state==0){	
+    	if(Mouse.getX()>=menuitemsx[0] && Mouse.getX()<=menuitemsx[1]){
+    		//start game
+    		if(Mouse.getY()>=menuitemsy[1] && Mouse.getY()<=menuitemsy[0]){
+    	    	GameState.state=1;
+    		}
+    		if(Mouse.getY()>=menuitemsy[3] && Mouse.getY()<=menuitemsy[2]){
+    	    	BaseWindow.isRunning=false;
+    		}
+    	}
+    }
+    //mouse in game
+    else if (Mouse.isGrabbed()) {
+        float mouseDX = Mouse.getDX()* mouseSpeed * 0.16f;
+        float mouseDY = Mouse.getDY()* mouseSpeed * 0.16f;
         if(mouseDX>0){
     		angle += mouseDX;
         }
@@ -217,14 +361,34 @@ public class Refactored extends BaseWindow
         if(mouseDY<0){
         	angley+=mouseDY;
         }
-//        System.out.println(mouseDX+"   "+mouseDY);
         
+//        System.out.println(mouseDX+"   "+mouseDY);
+        //lvl done
+        if(GameState.state==2){	
+        	if(Mouse.getX()>=menuitemsx[0] && Mouse.getX()<=menuitemsx[1]){
+        		if(Mouse.getY()>=menuitemsy[3] && Mouse.getY()<=menuitemsy[2]){
+        	    	GameState.lvl++;
+        	    	GameState.state = 1;
+        	    	initializeModels();
+        	    }
+        	}
+        }
+        //TODO if game over
+        if(GameState.state==2){	
+        	if(Mouse.getX()>=menuitemsx[0] && Mouse.getX()<=menuitemsx[1]){
+        		if(Mouse.getY()>=menuitemsy[3] && Mouse.getY()<=menuitemsy[2]){
+        	    	GameState.lvl++;
+        	    	GameState.state = 1;
+        	    	initializeModels();
+        	    }
+        	}
+        }
     }
     while (Mouse.next()) {
         if (Mouse.isButtonDown(0)) {
             Mouse.setGrabbed(true);
         }
-        if (Mouse.isButtonDown(1)) {
+        else {
             Mouse.setGrabbed(false);
         }
 
@@ -232,7 +396,6 @@ public class Refactored extends BaseWindow
 	lx = (float) Math.sin(angle);
 	ly = (float) Math.tan(angley);
 	lz = (float) -Math.cos(angle);
-	 System.out.println(GameState.money);
     super.processInput();
   }
   public static void main(String[] args) {

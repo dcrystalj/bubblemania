@@ -9,10 +9,10 @@ public class Bubble extends Model3D
 {
   private Sphere s = new Sphere();
   public float radius = 1;
-  public float[] speed = {5f, 0.01f, 0.01f};
   public float[] color = {1, 1, 1};
   public float safetyDistance=25;	//Distance between this and next bubble
   public int checkpoint=0;  //checkPoint, which is next point on path
+  float speed=0.5f;	//Speed of a bubble
 
   public Bubble(float r) {
 	  super(r);
@@ -32,48 +32,29 @@ public class Bubble extends Model3D
     m_nY = pos[1];
     m_nZ = pos[2];
   }
-  public void move(int timeMilis) {
-	  Vector3f v1=GameState.bubblesPath.get(0);
-	  Vector3f v2=GameState.bubblesPath.get(1);
-	  Vector3f v3=GameState.bubblesPath.get(2);
-	  Vector3f t=new Vector3f(m_nX, m_nY, m_nZ);
-	  if(checkpoint==0){
-		  m_nX += 5.f*timeMilis/100;
-		  if(distanceBetween(v1,t)<1)
+  public void move() {
+	  if(checkpoint<GameState.bubblesPath.path.size()){
+		  //Bubbles next target destination
+		  Vector3f next=GameState.bubblesPath.path.get(checkpoint);
+		  //Direction to that target
+		  Vector3f direction=new Vector3f(next.x-this.m_nX,next.y-this.m_nY,next.z-this.m_nZ);
+		  direction.normalise();	//Normalise vector of direction to next checkpoint
+		  //We move in that direction with some speed
+		  direction.scale(speed);
+		  m_nX+=direction.x;
+		  m_nY+=direction.y;
+		  m_nZ+=direction.z;
+		  //If bubble is close enough to target it can move on to next checkpoint
+		  //We add some random mistake option, that it doesnt look so automized
+		  if(distanceBetween(new Vector3f(m_nX,m_nY,m_nZ), next)<1.5+Math.random()*6){
 			  checkpoint++;
+		  }
 	  }
-	  else if(checkpoint==1){
-		  m_nZ += 5.f*timeMilis/100;
-		  if(distanceBetween(v2,t)<2)
-			  checkpoint++;
+	  else if(this.show){
+		  GameState.lives--;	//In that case bubble comes through so we lose 1 life
+		  this.show=false;
 	  }
-	  else if(checkpoint==2){
-		  m_nX += 5.f*timeMilis/100;
-		  if(distanceBetween(v3,t)<3)
-			  checkpoint++;
-	  }
-	  else if(checkpoint==3){
-		  m_nZ += 5.f*timeMilis/100;
-	  }
-	  //Direction using direction vector, deprecated :) :D
- //	  Vector3 next=Refactored.bubblesPath.get(checkpoint);
-//	  Vector3 direction=new Vector3(next.x-this.m_nX,next.y-this.m_nY,next.z-this.m_nZ);
-//	  if(checkpoint<(Refactored.bubblesPath.path.size()-1)){
-//		  if(Math.abs(direction.len())<1){
-//			  checkpoint++;
-//			  next=Refactored.bubblesPath.get(checkpoint);
-//			  direction=new Vector3(next.x-m_nX,next.y-m_nY,next.z-m_nZ);
-//		  }
-//		  direction.nor();	//Get direction vector and normalize it
-//		  System.out.println("Dolzina: "+direction.toString());
-//		  m_nX += direction.x*(speed[0]*timeMilis);
-//		  m_nY += direction.y*(speed[1]*timeMilis);
-//		  m_nZ += direction.z*(speed[2]*timeMilis);
-//	  }
-//	  Vector3 thisVec=new Vector3(m_nX,m_nY,m_nZ);
-//	  thisVec = thisVec.slerp(next, 0.5f);
-//	  m_nX += 5.f;
-//	   //make object look towards currentTarget
+	  
   }
   public float distanceBetween(Vector3f v1, Vector3f v2){
 	  //We DO NOT consider y coordinates

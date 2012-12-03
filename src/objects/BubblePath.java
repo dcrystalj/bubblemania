@@ -7,23 +7,20 @@ import org.lwjgl.util.vector.Vector3f;
 
 public class BubblePath extends Model3D{
 	LinkedList<Vector3f> path;	//list of point on path for bubbles
-	LinkedList<Vector3f> pathPaint;	//list of point on path for bubbles
 	float pathWidth=30;
 	
 	public BubblePath(Vector3f start, Vector3f end){
 		super(30);
+		float height=5;	//Height of path for bubbles
 		//Generate simple path for bubbles
 		path=new LinkedList<Vector3f>();
-		path.add(new Vector3f(start.x+250,start.y,start.z));
-		path.add(new Vector3f(start.x+250,start.y,start.z+250));
-		path.add(new Vector3f(end.x-20,end.y,start.z+250));
-		//Same as path, it includes also start and end points
-		pathPaint=new LinkedList<Vector3f>();
-		pathPaint.add(start);
-		for(Vector3f v : path){
-			pathPaint.add(v);
-		}
-		pathPaint.add(end);
+		start.y=height;
+		path.add(start);
+		path.add(new Vector3f(start.x+250,height,start.z));
+		path.add(new Vector3f(start.x+250,height,start.z+250));
+		path.add(new Vector3f(end.x-20,height,start.z+250));
+		end.y=height;
+		path.add(end);
 	}
 	public Vector3f get(int index){	//Returns point on path
 		return path.get(index);
@@ -60,12 +57,12 @@ public class BubblePath extends Model3D{
 	  
 	  private void renderModel()
 	  {
-	    GL11.glBegin(GL11.GL_QUADS); // draw independent triangles
+	    GL11.glBegin(GL11.GL_QUADS); // draw independent quads
 	    GL11.glColor3f(0.8f, 0.8f, 0.8f);
 	    
-	    for(int i=0; i<pathPaint.size()-1;i++){
-	    	Vector3f v1=pathPaint.get(i);
-	    	Vector3f v2=pathPaint.get(i+1);
+	    for(int i=0; i<path.size()-1;i++){
+	    	Vector3f v1=path.get(i);
+	    	Vector3f v2=path.get(i+1);
 	    	if(i%2==0){
 		    	GL11.glVertex3f( v1.x-pathWidth/2, 0.008f, v1.z-pathWidth/2);    // upper left vertex
 		    	GL11.glVertex3f(  v1.x-pathWidth/2, 0.008f, v1.z+pathWidth/2);    // lower left vertex

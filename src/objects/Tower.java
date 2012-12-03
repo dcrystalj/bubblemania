@@ -2,9 +2,8 @@ package objects;
 
 import main.*;	//Import of main package
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.vector.Matrix2f;
 import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
+
 
 //Class for saving object tower
 public class Tower extends Model3D {
@@ -22,7 +21,7 @@ public class Tower extends Model3D {
 	@Override
 	public void render3D()
 	  {
-//		  if(show){
+		  if(show){
 			// model view stack 
 			    GL11.glMatrixMode(GL11.GL_MODELVIEW);
 			    
@@ -50,7 +49,7 @@ public class Tower extends Model3D {
 			    
 			    // discard current matrix
 			    GL11.glPopMatrix();
-//		  }
+		  }
 	  }
 	private void renderModel()
 	{
@@ -72,13 +71,13 @@ public class Tower extends Model3D {
 	    //right
 	    GL11.glVertex3f( cW,0.0f,0.0f);    // lower right vertex
 	    GL11.glVertex3f( cW,0.0f, cW);    // upper right vertex
-	    GL11.glVertex3f( cW, cW, cW);    // upper left vertex
-	    GL11.glVertex3f( cW, cW,0.0f);    // lower left vertex
+	    GL11.glVertex3f( cW, 5*cW, cW);    // upper left vertex
+	    GL11.glVertex3f( cW, 5*cW,0.0f);    // lower left vertex
 
 	    //left
 	    GL11.glVertex3f(0.0f,0.0f,0.0f);    // lower right vertex
-	    GL11.glVertex3f(0.0f, cW,0.0f);    // lower left vertex
-	    GL11.glVertex3f(0.0f, cW, cW);    // upper left vertex
+	    GL11.glVertex3f(0.0f, 5*cW,0.0f);    // lower left vertex
+	    GL11.glVertex3f(0.0f, 5*cW, cW);    // upper left vertex
 	    GL11.glVertex3f(0.0f,0.0f, cW);    // upper right vertex
 	    
 	    //bottom
@@ -92,15 +91,15 @@ public class Tower extends Model3D {
 	    GL11.glColor3f(color[0],color[1],color[2]);
 	    GL11.glVertex3f(0.0f,0.0f,0.0f);    // lower right vertex
 	    GL11.glVertex3f( cW,0.0f,0.0f);    // upper right vertex
-	    GL11.glVertex3f( cW, cW,0.0f);    // lower left vertex
-	    GL11.glVertex3f(0.0f, cW,0.0f);    // upper left vertex
+	    GL11.glVertex3f( cW, 5*cW,0.0f);    // lower left vertex
+	    GL11.glVertex3f(0.0f, 5*cW,0.0f);    // upper left vertex
 	  
 	    
 	    //front
 	    GL11.glColor3f(color[0],color[1],color[2]);
 	    GL11.glVertex3f(0.0f,0.0f, cW);    // lower right vertex
-	    GL11.glVertex3f(0.0f, cW, cW);    // upper right vertex
-	    GL11.glVertex3f( cW, cW, cW);    // lower left vertex
+	    GL11.glVertex3f(0.0f, 5*cW, cW);    // upper right vertex
+	    GL11.glVertex3f( cW, 5*cW, cW);    // lower left vertex
 	    GL11.glVertex3f( cW,0.0f, cW);    // upper left vertex
 	    //"GUN"
 	    float wG=cW/2;
@@ -113,10 +112,10 @@ public class Tower extends Model3D {
 	    
 	    //top
 	    GL11.glColor3f(color[0],color[1],color[2]);
-	    GL11.glVertex3f(0.0f, cW, cW);    // lower right vertex
-	    GL11.glVertex3f(0.0f, cW,0.0f);    // upper right vertex
-	    GL11.glVertex3f( cW, cW,0.0f);    // lower left vertex
-	    GL11.glVertex3f( cW, cW, cW);    // upper left vertex
+	    GL11.glVertex3f(0.0f, 5*cW, cW);    // lower right vertex
+	    GL11.glVertex3f(0.0f, 5*cW,0.0f);    // upper right vertex
+	    GL11.glVertex3f( cW, 5*cW,0.0f);    // lower left vertex
+	    GL11.glVertex3f( cW, 5*cW, cW);    // upper left vertex
 	    
 	    GL11.glEnd();
 	    
@@ -132,7 +131,7 @@ public class Tower extends Model3D {
 				if(dToBubble<=shootingRadius){
 					rotateOnShoot(b);
 					b.show=false;	//If we popped one bubble we quit function
-					GameState.money+=10;
+					GameState.money+=10; //For every bloon we add money
 					return;
 				}
 			}
@@ -142,21 +141,11 @@ public class Tower extends Model3D {
 	}
 	public void rotateOnShoot(Bubble b){
 		//We don't consider height, y coordinate
-		
 		Vector2f toBubble=new Vector2f(b.m_nX-this.m_nX, b.m_nZ-this.m_nZ);
 		toBubble.normalise();
-		float alpha = Vector2f.dot(toBubble,shootingDirection);
-		alpha = (float)Math.toDegrees(Math.acos(alpha));
-		shootingDirection=new Vector2f(toBubble);
-		if(toBubble.x<shootingDirection.x){
-			if(toBubble.y>0)
-				this.m_rY-=alpha;
-			else
-				this.m_rY+=alpha;
-		}
-		else if(toBubble.y>0)
-			this.m_rY-=alpha;
-		else this.m_rY-=alpha;
+		//Calculating rotation with polar coordinates tan function
+		this.m_rY=(float)Math.toDegrees(Math.atan2(toBubble.y, -toBubble.x))+90; 
+		
 	}
 
 	
