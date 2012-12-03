@@ -63,6 +63,7 @@ public class GameState {
 		to.setPosition(startPoint.x+225, 0.0f, startPoint.z+180);
 		towers.add(to);
 		to = new Tower(10);
+		to.setPosition(startPoint.x+410, 0.01f, startPoint.z+270);
 		to.setPosition(startPoint.x+410, 0.0f, startPoint.z+270);
 		towers.add(to);
 	}

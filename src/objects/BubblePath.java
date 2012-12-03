@@ -58,7 +58,7 @@ public class BubblePath extends Model3D{
 	  private void renderModel()
 	  {
 	    GL11.glBegin(GL11.GL_QUADS); // draw independent quads
-	    GL11.glColor3f(0.8f, 0.8f, 0.8f);
+	    GL11.glColor4f(0.8f, 0.8f, 0.8f,0.5f);
 	    
 	    for(int i=0; i<path.size()-1;i++){
 	    	Vector3f v1=path.get(i);
