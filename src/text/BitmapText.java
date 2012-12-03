@@ -14,7 +14,7 @@ public class BitmapText
   public BitmapText() {
     font = Texture.loadTextures2D(new String[] { "font.png" });
     charPos[0]=10;
-    charPos[1]=680;
+    charPos[1]=650;
   }
   
   public float textWidth(String s, int size) {

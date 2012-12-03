@@ -1,4 +1,6 @@
 package window;
+import main.GameState;
+
 import org.lwjgl.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.input.*;
@@ -47,7 +49,7 @@ public class BaseWindow
     {
       // reset view
       resetView();
-
+      
       // let subsystem paint
       renderFrame();
 
@@ -59,7 +61,8 @@ public class BaseWindow
     }
   }
 
-  /**
+
+/**
    * Initial setup of projection of the scene onto screen, lights, etc.
    */
   protected void setupView()

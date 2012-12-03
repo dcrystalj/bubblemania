@@ -14,6 +14,15 @@ import org.lwjgl.util.vector.Vector3f;
 
 //Class which has saved state of current game
 public class GameState {
+	//main state
+	/*
+	 * 0=main menu
+	 * 1=game
+	 * 2=level end
+	 * 3=game over
+	 */
+	public static int state=0;
+	
 	//Bubbles+towers
 	public static int numberOfBubbles = 15;
 	public static Set<Bubble> bubbles=new HashSet<Bubble>();
@@ -34,6 +43,7 @@ public class GameState {
 	//Current game state: lives, money,..
 	public static int lives=30;
 	public static int money=100;
+	public static int lvl=1;
 	
 	public static void startingObjects(){
 		
