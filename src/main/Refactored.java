@@ -24,7 +24,7 @@ public class Refactored extends BaseWindow
   public static final int maxLookUp = 85;
   public static final int maxLookDown = -85;
   int xOrigin = -1;
-  BitmapText t_money, t_lives, t_startgame, t_exit, t_lvl, t_gameover, t_finishedlvl;
+  BitmapText t_money, t_lives, t_startgame, t_exit, t_lvl, t_gameover, t_finishedlvl, t_bubblesThisLvl;
   public static int[] menuitemsx= {240,760};
   public static int[] menuitemsy= {580,500,480,400};
   
@@ -83,8 +83,10 @@ public class Refactored extends BaseWindow
     t_money = new BitmapText();
     t_lives = new BitmapText();
     t_lvl = new BitmapText();
+    t_bubblesThisLvl = new BitmapText();
     t_lives.charPos[1]+=30;
     t_lvl.charPos[1]+=60;
+    t_bubblesThisLvl.charPos[1]+=90;
     
     //setmenutext
     t_startgame = new BitmapText();
@@ -101,48 +103,6 @@ public class Refactored extends BaseWindow
     t_finishedlvl.charPos[0] = (int)(WIDTH-t_startgame.textWidth("Congratulations, you have finished lvl 8", 35)/2);
     t_finishedlvl.charPos[1] = menuitemsy[1]+20;
     
-    Thread t = new Thread(new Runnable()	//Deffining new thread for drawing bubbles
-    {
-    	@Override
-    	public void run()
-    	{
-    		while (GameState.running) {
-    			try {
-    				for (Bubble b : GameState.bubbles){
-    					b.move();
-    					if(GameState.state==1)
-    						b.move();
-    					if(b.isOut(GameState.t_bg)){	//If bubble gets out of terrain
-    						//TODO remove bubble from list, this just hides it!!!
-    						b.show=false;
-    					}
-    				}
-    				
-    				Thread.sleep(20);
-    			} catch (Exception e) {
-    			}
-    		}
-    	}
-    });
-    Thread pop = new Thread(new Runnable()	//Deffining new thread for drawing bubbles
-    {
-    	@Override
-    	public void run()
-    	{
-    		while (GameState.running) {
-    			try {
-    				for(Tower t : GameState.towers){
-    					t.popBubble();
-    				}
-    				Thread.sleep(600);
-    				System.out.println(GameState.lives);
-    			} catch (Exception e) {
-    			}
-    		}
-    	}
-    });
-    pop.start();
-    t.start();	//Run thread
   }
   
   /**
@@ -187,7 +147,9 @@ public class Refactored extends BaseWindow
 		  this.startHUD();
 		  this.t_money.renderString("Money:"+GameState.money,20);
 		  this.t_lives.renderString("Lives:"+GameState.lives,20);
-		  this.t_lvl.renderString("Level:"+GameState.lvl,20);		  
+		  this.t_lvl.renderString("Level:"+GameState.lvl,20);		
+		  this.t_bubblesThisLvl.renderString("Bloons attributes for this level: number="+GameState.numberOfBubbles+", speed=" +
+		  		""+Bubble.speed+", distance between="+Bubble.safetyDistance,20);	
 		  this.endHUD();
 		  	  
 		  // Set the camera
@@ -283,7 +245,7 @@ private void renderFrameLvlDone() {
 	  GL11.glEnd();
 	  
 	  GL11.glColor3f(0.9f, 0.9f, 0.9f);
-	  this.t_finishedlvl.renderString("Congratulations, you have finished lvl "+GameState.lvl,35);
+	  this.t_finishedlvl.renderString("Congratulations, you have finished level "+GameState.lvl,35);
 	  this.t_exit.renderString("Next",80);
 
 	  this.endHUD();
@@ -369,20 +331,33 @@ protected void startHUD() {
         		if(Mouse.getY()>=menuitemsy[3] && Mouse.getY()<=menuitemsy[2]){
         	    	GameState.lvl++;
         	    	GameState.state = 1;
+        	    	//TODO
+        	    	//Define harder level
+        	    	if(GameState.lvl%3==0){
+        	    		GameState.numberOfBubbles*=1.5; //We increase number of bloons
+        	    	}
+        	    	else if(GameState.lvl%3==1){
+        	    		Bubble.safetyDistance*=0.8;
+        	    	}
+        	    	else Bubble.speed*=1.2f;
+        	    	
+        	    	//Reset towers+bubbles
+        	    	GameState.resetObjects();
+        	    	//Initialize them again for new level
         	    	initializeModels();
         	    }
         	}
         }
         //TODO if game over
-        if(GameState.state==2){	
-        	if(Mouse.getX()>=menuitemsx[0] && Mouse.getX()<=menuitemsx[1]){
-        		if(Mouse.getY()>=menuitemsy[3] && Mouse.getY()<=menuitemsy[2]){
-        	    	GameState.lvl++;
-        	    	GameState.state = 1;
-        	    	initializeModels();
-        	    }
-        	}
-        }
+//        if(GameState.state==2){	
+//        	if(Mouse.getX()>=menuitemsx[0] && Mouse.getX()<=menuitemsx[1]){
+//        		if(Mouse.getY()>=menuitemsy[3] && Mouse.getY()<=menuitemsy[2]){
+//        	    	GameState.lvl++;
+//        	    	GameState.state = 1;
+//        	    	initializeModels();
+//        	    }
+//        	}
+//        }
     }
     while (Mouse.next()) {
         if (Mouse.isButtonDown(0)) {

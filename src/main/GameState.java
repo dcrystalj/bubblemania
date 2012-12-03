@@ -46,8 +46,50 @@ public class GameState {
 	public static int money=100;
 	public static int lvl=1;
 	
+	//Threads
+	public static Thread popBubbles;
+	public static Thread moveBubbles;
+	
 	public static void startingObjects(){
-		
+		moveBubbles = new Thread(new Runnable()	//Deffining new thread for drawing bubbles
+	    {
+	    	@Override
+	    	public void run()
+	    	{
+	    		while (GameState.running) {
+	    			try {
+	    				for (Bubble b : GameState.bubbles){
+	    					b.move();
+	    					if(GameState.state==1)
+	    						b.move();
+	    					if(b.isOut(GameState.t_bg)){	//If bubble gets out of terrain
+	    						//TODO remove bubble from list, this just hides it!!!
+	    						b.show=false;
+	    					}
+	    				}
+	    				
+	    				Thread.sleep(15);
+	    			} catch (Exception e) {
+	    			}
+	    		}
+	    	}
+	    });
+	    popBubbles = new Thread(new Runnable()	//Deffining new thread for drawing bubbles
+	    {
+	    	@Override
+	    	public void run()
+	    	{
+	    		while (GameState.running) {
+	    			try {
+	    				for(Tower t : GameState.towers){
+	    					t.popBubble();
+	    				}
+	    				Thread.sleep(600);
+	    			} catch (Exception e) {
+	    			}
+	    		}
+	    	}
+	    });
 		//Create n bubbles
 		//Radius of bubble
 		float radius=3.f;
@@ -66,5 +108,18 @@ public class GameState {
 		to.setPosition(startPoint.x+410, 0.01f, startPoint.z+270);
 		to.setPosition(startPoint.x+410, 0.0f, startPoint.z+270);
 		towers.add(to);
+		//Start all running threads
+		popBubbles.start();
+		moveBubbles.start();
+		running=true;
+	}
+	public static void resetObjects(){
+		//Delete all bubbles and towers
+		popBubbles.stop();
+		moveBubbles.stop();
+		bubbles=new HashSet<Bubble>();	
+		towers=new HashSet<Tower>();
+		//Stop all running threads
+		running=false;
 	}
 }
