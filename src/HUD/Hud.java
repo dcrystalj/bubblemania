@@ -33,6 +33,10 @@ public class Hud {
 		 }
 		  GL11.glEnd();
 		  
+		  GL11.glColor3f(0.1f, 0.3f, 0.3f);
+		  t_finishedlvl.charPos[0] = (int)(GameState.WIDTH-t_1item.textWidth("BzBBle MaNiA", 85)/2);
+		  t_finishedlvl.charPos[1] = menuitemsy[0]+20;
+		  t_finishedlvl.renderString("BuBBle MaNiA",85);
 		  GL11.glColor3f(0.9f, 0.9f, 0.9f);
 		  t_1item.renderString("START GAME",80);
 		  t_2item.renderString("EXIT",80);
@@ -47,7 +51,7 @@ public class Hud {
 		  //draw rectangle
 		  GL11.glBegin(GL11.GL_QUADS);
 		  GL11.glColor3f(0.3f, 0.2f, 0.4f);
-		  for (int i = 0; i < menuitemsy.length; i+=2) {
+		  for (int i = 0; i < menuitemsy.length-2; i+=2) {
 			  GL11.glVertex2f(menuitemsx[0], menuitemsy[i]);
 			  GL11.glVertex2f(menuitemsx[0], menuitemsy[i+1]);
 			  GL11.glVertex2f(menuitemsx[1], menuitemsy[i+1]);
@@ -55,12 +59,16 @@ public class Hud {
 		 }
 		  GL11.glEnd();
 		  
+		  GL11.glColor3f(0.1f, 0.3f, 0.3f);
+		  t_finishedlvl.charPos[0] = (int)(GameState.WIDTH-t_1item.textWidth("GAME OVER", 85)/2);
+		  t_finishedlvl.charPos[1] = menuitemsy[0]+20;
+		  t_finishedlvl.renderString("GAME OVER",85);
 		  GL11.glColor3f(0.9f, 0.9f, 0.9f);
-		  t_1item.renderString("START GAME",80);
+		  t_1item.renderString("  RESTART",80);
 		  t_2item.renderString("EXIT",80);
-
+		  
 		  endHUD();
-		
+		  Refactored.angle+=0.01;
 	}
 
 	public static void renderFrameLvlDone() {
@@ -85,8 +93,10 @@ public class Hud {
 		  
 		  //draw texts
 		  GL11.glColor3f(0.9f, 0.9f, 0.9f);
+		  t_finishedlvl.charPos[0] = (int)(GameState.WIDTH-t_1item.textWidth("Congratulations, you have finished lvl 8", 35)/2);
+		  t_finishedlvl.charPos[1] = menuitemsy[1]+20;
 		  t_finishedlvl.renderString("Congratulations, you have finished level "+GameState.lvl,35);
-		  t_2item.renderString("Buy",80);
+		  t_2item.renderString(" Buy",65);
 		  t_3item.renderString("Next",80);
 
 		  endHUD();

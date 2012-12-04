@@ -19,7 +19,7 @@ import window.BaseWindow;
 public class Refactored extends BaseWindow 
 {
 
-  float scale = 1,speed=0.5f*10, x=WIDTH/2,y=WIDTH/4,z=WIDTH, lx=-x,ly=-y,lz=-z, angley=0, angle=-0.1f ;
+  public static float scale = 1,speed=0.5f*10, x=WIDTH/2,y=WIDTH/4,z=WIDTH, lx=-x,ly=-y,lz=-z, angley=0, angle=-0.1f ;
   public static Vector3f rotation = new Vector3f(0, 0, 0);
   public static float mouseSpeed = 0.01f;
   public static final int maxLookUp = 85;
@@ -76,7 +76,6 @@ public class Refactored extends BaseWindow
     GameState.endPoint=new Vector3f(GameState.c_end.m_nX+GameState.c_end.cW/2,GameState.c_end.m_nY,GameState.c_end.m_nZ+GameState.c_end.cW/2);
     GameState.bubblesPath=new BubblePath(GameState.startPoint, GameState.endPoint);
     GameState.startingObjects();
-   
     //set text
     Hud.t_money = new Bitmap();
     Hud.t_lives = new Bitmap();
@@ -102,9 +101,6 @@ public class Refactored extends BaseWindow
     Hud.t_3item.charPos[0]=(int)(WIDTH-Hud.t_1item.textWidth("EXIT", 80)/2);
     Hud.t_3item.charPos[1]=300;
     
-    Hud.t_finishedlvl.charPos[0] = (int)(WIDTH-Hud.t_1item.textWidth("Congratulations, you have finished lvl 8", 35)/2);
-    Hud.t_finishedlvl.charPos[1] = Hud.menuitemsy[1]+20;
-    
   }
   
   /**
@@ -116,8 +112,10 @@ public class Refactored extends BaseWindow
     // clear color and depth buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
-    if(GameState.lives<=0)
+    if(GameState.lives<=0){
+    	GameState.running=false;
     	GameState.state=3;
+    }
     else if(allBublesAreOut() && GameState.state!=4){
     	GameState.state=2;
     }
@@ -175,10 +173,10 @@ public class Refactored extends BaseWindow
 		  for (Tower t : GameState.towers)
 			  t.render3D();
 		  glEnable(GL_CULL_FACE);
-		  if(GameState.state==2){ //lvl done
+		  if(GameState.state==2){ //level done
 			  Hud.renderFrameLvlDone();
 		  }
-		  else if(GameState.state==3){ //gameover
+		  else if(GameState.state==3){ //game over
 			  Hud.renderFrameGameOver();
 		  }
 		  else if(GameState.state==4){
@@ -218,8 +216,8 @@ public class Refactored extends BaseWindow
     if(Mouse.isGrabbed() && GameState.state==0){	
     	if(Mouse.getX()>=Hud.menuitemsx[0] && Mouse.getX()<=Hud.menuitemsx[1]){
     		//start game
-    		if(Mouse.getY()>=Hud.menuitemsy[1] && Mouse.getY()<=Hud.menuitemsy[0]){
-    	    	GameState.state=1;
+    		if(Mouse.getY()>=Hud.menuitemsy[1] && Mouse.getY()<=Hud.menuitemsy[0]){   	        
+    	        GameState.state=1;
     		}
     		if(Mouse.getY()>=Hud.menuitemsy[3] && Mouse.getY()<=Hud.menuitemsy[2]){
     	    	BaseWindow.isRunning=false;
@@ -256,8 +254,8 @@ public class Refactored extends BaseWindow
 //        System.out.println(mouseDX+"   "+mouseDY);
         //level done
         if(GameState.state==2){	
-        	if(Mouse.getX()>=Hud.menuitemsx[0] && Mouse.getX()<=Hud.menuitemsx[1]){ //right x position
-        		if(Mouse.getY()>=Hud.menuitemsy[3] && Mouse.getY()<=Hud.menuitemsy[2]){ //second button
+        	if(Mouse.getX()>=Hud.menuitemsx[0] && Mouse.getX()<=Hud.menuitemsx[1]){
+        		if(Mouse.getY()>=Hud.menuitemsy[1] && Mouse.getY()<=Hud.menuitemsy[0]){
         			GameState.state = 4;
         			x=WIDTH/2; y=800; z=WIDTH/2;
         			angle=0; angley=-(float) (Math.PI/2-0.001);
@@ -268,16 +266,27 @@ public class Refactored extends BaseWindow
         	    }
         	}
         }
-        //TODO if game over
-//        if(GameState.state==2){	
-//        	if(Mouse.getX()>=menuitemsx[0] && Mouse.getX()<=menuitemsx[1]){
-//        		if(Mouse.getY()>=menuitemsy[3] && Mouse.getY()<=menuitemsy[2]){
-//        	    	GameState.lvl++;
-//        	    	GameState.state = 1;
-//        	    	initializeModels();
-//        	    }
-//        	}
-//        }
+        //game over
+        if(GameState.state==3){	
+        	if(Mouse.getX()>=Hud.menuitemsx[0] && Mouse.getX()<=Hud.menuitemsx[1]){ //right x position
+        		if(Mouse.getY()>=Hud.menuitemsy[1] && Mouse.getY()<=Hud.menuitemsy[0]){ //second button
+        			
+        			GameState.state = 1;
+        			initializeModels();
+        			scale = 1;
+        			speed=0.5f*10; x=WIDTH/2;y=WIDTH/4;z=WIDTH; lx=-x;ly=-y;lz=-z; angley=0; angle=-0.1f ;
+        			GameState.lives=30;
+        			GameState.money=100;
+        			GameState.lvl = 1;
+        			GameState.numberOfBubbles = 10;
+        			Bubble.safetyDistance=25;
+        			Bubble.speed = 1.3f;
+        		}
+        		if(Mouse.getY()>=Hud.menuitemsy[3] && Mouse.getY()<=Hud.menuitemsy[2]){
+        			BaseWindow.isRunning=false;
+        	    }
+        	}
+        }
     }
     while (Mouse.next()) {
         if (Mouse.isButtonDown(0)) {
@@ -299,10 +308,12 @@ public class Refactored extends BaseWindow
 	  	//TODO
 	  	//Define harder level
 	  	if(GameState.lvl%3==0){
-	  		GameState.numberOfBubbles*=1.5; //We increase number of balloons
+	  		GameState.numberOfBubbles*=1.1; //We increase number of balloons
+	  		Bubble.speed*=1.2f;
 	  	}
 	  	else if(GameState.lvl%3==1){
 	  		Bubble.safetyDistance*=0.8;
+	  		Bubble.speed*=1.2f;
 	  	}
 	  	else Bubble.speed*=1.2f;
 	  	

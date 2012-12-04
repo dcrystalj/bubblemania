@@ -9,11 +9,11 @@ public class Bitmap
 {
 	 public int[] charPos = new int[2];
 	 public int[] charCode = new int[2];
-  private static IntBuffer font;
+	 public static IntBuffer font;
   float fw = 0.065f, dx = 0.010f, fh = 0.13f, ff = 0.65f;
  
   public Bitmap() {
-    font = Texture.loadTextures2D(new String[] { "font.png", "pic1.png", "pic2.png" });
+    font = Texture.loadTextures2D(new String[] { "font.png", "pic1.png", "pic2.png", "grass.jpg", "cloud.jpg" });
     charPos[0]=10;
     charPos[1]=650;
   }

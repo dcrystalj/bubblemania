@@ -8,7 +8,7 @@ import java.nio.*;
 
 public class BaseWindow
 {
-  public float WIDTH = 500;
+  public static float WIDTH = 500;
   protected static boolean isRunning = false;
   public static void main(String[] args)
   {

@@ -60,7 +60,6 @@ public class GameState {
 	    		while (GameState.running) {
 	    			try {
 	    				for (Bubble b : GameState.bubbles){
-	    					b.move();
 	    					if(GameState.state==1)
 	    						b.move();
 	    					if(b.isOut(GameState.t_bg)){	//If bubble gets out of terrain
@@ -69,7 +68,7 @@ public class GameState {
 	    					}
 	    				}
 	    				
-	    				Thread.sleep(15);
+	    				Thread.sleep(20);
 	    			} catch (Exception e) {
 	    			}
 	    		}
