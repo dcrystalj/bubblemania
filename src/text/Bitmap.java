@@ -5,15 +5,15 @@ import java.nio.IntBuffer;
 import org.lwjgl.opengl.GL11;
 
 
-public class BitmapText
+public class Bitmap
 {
 	 public int[] charPos = new int[2];
 	 public int[] charCode = new int[2];
-  private IntBuffer font;
+  private static IntBuffer font;
   float fw = 0.065f, dx = 0.010f, fh = 0.13f, ff = 0.65f;
  
-  public BitmapText() {
-    font = Texture.loadTextures2D(new String[] { "font.png" });
+  public Bitmap() {
+    font = Texture.loadTextures2D(new String[] { "font.png", "pic1.png", "pic2.png" });
     charPos[0]=10;
     charPos[1]=650;
   }
@@ -23,7 +23,6 @@ public class BitmapText
   }
   
   public void renderString(String text, int size) {
-    GL11.glBindTexture(GL11.GL_TEXTURE_2D, font.get(0));
     int charposic=charPos[0];
     int len = text.length();
 
@@ -32,6 +31,8 @@ public class BitmapText
     
     GL11.glEnable(GL11.GL_TEXTURE_2D);
     
+
+    GL11.glBindTexture(GL11.GL_TEXTURE_2D, font.get(0));
     GL11.glBegin(GL11.GL_QUADS);
     for (int i = 0; i < len; i++) {
       charCode = getCode(text.charAt(i));
@@ -48,6 +49,23 @@ public class BitmapText
     GL11.glDisable(GL11.GL_TEXTURE_2D);
     GL11.glDisable(GL11.GL_BLEND);
   }
+  
+  public static void renderPic(int picNum,int x1, int x2, int y1, int y2) {
+	    
+	    GL11.glEnable(GL11.GL_TEXTURE_2D);
+	    GL11.glBindTexture(GL11.GL_TEXTURE_2D, font.get(picNum));
+	    
+	    GL11.glBegin(GL11.GL_QUADS);
+	    GL11.glColor4f(1f, 0.0f,  0f, 1f);
+		GL11.glTexCoord2f(0,0);  GL11.glVertex2f(x1,y1);
+		GL11.glTexCoord2f(1,0);  GL11.glVertex2f(x2,y1);
+		GL11.glTexCoord2f(1,1);  GL11.glVertex2f(x2,y2);
+		GL11.glTexCoord2f(0,1);  GL11.glVertex2f(x1,y2);
+	    GL11.glEnd();
+
+	    GL11.glDisable(GL11.GL_TEXTURE_2D);
+	    GL11.glDisable(GL11.GL_BLEND);
+	  }
   
   private static int[] getCode(char c) {
     switch(c) {

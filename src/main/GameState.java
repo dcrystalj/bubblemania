@@ -20,6 +20,7 @@ public class GameState {
 	 * 1=game
 	 * 2=level end
 	 * 3=game over
+	 * 4=upgrade
 	 */
 	public static int state=0;
 	
@@ -37,7 +38,7 @@ public class GameState {
 	public static BubblePath path;
 
 	//Other objects and variables
-	public static float WIDTH;	//BaseWindow width
+	public static float WIDTH=500;	//BaseWindow width
 	public static Terrain t_bg;
 	public static Cube c_begin, c_end;
 	

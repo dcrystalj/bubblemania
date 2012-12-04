@@ -14,7 +14,7 @@ public class BubblePath extends Model3D{
 		float height=5;	//Height of path for bubbles
 		//Generate simple path for bubbles
 		path=new LinkedList<Vector3f>();
-		start.y=height;
+		start.y=(float) (height+1);
 		path.add(start);
 		path.add(new Vector3f(start.x+250,height,start.z));
 		path.add(new Vector3f(start.x+250,height,start.z+250));
