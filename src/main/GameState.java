@@ -12,6 +12,9 @@ import objects.Tower;
 
 import org.lwjgl.util.vector.Vector3f;
 
+import threads.ThreadMoveBubbles;
+import threads.ThreadPopBubbles;
+
 //Class which has saved state of current game
 public class GameState {
 	//main state
@@ -58,7 +61,8 @@ public class GameState {
 		float radius=3.f;
 		for(int i=0; i<numberOfBubbles;i++){
 			Bubble b = new Bubble(radius);
-			float[] start={c_begin.m_nX-b.safetyDistance*(i+2), c_begin.m_nY+10, c_begin.m_nZ+c_begin.cW/2};
+			//-lvl*50, because of level rendering
+			float[] start={c_begin.m_nX-Bubble.safetyDistance*(i+2)-lvl*60, c_begin.m_nY+10, c_begin.m_nZ+c_begin.cW/2};
 			b.setPos(start);
 			bubbles.add(b);
 		}

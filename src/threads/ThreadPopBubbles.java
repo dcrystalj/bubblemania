@@ -1,5 +1,6 @@
-package main;
+package threads;
 
+import main.GameState;
 import objects.Tower;
 
 public class ThreadPopBubbles extends Thread {

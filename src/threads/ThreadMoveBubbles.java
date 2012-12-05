@@ -1,5 +1,6 @@
-package main;
+package threads;
 
+import main.GameState;
 import objects.Bubble;
 
 public class ThreadMoveBubbles extends Thread {

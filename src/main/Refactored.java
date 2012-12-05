@@ -13,6 +13,7 @@ import org.lwjgl.util.vector.Vector3f;
 import static org.lwjgl.opengl.GL11.*;
 
 import text.Bitmap;
+import threads.ThreadMoveTower;
 import HUD.*;
 import window.BaseWindow;
 
@@ -24,6 +25,7 @@ public class Refactored extends BaseWindow
   public static float mouseSpeed = 0.01f;
   public static final int maxLookUp = 85;
   public static final int maxLookDown = -85;
+  public static Tower newTower=null;
   
   int xOrigin = -1;
  
@@ -185,22 +187,14 @@ public class Refactored extends BaseWindow
 //			  Tower t= new Tower(10);
 //			  System.out.println("probam");
 			  System.out.println("xxx "+Mouse.getX()+","+Mouse.getY());
-			  if(Mouse.isButtonDown(0)&& Hud.isInRectangle(849, 999, 649,499)){
-				  Tower t= new Tower(10);
-				  Mouse.setCursorPosition(222, 672);
-				  while(Mouse.isButtonDown(0)){
-					  System.out.println("down");
-
-					  t.setPosition(Mouse.getX()-222+50, 0, 672-Mouse.getY()+50);
-					  t.render3D();
-				  }
-				  if(GameState.money>200){
-					  GameState.money-=200;
-					  GameState.towers.add(t);
-				  }
+			  if(GameState.money>=200 && Mouse.isButtonDown(0)&& Hud.isInRectangle(849, 999, 649,499)){
+				  ThreadMoveTower mt=new ThreadMoveTower();
+				  mt.start();
+				  
 					  
 			  }
-				  
+			  if(newTower!=null)
+				  newTower.render3D();
 			  
 		  }
 	  }
