@@ -9,6 +9,7 @@ import main.Refactored;
 
 import objects.Terrain;
 
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import text.Bitmap;
@@ -164,6 +165,14 @@ public class Hud {
 	    GL11.glMatrixMode(GL11.GL_MODELVIEW);
 	    GL11.glPopMatrix();
 	  }
+	  public static boolean isInRectangle(int xL,int xR,int yT,int yB){	//We send xLeft, xRight, yTop and yBottom to function
 
-
+		  if(Mouse.getX()>=xL && Mouse.getX()<=xR){ //right x position
+        		if(Mouse.getY()>=yB && Mouse.getY()<=yT){ //second button
+        			return true;
+        		}
+		  }
+		  return false;
+        		
+	  }
 }

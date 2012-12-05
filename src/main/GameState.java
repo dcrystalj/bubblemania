@@ -52,44 +52,7 @@ public class GameState {
 	public static Thread moveBubbles;
 	
 	public static void startingObjects(){
-		moveBubbles = new Thread(new Runnable()	//Deffining new thread for drawing bubbles
-	    {
-	    	@Override
-	    	public void run()
-	    	{
-	    		while (GameState.running) {
-	    			try {
-	    				for (Bubble b : GameState.bubbles){
-	    					if(GameState.state==1)
-	    						b.move();
-	    					if(b.isOut(GameState.t_bg)){	//If bubble gets out of terrain
-	    						//TODO remove bubble from list, this just hides it!!!
-	    						b.show=false;
-	    					}
-	    				}
-	    				
-	    				Thread.sleep(20);
-	    			} catch (Exception e) {
-	    			}
-	    		}
-	    	}
-	    });
-	    popBubbles = new Thread(new Runnable()	//Deffining new thread for drawing bubbles
-	    {
-	    	@Override
-	    	public void run()
-	    	{
-	    		while (GameState.running) {
-	    			try {
-	    				for(Tower t : GameState.towers){
-	    					t.popBubble();
-	    				}
-	    				Thread.sleep(600);
-	    			} catch (Exception e) {
-	    			}
-	    		}
-	    	}
-	    });
+		
 		//Create n bubbles
 		//Radius of bubble
 		float radius=3.f;
@@ -97,30 +60,38 @@ public class GameState {
 			Bubble b = new Bubble(radius);
 			float[] start={c_begin.m_nX-b.safetyDistance*(i+2), c_begin.m_nY+10, c_begin.m_nZ+c_begin.cW/2};
 			b.setPos(start);
-			//	    	System.out.println(b.toString()+", Begin: "+c_begin.toString());
 			bubbles.add(b);
 		}
-		//Create towers
-		Tower to = new Tower(10);
-		to.setPosition(startPoint.x+225, 0.0f, startPoint.z+180);
-		towers.add(to);
-		to = new Tower(10);
-		to.setPosition(startPoint.x+410, 0.01f, startPoint.z+270);
-		to.setPosition(startPoint.x+410, 0.0f, startPoint.z+270);
-		towers.add(to);
+		if(lvl==1)
+			towers=startingTowers();
 		//Start all running threads
+		running=true;
+		popBubbles = new ThreadPopBubbles();
+	    moveBubbles = new ThreadMoveBubbles();
 		popBubbles.start();
 		moveBubbles.start();
-		running=true;
 	}
 	@SuppressWarnings("deprecation")
 	public static void resetObjects(){
 		//Delete all bubbles and towers
+		running=false;
 		popBubbles.stop();
 		moveBubbles.stop();
+		
 		bubbles=new HashSet<Bubble>();	
-		towers=new HashSet<Tower>();
 		//Stop all running threads
 		running=false;
+	}
+	public static Set<Tower> startingTowers(){
+		//Create towers
+		Set<Tower> towersStart=new HashSet<Tower>();
+		Tower to = new Tower(10);
+		to.setPosition(startPoint.x+225, 0.0f, startPoint.z+180);
+		towersStart.add(to);
+		to = new Tower(10);
+		to.setPosition(startPoint.x+410, 0.01f, startPoint.z+270);
+		to.setPosition(startPoint.x+410, 0.0f, startPoint.z+270);
+		towersStart.add(to);
+		return towersStart;
 	}
 }

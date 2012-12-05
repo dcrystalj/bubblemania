@@ -18,7 +18,7 @@ public class ThreadMoveBubbles extends Thread {
 					}
 				}
 
-				Thread.sleep(20);
+				Thread.sleep(30);
 			} catch (Exception e) {
 			}
 		}

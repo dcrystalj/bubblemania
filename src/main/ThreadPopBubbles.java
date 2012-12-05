@@ -12,7 +12,6 @@ public class ThreadPopBubbles extends Thread {
 					t.popBubble();
 				}
 				Thread.sleep(600);
-				System.out.println(GameState.lives);
 			} catch (Exception e) {
 			}
 		}

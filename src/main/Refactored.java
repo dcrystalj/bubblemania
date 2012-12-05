@@ -24,6 +24,7 @@ public class Refactored extends BaseWindow
   public static float mouseSpeed = 0.01f;
   public static final int maxLookUp = 85;
   public static final int maxLookDown = -85;
+  
   int xOrigin = -1;
  
 	/**
@@ -181,11 +182,30 @@ public class Refactored extends BaseWindow
 		  }
 		  else if(GameState.state==4){
 			  Hud.renderFrameBuy();
+//			  Tower t= new Tower(10);
+//			  System.out.println("probam");
+			  System.out.println("xxx "+Mouse.getX()+","+Mouse.getY());
+			  if(Mouse.isButtonDown(0)&& Hud.isInRectangle(849, 999, 649,499)){
+				  Tower t= new Tower(10);
+				  Mouse.setCursorPosition(222, 672);
+				  while(Mouse.isButtonDown(0)){
+					  System.out.println("down");
+
+					  t.setPosition(Mouse.getX()-222+50, 0, 672-Mouse.getY()+50);
+					  t.render3D();
+				  }
+				  if(GameState.money>200){
+					  GameState.money-=200;
+					  GameState.towers.add(t);
+				  }
+					  
+			  }
+				  
+			  
 		  }
 	  }
 
   }
-  
   /**
    * Processes Keyboard and Mouse input and spawns actions
    */  
@@ -224,7 +244,8 @@ public class Refactored extends BaseWindow
     		}
     	}
     }
-    if(Mouse.isGrabbed() && GameState.state==4){
+    //next in buy menu
+    if(Mouse.isButtonDown(0) && GameState.state==4){
     	if(Mouse.getX()>=Hud.menuitemsx[0] && Mouse.getX()<=Hud.menuitemsx[1]){
     		if(Mouse.getY()>=0 && Mouse.getY()<=60){
     			nextLevel();
