@@ -1,5 +1,6 @@
 package objects;
 
+import glmodel.GLModel;
 import main.*;	//Import of main package
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector2f;
@@ -13,10 +14,23 @@ public class Tower extends Model3D {
 	//Default shooting direction is to negative on z axis
 	public Vector2f shootingDirection=new Vector2f(0,-1);
 	public float cW=WIDTH;
+	GLModel m_Obj = null;
 	
 	public Tower(float w) {
 		super(w);
+		try {
+			m_Obj = new GLModel("towerGun.obj");
+		}
+		catch(Exception e)
+		{
+			System.err.println(e.getMessage());
+		}   
 	}
+//	public Tower(String p_strFileName)
+//	{
+//		super(10);
+//		 
+//	}
 
 	@Override
 	public void render3D()
@@ -41,29 +55,29 @@ public class Tower extends Model3D {
 			    if (m_rX!=0)
 			      GL11.glRotatef(m_rX, 1, 0, 0);
 			    if (m_sX!=1 || m_sY!=1 || m_sZ!=1)
-			      GL11.glScalef(m_sX, m_sY, m_sZ);	//SCALING ON Y!!!
+			      GL11.glScalef(m_sX, m_sY, m_sZ);
 			    
 //			    GL11.glTranslatef(-cW/2, 0, -cW/2);    
 			    GL11.glTranslatef(-WIDTH/2+deltax, -WIDTH/2+deltay, -WIDTH/2+deltaz);
-			    renderModel();
+			    m_Obj.render();
 			    
-			    // discard current matrix
+//			    shooting range of tower
+			    GL11.glBegin(GL11.GL_LINE_LOOP);
+			    GL11.glColor3f(0,0,0);		//BLACK COLOR for radius of tower
+			    float DEG2RAD = 3.14159f/180.f;
+			    for (int i=0; i<360; i++)
+			    {
+			       float degInRad = i*DEG2RAD;
+			       GL11.glVertex3f((float)Math.cos(degInRad)*shootingRadius+cW/2, 0, (float)Math.sin(degInRad)*shootingRadius+cW/2);
+			    }
+			  
+			    GL11.glEnd();
 			    GL11.glPopMatrix();
 		  }
 	  }
 	private void renderModel()
 	{
-		//Drawing shooting range of tower
-	    GL11.glBegin(GL11.GL_LINE_LOOP);
-	    GL11.glColor3f(0,0,0);		//BLACK COLOR for radius of tower
-	    float DEG2RAD = 3.14159f/180.f;
-	    for (int i=0; i<360; i++)
-	    {
-	       float degInRad = i*DEG2RAD;
-	       GL11.glVertex3f((float)Math.cos(degInRad)*shootingRadius+cW/2, 0, (float)Math.sin(degInRad)*shootingRadius+cW/2);
-	    }
-	  
-	    GL11.glEnd();
+		//Drawing shoo
 		
 	    GL11.glBegin(GL11.GL_QUADS); // draw independent triangles
 	    GL11.glColor3f(color[0],color[1],color[2]);

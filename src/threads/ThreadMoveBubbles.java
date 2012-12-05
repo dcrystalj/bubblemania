@@ -14,7 +14,6 @@ public class ThreadMoveBubbles extends Thread {
 					if(GameState.state==1)
 						b.move();
 					if(b.isOut(GameState.t_bg)){	//If bubble gets out of terrain
-						//TODO remove bubble from list, this just hides it!!!
 						b.show=false;
 					}
 				}
