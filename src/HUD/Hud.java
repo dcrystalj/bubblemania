@@ -146,11 +146,14 @@ public class Hud {
 		  GL11.glVertex2f(menuitemsx[0], 60);
 		  GL11.glEnd();
 		  glDisable(GL_BLEND);
+		  
 		  endHUD();
 		
 	}
 	public static void startHUD() {
-	    GL11.glMatrixMode(GL11.GL_PROJECTION);
+
+		GL11.glDisable(GL11.GL_LIGHTING);
+		GL11.glMatrixMode(GL11.GL_PROJECTION);
 	    GL11.glPushMatrix();
 	    GL11.glLoadIdentity();
 	    GL11.glOrtho(0, 1024, 0, 768, -1, 1);
@@ -164,6 +167,7 @@ public class Hud {
 	    GL11.glPopMatrix();
 	    GL11.glMatrixMode(GL11.GL_MODELVIEW);
 	    GL11.glPopMatrix();
+	    GL11.glEnable(GL11.GL_LIGHTING);
 	  }
 	  public static boolean isInRectangle(int xL,int xR,int yT,int yB){	//We send xLeft, xRight, yTop and yBottom to function
 

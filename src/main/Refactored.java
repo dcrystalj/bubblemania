@@ -8,6 +8,7 @@ import objects.Tower;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 import org.lwjgl.util.vector.Vector3f;
 import static org.lwjgl.opengl.GL11.*;
@@ -35,11 +36,25 @@ public class Refactored extends BaseWindow
   protected void setupView()
   {    
 	  initializeModels();
-
+	  glEnable(GL_DEPTH_TEST);
 	  // enable depth buffer (off by default)
 	  glEnable(GL_DEPTH_TEST); 
 	  // enable culling of back sides of polygons
 	  glEnable(GL_CULL_FACE);
+	  
+	  //Lightning
+	  GL11.glEnable(GL11.GL_COLOR_MATERIAL);
+	  GL11.glEnable(GL11.GL_LIGHTING);
+	  GL11.glEnable(GL11.GL_LIGHT0);
+	  GL11.glLight(GL11.GL_LIGHT0, GL11.GL_AMBIENT, allocFloats(new float[] { 10.0f, 10.0f, 10.0f, 10.0f}));
+      GL11.glLight(GL11.GL_LIGHT0, GL11.GL_DIFFUSE , allocFloats(new float[] { 1.0f, 1.0f, 1.0f, 0.0f}));
+
+      GL11.glLight(GL11.GL_LIGHT0, GL11.GL_SPECULAR, allocFloats(new float[] { 1.0f, 1.0f, 1.0f, 0.0f}));
+      GL11.glLightf(GL11.GL_LIGHT0, GL11.GL_LINEAR_ATTENUATION , 7f);
+      GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, allocFloats(new float[] { 450f, 450f, 450f, 0f}));
+
+      // smooth shading - Gouraud
+      GL11.glShadeModel(GL11.GL_SMOOTH);
 
 	  // mapping from normalized to window coordinates
 	  glViewport(0, 0, 1024, 768);
@@ -47,7 +62,7 @@ public class Refactored extends BaseWindow
 	  // setup projection matrix stack
 	  glMatrixMode(GL_PROJECTION);
 	  glLoadIdentity();
-	  GLU.gluPerspective(45, 1024 / (float)768, 1.0f, 1500.0f);
+	  GLU.gluPerspective(45, 1024 / (float)768, 20.0f, 1200.0f);
 	  
 	  
 	  
@@ -113,7 +128,7 @@ public class Refactored extends BaseWindow
   protected void resetView()
   {
     // clear color and depth buffer
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT);
     
     if(GameState.lives<=0){
     	GameState.running=false;

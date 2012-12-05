@@ -68,7 +68,7 @@ public class BaseWindow
    */
   protected void setupView()
   {
-
+	  
   }
 
   /**

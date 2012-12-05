@@ -46,7 +46,6 @@ public class Tower extends Model3D {
 			    GL11.glTranslatef(m_nX, m_nY, m_nZ);
 
 			    // ROTATE and SCALE
-//			    GL11.glTranslatef(cW/2, 0, cW/2);
 			    GL11.glTranslatef(WIDTH/2-deltax, WIDTH/2-deltay, WIDTH/2-deltaz);
 			    if (m_rZ!=0)
 			      GL11.glRotatef(m_rZ, 0, 0, 1);
@@ -57,8 +56,9 @@ public class Tower extends Model3D {
 			    if (m_sX!=1 || m_sY!=1 || m_sZ!=1)
 			      GL11.glScalef(m_sX, m_sY, m_sZ);
 			    
-//			    GL11.glTranslatef(-cW/2, 0, -cW/2);    
 			    GL11.glTranslatef(-WIDTH/2+deltax, -WIDTH/2+deltay, -WIDTH/2+deltaz);
+			    GL11.glColor3f(0.7f,0.7f,0.7f);		//BLACK COLOR for radius of tower
+			    //Draw .obj tower
 			    m_Obj.render();
 			    
 //			    shooting range of tower
@@ -70,7 +70,7 @@ public class Tower extends Model3D {
 			       float degInRad = i*DEG2RAD;
 			       GL11.glVertex3f((float)Math.cos(degInRad)*shootingRadius+cW/2, 0, (float)Math.sin(degInRad)*shootingRadius+cW/2);
 			    }
-			  
+			    GL11.glColor3f(color[0],color[1],color[2]);
 			    GL11.glEnd();
 			    GL11.glPopMatrix();
 		  }
