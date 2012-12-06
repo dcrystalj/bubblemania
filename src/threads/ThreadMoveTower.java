@@ -7,7 +7,6 @@ import main.Refactored;
 
 import org.lwjgl.input.Mouse;
 
-import towers.Tower;
 import towers.TowerGun;
 import towers.TripleGun;
 

@@ -23,7 +23,7 @@ public class Refactored extends BaseWindow
 
   public static float scale = 1,speed=0.5f*10, x=WIDTH/2,y=WIDTH/4,z=WIDTH, lx=-x,ly=-y,lz=-z, angley=0, angle=-0.1f ;
   public static Vector3f rotation = new Vector3f(0, 0, 0);
-  public static float mouseSpeed = 0.01f;
+  public static float mouseSpeed = 0.005f;
   public static final int maxLookUp = 85;
   public static final int maxLookDown = -85;
   public static Tower newTower=null;
@@ -169,6 +169,18 @@ public class Refactored extends BaseWindow
 			  		""+Bubble.speed+", distance between="+Bubble.safetyDistance,20);	
 			  Hud.endHUD();
 		  }
+		  if(x>=WIDTH-30)
+			  x=WIDTH-30;
+		  if(y>=WIDTH-30 && GameState.state != 4)
+			  y=WIDTH-30;
+		  if(z>=WIDTH-30)
+			  z=WIDTH-30;
+		  if(x<=30)
+			  x=30;
+		  if(y<=30)
+			  y=30;
+		  if(z<=30)
+			  z=30;
 		  // Set the camera
 		  GLU.gluLookAt(
 				  x, y,  z,
@@ -204,7 +216,7 @@ public class Refactored extends BaseWindow
 		  }
 		  else if(GameState.state==4){
 			  Hud.renderFrameBuy();
-
+			  Hud.t_money.renderString("Money:"+GameState.money,20);
 			  //Build towerGun
 			  if(GameState.money>=200 && Mouse.isButtonDown(0)&& Hud.isInRectangle(849, 999, 649,499)){
 				  GameState.buildTower=1;
@@ -212,7 +224,7 @@ public class Refactored extends BaseWindow
 				  mt.start();	  
 			  }
 			  //Build triple gun
-			  else if(GameState.money>=200 && Mouse.isButtonDown(0)&& Hud.isInRectangle(849, 999, 479, 330)){
+			  else if(GameState.money>=500 && Mouse.isButtonDown(0)&& Hud.isInRectangle(849, 999, 479, 330)){
 				  GameState.buildTower=2;
 				  ThreadMoveTower mt=new ThreadMoveTower();
 				  mt.start();	  
@@ -294,7 +306,7 @@ public class Refactored extends BaseWindow
         //level done
         if(GameState.state==2){	
         	if(Mouse.getX()>=Hud.menuitemsx[0] && Mouse.getX()<=Hud.menuitemsx[1]){
-        		if(Mouse.getY()>=Hud.menuitemsy[1] && Mouse.getY()<=Hud.menuitemsy[0]){
+        		if(Mouse.getY()>=Hud.menuitemsy[3] && Mouse.getY()<=Hud.menuitemsy[2]){
         			GameState.state = 4;
         			x=WIDTH/2; y=800; z=WIDTH/2;
         			angle=0; angley=-(float) (Math.PI/2-0.001);
@@ -317,9 +329,11 @@ public class Refactored extends BaseWindow
         			GameState.lives=30;
         			GameState.money=100;
         			GameState.lvl = 1;
-        			GameState.numberOfBubbles = 10;
+        			GameState.numberOfBubbles = 15;
         			Bubble.safetyDistance=25;
         			Bubble.speed = 1.3f;
+        			GameState.towerGuns = GameState.startingTowers();
+        			
         		}
         		if(Mouse.getY()>=Hud.menuitemsy[3] && Mouse.getY()<=Hud.menuitemsy[2]){
         			BaseWindow.isRunning=false;

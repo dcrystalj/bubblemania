@@ -50,7 +50,8 @@ public class Tower extends Model3D {
 //			    GL11.glColor3f(0.7f,0.7f,0.7f);		//BLACK COLOR for radius of tower
 			    //Draw .obj tower
 //			    GL11.glColor3f(0.75f,0.83f,0.32f);
-			    GL11.glColor3f(0.1f, 0.1f, 0.1f);
+			    GL11.glColor3f(1f, 1f, 1f);
+			    
 			    m_Obj.render();
 			    
 //			    shooting range of tower

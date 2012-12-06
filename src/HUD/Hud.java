@@ -16,7 +16,7 @@ import text.Bitmap;
 
 //Head Up Display
 public class Hud {
-	public static Bitmap t_money, t_lives, t_1item, t_2item, t_3item, t_lvl, t_gameover, t_choose, t_finishedlvl, t_bubblesThisLvl, p_pic1;
+	public static Bitmap t_money, t_lives, t_1item, t_2item, t_3item, t_lvl, t_gameover, t_choose, t_finishedlvl, t_bubblesThisLvl, p_pic1, t_towerprice;
 	public static int[] menuitemsx= {240,760};
 	public static int[] menuitemsy= {580,500,480,400,380,300};
 	
@@ -113,6 +113,16 @@ public class Hud {
 		  t_choose.charPos[0] = (int)(w-t_1item.textWidth("Choose tower", 20)-margin);
 		  t_choose.charPos[1] = yFirstImage+picHeight+20;  
 		  t_choose.renderString("Choose tower", 20);
+		  
+		  //price label
+		  t_towerprice = new Bitmap();
+		  t_towerprice.charPos[0]  =(int)(w-t_1item.textWidth("500$", 20)-margin);
+		  t_towerprice.charPos[1] = yFirstImage-picHeight-20;  
+		  t_towerprice.renderString("500$", 20);
+		  
+		  t_towerprice.charPos[0]  =(int)(w-t_1item.textWidth("200$", 20)-margin);
+		  t_towerprice.charPos[1] = yFirstImage;  
+		  t_towerprice.renderString("200$", 20);
 		  
 		  //draw images
 		  Bitmap.renderPic(1,w-pass+margin, w-margin, yFirstImage, yFirstImage+picHeight);

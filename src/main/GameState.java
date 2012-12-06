@@ -14,7 +14,6 @@ import org.lwjgl.util.vector.Vector3f;
 import threads.ThreadMoveBubbles;
 import threads.ThreadPopBubblesTowerGun;
 import threads.ThreadPopBubblesTripleGun;
-import towers.Tower;
 import towers.TowerGun;
 import towers.TripleGun;
 
