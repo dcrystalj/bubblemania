@@ -1,15 +1,15 @@
 package threads;
 
 import main.GameState;
-import objects.Tower;
+import towers.Tower;
 
-public class ThreadPopBubbles extends Thread {
+public class ThreadPopBubblesTowerGun extends Thread {
 	@Override
 	public void run()
 	{
 		while (GameState.running) {
 			try {
-				for(Tower t : GameState.towers){
+				for(Tower t : GameState.towerGuns){
 					t.popBubble();
 				}
 				Thread.sleep(600);

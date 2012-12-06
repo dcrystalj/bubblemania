@@ -9,7 +9,7 @@ public class Bubble extends Model3D
 {
   private Sphere s = new Sphere();
   public float radius = 1;
-  public float[] color = {1, 1, 1};
+  public float[] color = {0.1f,0.1f, 1};
   public static float safetyDistance=25;	//Distance between this and next bubble
   public int checkpoint=0;  //checkPoint, which is next point on path
   public static float speed=1.3f;	//Speed of a bubble

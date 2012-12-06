@@ -8,12 +8,15 @@ import objects.Bubble;
 import objects.BubblePath;
 import objects.Cube;
 import objects.Terrain;
-import objects.Tower;
 
 import org.lwjgl.util.vector.Vector3f;
 
 import threads.ThreadMoveBubbles;
-import threads.ThreadPopBubbles;
+import threads.ThreadPopBubblesTowerGun;
+import threads.ThreadPopBubblesTripleGun;
+import towers.Tower;
+import towers.TowerGun;
+import towers.TripleGun;
 
 //Class which has saved state of current game
 public class GameState {
@@ -31,7 +34,8 @@ public class GameState {
 	public static int numberOfBubbles = 15;
 	public static Set<Bubble> bubbles=new HashSet<Bubble>();
 	public static Set<Bubble> points=new HashSet<Bubble>();
-	public static Set<Tower> towers=new HashSet<Tower>();
+	public static Set<TowerGun> towerGuns=new HashSet<TowerGun>();
+	public static Set<TripleGun> tripleGuns=new HashSet<TripleGun>();
 	public static boolean running=true;	//Running thread for moving bubbles 
 
 	//Bubbles path
@@ -51,8 +55,12 @@ public class GameState {
 	public static int lvl=1;
 	
 	//Threads
-	public static Thread popBubbles;
+	public static Thread towerGunPopBubbles;
+	public static Thread tripleGunPopBubbles;
 	public static Thread moveBubbles;
+	
+	//For knowing which tower we are building, 1=towerGun, 2=TripleGun
+	public static int buildTower;
 	
 	public static void startingObjects(){
 		
@@ -67,32 +75,37 @@ public class GameState {
 			bubbles.add(b);
 		}
 		if(lvl==1)
-			towers=startingTowers();
+			towerGuns=startingTowers();
 		//Start all running threads
 		running=true;
-		popBubbles = new ThreadPopBubbles();
+		towerGunPopBubbles = new ThreadPopBubblesTowerGun();
+		tripleGunPopBubbles = new ThreadPopBubblesTripleGun();
 	    moveBubbles = new ThreadMoveBubbles();
-		popBubbles.start();
+	    towerGunPopBubbles.start();
+		tripleGunPopBubbles.start();
 		moveBubbles.start();
+		
 	}
 	@SuppressWarnings("deprecation")
 	public static void resetObjects(){
 		//Delete all bubbles and towers
 		running=false;
-		popBubbles.stop();
+		towerGunPopBubbles.stop();
+		tripleGunPopBubbles.stop();
 		moveBubbles.stop();
 		
 		bubbles=new HashSet<Bubble>();	
 		//Stop all running threads
 		running=false;
 	}
-	public static Set<Tower> startingTowers(){
+	//In starting level we can only have tower gun
+	public static Set<TowerGun> startingTowers(){
 		//Create towers
-		Set<Tower> towersStart=new HashSet<Tower>();
-		Tower to = new Tower(10);
+		Set<TowerGun> towersStart=new HashSet<TowerGun>();
+		TowerGun to = new TowerGun(10);
 		to.setPosition(startPoint.x+225, 0.0f, startPoint.z+180);
 		towersStart.add(to);
-		to = new Tower(10);
+		to = new TowerGun(10);
 		to.setPosition(startPoint.x+410, 0.01f, startPoint.z+270);
 		to.setPosition(startPoint.x+410, 0.0f, startPoint.z+270);
 		towersStart.add(to);

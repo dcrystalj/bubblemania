@@ -4,7 +4,6 @@ import objects.Bubble;
 import objects.BubblePath;
 import objects.Cube;
 import objects.Terrain;
-import objects.Tower;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -15,6 +14,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 import text.Bitmap;
 import threads.ThreadMoveTower;
+import towers.Tower;
 import HUD.*;
 import window.BaseWindow;
 
@@ -46,11 +46,11 @@ public class Refactored extends BaseWindow
 	  GL11.glEnable(GL11.GL_COLOR_MATERIAL);
 	  GL11.glEnable(GL11.GL_LIGHTING);
 	  GL11.glEnable(GL11.GL_LIGHT0);
-	  GL11.glLight(GL11.GL_LIGHT0, GL11.GL_AMBIENT, allocFloats(new float[] { 10.0f, 10.0f, 10.0f, 10.0f}));
-      GL11.glLight(GL11.GL_LIGHT0, GL11.GL_DIFFUSE , allocFloats(new float[] { 1.0f, 1.0f, 1.0f, 0.0f}));
+	  GL11.glLight(GL11.GL_LIGHT0, GL11.GL_AMBIENT, allocFloats(new float[] { 0.8f, 0.80f, 0.80f, 0.80f}));
+      GL11.glLight(GL11.GL_LIGHT0, GL11.GL_DIFFUSE , allocFloats(new float[] { 0.6f, 0.2f, 0.4f, 0.0f}));
 
-      GL11.glLight(GL11.GL_LIGHT0, GL11.GL_SPECULAR, allocFloats(new float[] { 1.0f, 1.0f, 1.0f, 0.0f}));
-      GL11.glLightf(GL11.GL_LIGHT0, GL11.GL_LINEAR_ATTENUATION , 7f);
+      GL11.glLight(GL11.GL_LIGHT0, GL11.GL_SPECULAR, allocFloats(new float[] { 0.2f, 0.2f, 0.2f, 0.1f}));
+      GL11.glLightf(GL11.GL_LIGHT0, GL11.GL_LINEAR_ATTENUATION , 2f);
       GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, allocFloats(new float[] { 450f, 450f, 450f, 0f}));
 
       // smooth shading - Gouraud
@@ -161,6 +161,7 @@ public class Refactored extends BaseWindow
 		  //draw text
 		  if(GameState.state!=4){
 			  Hud.startHUD();
+			  GL11.glColor3f(1,1,1);
 			  Hud.t_money.renderString("Money:"+GameState.money,20);
 			  Hud.t_lives.renderString("Lives:"+GameState.lives,20);
 			  Hud.t_lvl.renderString("Level:"+GameState.lvl,20);		
@@ -187,9 +188,13 @@ public class Refactored extends BaseWindow
 		  //Draw bubbles
 		  for (Bubble b : GameState.bubbles)
 			  b.render3D();
-		  //Draw towers
-		  for (Tower t : GameState.towers)
+		  //Draw towerGuns
+		  for (Tower t : GameState.towerGuns)
 			  t.render3D();
+		  //Draw tripleGuns
+		  for (Tower t : GameState.tripleGuns)
+			  t.render3D();
+		  
 		  glEnable(GL_CULL_FACE);
 		  if(GameState.state==2){ //level done
 			  Hud.renderFrameLvlDone();
@@ -199,14 +204,18 @@ public class Refactored extends BaseWindow
 		  }
 		  else if(GameState.state==4){
 			  Hud.renderFrameBuy();
-//			  Tower t= new Tower(10);
-//			  System.out.println("probam");
-			  System.out.println("xxx "+Mouse.getX()+","+Mouse.getY());
+
+			  //Build towerGun
 			  if(GameState.money>=200 && Mouse.isButtonDown(0)&& Hud.isInRectangle(849, 999, 649,499)){
+				  GameState.buildTower=1;
 				  ThreadMoveTower mt=new ThreadMoveTower();
-				  mt.start();
-				  
-					  
+				  mt.start();	  
+			  }
+			  //Build triple gun
+			  else if(GameState.money>=200 && Mouse.isButtonDown(0)&& Hud.isInRectangle(849, 999, 479, 330)){
+				  GameState.buildTower=2;
+				  ThreadMoveTower mt=new ThreadMoveTower();
+				  mt.start();	  
 			  }
 			  if(newTower!=null)
 				  newTower.render3D();
