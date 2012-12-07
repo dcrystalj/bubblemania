@@ -105,11 +105,10 @@ public class GameState {
 		//Create towers
 		Set<TowerGun> towersStart=new HashSet<TowerGun>();
 		TowerGun to = new TowerGun(10);
-		to.setPosition(startPoint.x+225, 0.0f, startPoint.z+180);
+		to.setPosition(startPoint.x+215, 0.0f, startPoint.z+180);
 		towersStart.add(to);
 		to = new TowerGun(10);
-		to.setPosition(startPoint.x+410, 0.01f, startPoint.z+270);
-		to.setPosition(startPoint.x+410, 0.0f, startPoint.z+270);
+		to.setPosition(startPoint.x+400, 0.01f, startPoint.z+280);
 		towersStart.add(to);
 		return towersStart;
 	}

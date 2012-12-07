@@ -34,7 +34,7 @@ public class Obj3D extends Model3D
     if (m_rX!=0)
       GL11.glRotatef(m_rX, 1, 0, 0);
     GL11.glScalef(m_sX, m_sY, m_sZ);
-
+    GL11.glColor3f(1,1,1);
     m_Obj.render();
     
     GL11.glPopMatrix();

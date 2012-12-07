@@ -225,7 +225,6 @@ public class Refactored extends BaseWindow
 			//Draw tripleGuns
 			for (Tower t : GameState.tripleGuns)
 				t.render3D();
-
 			glEnable(GL_CULL_FACE);
 			if(GameState.state==2){ //level done
 				Hud.renderFrameLvlDone();
@@ -287,6 +286,8 @@ public class Refactored extends BaseWindow
 				//start game
 				if(Mouse.getY()>=Hud.menuitemsy[1] && Mouse.getY()<=Hud.menuitemsy[0]){   	        
 					GameState.state=1;
+					GameState.resetObjects();
+					GameState.startingObjects();
 				}
 				if(Mouse.getY()>=Hud.menuitemsy[3] && Mouse.getY()<=Hud.menuitemsy[2]){
 					BaseWindow.isRunning=false;

@@ -13,7 +13,7 @@ public class Bitmap
   float fw = 0.065f, dx = 0.010f, fh = 0.13f, ff = 0.65f;
  
   public Bitmap() {
-    font = Texture.loadTextures2D(new String[] { "font.png", "pic1.png", "pic2.png", "grass.jpg", "cloud.jpg" });
+    font = Texture.loadTextures2D(new String[] { "font.png", "towerGun.png", "tripleGun.png", "grass.jpg", "cloud.jpg" });
     charPos[0]=10;
     charPos[1]=650;
   }
@@ -30,7 +30,7 @@ public class Bitmap
     GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
     
     GL11.glEnable(GL11.GL_TEXTURE_2D);
-    
+    GL11.glColor3f(1, 1, 1);
 
     GL11.glBindTexture(GL11.GL_TEXTURE_2D, font.get(0));
     GL11.glBegin(GL11.GL_QUADS);
@@ -56,13 +56,13 @@ public class Bitmap
 	    GL11.glBindTexture(GL11.GL_TEXTURE_2D, font.get(picNum));
 	    
 	    GL11.glBegin(GL11.GL_QUADS);
-	    GL11.glColor4f(1f, 0.0f,  0f, 1f);
+	    GL11.glColor4f(1f, 1.0f,  1f, 1f);
 		GL11.glTexCoord2f(0,0);  GL11.glVertex2f(x1,y1);
 		GL11.glTexCoord2f(1,0);  GL11.glVertex2f(x2,y1);
 		GL11.glTexCoord2f(1,1);  GL11.glVertex2f(x2,y2);
 		GL11.glTexCoord2f(0,1);  GL11.glVertex2f(x1,y2);
 	    GL11.glEnd();
-
+	    GL11.glColor4f(1f, 0.0f,  0f, 1f);
 	    GL11.glDisable(GL11.GL_TEXTURE_2D);
 	    GL11.glDisable(GL11.GL_BLEND);
 	  }
