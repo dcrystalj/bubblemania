@@ -13,6 +13,8 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import text.Bitmap;
+import towers.TowerGun;
+import towers.TripleGun;
 
 //Head Up Display
 public class Hud {
@@ -161,7 +163,6 @@ public class Hud {
 		
 	}
 	public static void startHUD() {
-
 		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 	    GL11.glPushMatrix();

@@ -7,6 +7,7 @@ import java.util.Set;
 import objects.Bubble;
 import objects.BubblePath;
 import objects.Cube;
+import objects.Obj3D;
 import objects.Terrain;
 
 import org.lwjgl.util.vector.Vector3f;
@@ -46,7 +47,9 @@ public class GameState {
 	//Other objects and variables
 	public static float WIDTH=500;	//BaseWindow width
 	public static Terrain t_bg;
-	public static Cube c_begin, c_end;
+	public static Obj3D startObject,endObject;
+	public static Cube c_end,c_begin;
+	
 	
 	//Current game state: lives, money,..
 	public static int lives=30;
@@ -69,7 +72,7 @@ public class GameState {
 		for(int i=0; i<numberOfBubbles;i++){
 			Bubble b = new Bubble(radius);
 			//-lvl*50, because of level rendering
-			float[] start={c_begin.m_nX-Bubble.safetyDistance*(i+2)-lvl*60, c_begin.m_nY+10, c_begin.m_nZ+c_begin.cW/2};
+			float[] start={startPoint.x-Bubble.safetyDistance*(i+2)-lvl*60, startPoint.y+10, startPoint.y+10};
 			b.setPos(start);
 			bubbles.add(b);
 		}

@@ -14,7 +14,7 @@ public class Tower extends Model3D {
 	
 	public static int shootingSpeed;
 	public float shootingRadius;
-	public int cost;
+	public static int cost;
 	public float cW=WIDTH;
 	GLModel m_Obj = null;
 	
@@ -50,11 +50,10 @@ public class Tower extends Model3D {
 //			    GL11.glColor3f(0.7f,0.7f,0.7f);		//BLACK COLOR for radius of tower
 			    //Draw .obj tower
 //			    GL11.glColor3f(0.75f,0.83f,0.32f);
-			    GL11.glColor3f(1f, 1f, 1f);
-			    
 			    m_Obj.render();
 			    
 //			    shooting range of tower
+			    GL11.glDisable(GL11.GL_LIGHTING);
 			    GL11.glBegin(GL11.GL_LINE_LOOP);
 			    GL11.glColor3f(0,0,0);		//BLACK COLOR for radius of tower
 			    float DEG2RAD = 3.14159f/180.f;
@@ -66,6 +65,7 @@ public class Tower extends Model3D {
 			    }
 			    GL11.glEnd();
 			    GL11.glPopMatrix();
+			    GL11.glEnable(GL11.GL_LIGHTING);
 		  }
 	  }
 	public void popBubble(){	//Check whether there is a bubble in his radius and pops it

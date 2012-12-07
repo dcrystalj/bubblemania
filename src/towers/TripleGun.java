@@ -9,7 +9,7 @@ public class TripleGun extends Tower {
 		//Set shootingSpeed and shootingRadius of tower
 		shootingSpeed=250;
 		shootingRadius = 40;
-		cost=500;
+		cost=100;
 		try {
 			m_Obj = new GLModel("tripleGun.obj");
 		}
