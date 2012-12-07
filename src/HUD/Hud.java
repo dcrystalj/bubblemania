@@ -37,7 +37,7 @@ public class Hud {
 		  GL11.glEnd();
 		  
 		  GL11.glColor3f(0.1f, 0.3f, 0.3f);
-		  t_finishedlvl.charPos[0] = (int)(GameState.WIDTH-t_1item.textWidth("BzBBle MaNiA", 85)/2);
+		  t_finishedlvl.charPos[0] = (int)(GameState.WIDTH-t_1item.textWidth("BuBBle MaNiA", 85)/2);
 		  t_finishedlvl.charPos[1] = menuitemsy[0]+20;
 		  t_finishedlvl.renderString("BuBBle MaNiA",85);
 		  GL11.glColor3f(0.9f, 0.9f, 0.9f);
@@ -163,7 +163,8 @@ public class Hud {
 		
 	}
 	public static void startHUD() {
-		GL11.glDisable(GL11.GL_LIGHTING);
+		if(GameState.lighting)
+			GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 	    GL11.glPushMatrix();
 	    GL11.glLoadIdentity();
@@ -174,11 +175,13 @@ public class Hud {
 	  }
 	  
 	  public static void endHUD() {
-	    GL11.glMatrixMode(GL11.GL_PROJECTION);
-	    GL11.glPopMatrix();
+		
+		GL11.glMatrixMode(GL11.GL_PROJECTION);
+		GL11.glPopMatrix();
 	    GL11.glMatrixMode(GL11.GL_MODELVIEW);
 	    GL11.glPopMatrix();
-	    GL11.glEnable(GL11.GL_LIGHTING);
+	    if(GameState.lighting)
+	    	GL11.glEnable(GL11.GL_LIGHTING);
 	  }
 	  public static boolean isInRectangle(int xL,int xR,int yT,int yB){	//We send xLeft, xRight, yTop and yBottom to function
 

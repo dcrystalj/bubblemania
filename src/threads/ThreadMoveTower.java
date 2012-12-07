@@ -22,25 +22,27 @@ public class ThreadMoveTower extends Thread {
 			Refactored.newTower=new TripleGun(10);
 		Mouse.setCursorPosition(222, 672);
 
-
+		Mouse.setGrabbed(true);
 		while (move) {
 //			System.out.println(Mouse.getX()+","+Mouse.getY());
 			//QWe move tower according to mouse
 			Refactored.newTower.setPosition(Mouse.getX()-222, 0, 672-Mouse.getY());
+			//We build it with right button on mouse
 			if(Mouse.isButtonDown(1))
 				move=false;
 		}
-		//We finnaly buy tower on desired position, towerGun
+		
+		GameState.towers.add(Refactored.newTower);
+		Refactored.newTower=null;
+		
+		//We bought tower on desired position, towerGun
 		if(GameState.buildTower==1){
-			GameState.money-=Refactored.newTower.cost;
-			GameState.towerGuns.add((TowerGun)Refactored.newTower);
-			Refactored.newTower=null;
+			GameState.money-=200;
+			
 		}
 		//Else we have triple gun
 		else if(GameState.buildTower==2){
-			GameState.money-=Refactored.newTower.cost;
-			GameState.tripleGuns.add((TripleGun)Refactored.newTower);
-			Refactored.newTower=null;
+			GameState.money-=500;
 		}
 			
 		Mouse.setGrabbed(false);

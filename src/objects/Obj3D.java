@@ -9,7 +9,9 @@ public class Obj3D extends Model3D
   public Obj3D(String p_strFileName)
   {
     try {
+    	
       m_Obj = new GLModel(p_strFileName);
+      
     }
     catch(Exception e)
     {

@@ -38,6 +38,7 @@ public class Refactored extends BaseWindow
 	 */
 	protected void setupView()
 	{    
+		
 		initializeModels();
 		// enable depth buffer (off by default)
 		glEnable(GL_DEPTH_TEST); 
@@ -46,19 +47,21 @@ public class Refactored extends BaseWindow
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 //		Lightning
 //		GL11.glEnable(GL11.GL_COLOR_MATERIAL);
-		//Later disabled for drawing shooting range an HUD
-		GL11.glEnable(GL11.GL_LIGHTING);
-		GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, allocFloats(new float[] { 450f, 450f, 450f, 1f}));
-//		GL11.glLight(GL11.GL_LIGHT0, GL11.GL_AMBIENT, allocFloats(new float[] { 1f, 1f, 1f, 1f}));
-//		GL11.glLight(GL11.GL_LIGHT0, GL11.GL_DIFFUSE , allocFloats(new float[] { 0.5f, 0.5f, 0.5f, 1f}));
-//		
-//		GL11.glMaterialf(GL_FRONT, GL_SHININESS, 10.0f); // Shininess between 0 and 128
-//		GL11.glLight(GL11.GL_LIGHT0, GL11.GL_SPECULAR, allocFloats(new float[] { 0.5f, 0.5f, 0.5f, 1f}));
-//
-		// smooth shading - Gouraud
-		GL11.glShadeModel(GL11.GL_SMOOTH);
-		GL11.glEnable(GL11.GL_LIGHT0);
+//		//Later disabled for drawing shooting range an HUD
+		if(GameState.lighting){
+			GL11.glEnable(GL11.GL_LIGHTING);
+			GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, allocFloats(new float[] { 450f, 450f, 450f, 1f}));
+			GL11.glLight(GL11.GL_LIGHT0, GL11.GL_AMBIENT, allocFloats(new float[] { 1f, 1f, 1f, 1f}));
+//			GL11.glLight(GL11.GL_LIGHT0, GL11.GL_DIFFUSE , allocFloats(new float[] { 0.5f, 0.5f, 0.5f, 1f}));
 
+			//		GL11.glMaterialf(GL_FRONT, GL_SHININESS, 10.0f); // Shininess between 0 and 128
+			//		GL11.glLight(GL11.GL_LIGHT0, GL11.GL_SPECULAR, allocFloats(new float[] { 0.5f, 0.5f, 0.5f, 1f}));
+			//
+			// smooth shading - Gouraud
+			GL11.glShadeModel(GL11.GL_SMOOTH);
+			GL11.glEnable(GL11.GL_LIGHT0);
+		}
+		
 		// mapping from normalized to window coordinates
 		glViewport(0, 0, 1024, 768);
 
@@ -91,51 +94,62 @@ public class Refactored extends BaseWindow
 	    GL11.glEnable(GL11.GL_TEXTURE_2D);
 	 // select modulate to mix texture with color for shading; GL_REPLACE, GL_MODULATE ...
 	    GL11.glTexEnvf( GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_MODE, GL11.GL_MODULATE );
-		
-		GameState.t_bg = new Terrain(WIDTH);
-		GameState.c_begin= new Cube(WIDTH);
-		GameState.c_end = new Cube(WIDTH);
-		//Starting object
-		GameState.startObject=new Obj3D("Kugle.obj");
-		GameState.startObject.m_nX=80;
-		GameState.startObject.m_nZ=80;
-		GameState.startObject.m_nY=10;
-		GameState.startObject.setScaling(7, 7, 7);
-		//set ending cube position
-		GameState.c_end.m_nX=WIDTH-GameState.c_end.cW-20;
-		GameState.c_end.m_nZ=WIDTH-GameState.c_end.cW;
+	    
+	    //We draw basic objects just once, or if we need to
+	    if(GameState.standardObjectsDrawing){
+	    	GameState.t_bg = new Terrain(WIDTH);
+	    	GameState.c_begin= new Cube(WIDTH);
+	    	GameState.c_end = new Cube(WIDTH);
+	    	//Starting object
+	    	GameState.startObject=new Obj3D("Kugle.obj");
+	    	GameState.startObject.m_nX=80;
+	    	GameState.startObject.m_nZ=80;
+	    	GameState.startObject.m_nY=10;
+	    	GameState.startObject.setScaling(7, 7, 7);
+	    	//Ending object
+	    	GameState.endObject=new Obj3D("endTree.obj");
+	    	GameState.endObject.m_nX=460;
+	    	GameState.endObject.m_nZ=480;
+	    	GameState.endObject.m_nY=0.02f;
+	    	GameState.endObject.m_rY=180;
+	    	//		GameState.startObject.setScaling(7, 7, 7);
+	    	//set ending cube position
+	    	GameState.c_end.m_nX=WIDTH-GameState.c_end.cW-20;
+	    	GameState.c_end.m_nZ=WIDTH-GameState.c_end.cW;
 
-		//Set start and end point for bubbles
-		GameState.startPoint=new Vector3f(0,0,42);
-//		GameState.startPoint=new Vector3f(GameState.c_begin.m_nX,GameState.c_begin.m_nY,GameState.c_begin.m_nZ+GameState.c_begin.cW/2);
-		GameState.endPoint=new Vector3f(GameState.c_end.m_nX+GameState.c_end.cW/2,GameState.c_end.m_nY,GameState.c_end.m_nZ+GameState.c_end.cW/2);
-		GameState.bubblesPath=new BubblePath(GameState.startPoint, GameState.endPoint);
-		GameState.startingObjects();
-		
-		//set text
-		Hud.t_money = new Bitmap();
-		Hud.t_lives = new Bitmap();
-		Hud.t_lvl = new Bitmap();
-		Hud.t_bubblesThisLvl = new Bitmap();
-		Hud.t_lives.charPos[1]+=30;
-		Hud.t_lvl.charPos[1]+=60;
-		Hud.t_bubblesThisLvl.charPos[1]+=90;
+	    	//Set start and end point for bubbles
+	    	GameState.startPoint=new Vector3f(0,0,42);
+	    	//		GameState.startPoint=new Vector3f(GameState.c_begin.m_nX,GameState.c_begin.m_nY,GameState.c_begin.m_nZ+GameState.c_begin.cW/2);
+	    	GameState.endPoint=new Vector3f(GameState.c_end.m_nX+GameState.c_end.cW/2,GameState.c_end.m_nY,GameState.c_end.m_nZ+GameState.c_end.cW/2);
+	    	GameState.bubblesPath=new BubblePath(GameState.startPoint, GameState.endPoint);
 
-		//set menu text
-		Hud.t_1item = new Bitmap();
-		Hud.t_2item = new Bitmap();
-		Hud.t_3item = new Bitmap();
-		Hud.t_finishedlvl = new Bitmap();
-		Hud.t_gameover = new Bitmap();
+	    	//set text
+	    	Hud.t_money = new Bitmap();
+	    	Hud.t_lives = new Bitmap();
+	    	Hud.t_lvl = new Bitmap();
+	    	Hud.t_bubblesThisLvl = new Bitmap();
+	    	Hud.t_lives.charPos[1]+=30;
+	    	Hud.t_lvl.charPos[1]+=60;
+	    	Hud.t_bubblesThisLvl.charPos[1]+=90;
 
-		Hud.t_1item.charPos[0]=(int)(WIDTH-Hud.t_1item.textWidth("Start Game", 80)/2);
-		Hud.t_1item.charPos[1]=500;
+	    	//set menu text
+	    	Hud.t_1item = new Bitmap();
+	    	Hud.t_2item = new Bitmap();
+	    	Hud.t_3item = new Bitmap();
+	    	Hud.t_finishedlvl = new Bitmap();
+	    	Hud.t_gameover = new Bitmap();
 
-		Hud.t_2item.charPos[0]=(int)(WIDTH-Hud.t_1item.textWidth("EXIT", 80)/2);
-		Hud.t_2item.charPos[1]=400;
+	    	Hud.t_1item.charPos[0]=(int)(WIDTH-Hud.t_1item.textWidth("Start Game", 80)/2);
+	    	Hud.t_1item.charPos[1]=500;
 
-		Hud.t_3item.charPos[0]=(int)(WIDTH-Hud.t_1item.textWidth("EXIT", 80)/2);
-		Hud.t_3item.charPos[1]=300;
+	    	Hud.t_2item.charPos[0]=(int)(WIDTH-Hud.t_1item.textWidth("EXIT", 80)/2);
+	    	Hud.t_2item.charPos[1]=400;
+
+	    	Hud.t_3item.charPos[0]=(int)(WIDTH-Hud.t_1item.textWidth("EXIT", 80)/2);
+	    	Hud.t_3item.charPos[1]=300;
+	    	GameState.standardObjectsDrawing=false;
+	    }
+	    GameState.startingObjects();
 
 	}
 
@@ -209,22 +223,22 @@ public class Refactored extends BaseWindow
 			glColor3f(1,1,1);
 			GameState.t_bg.render3D();
 			GameState.startObject.render3D();
-
+			GameState.endObject.render3D();
+			
+			
 			//draw beginning and ending of bubbles
 //			glDisable(GL_CULL_FACE);
 //			GameState.c_begin.render3D();
-			GameState.c_end.render3D();
+//			GameState.c_end.render3D();
 			//Draw path
 			GameState.bubblesPath.render3D();
 			//Draw bubbles
 			for (Bubble b : GameState.bubbles)
 				b.render3D();
 			//Draw towerGuns
-			for (Tower t : GameState.towerGuns)
+			for (Tower t : GameState.towers)
 				t.render3D();
-			//Draw tripleGuns
-			for (Tower t : GameState.tripleGuns)
-				t.render3D();
+			
 			glEnable(GL_CULL_FACE);
 			if(GameState.state==2){ //level done
 				Hud.renderFrameLvlDone();
@@ -236,13 +250,13 @@ public class Refactored extends BaseWindow
 				Hud.renderFrameBuy();
 				Hud.t_money.renderString("Money:"+GameState.money,20);
 				//Build towerGun
-				if(GameState.money>=TowerGun.cost && Mouse.isButtonDown(0)&& Hud.isInRectangle(849, 999, 649,499)){
+				if(GameState.money>=200 && Mouse.isButtonDown(0)&& Hud.isInRectangle(849, 999, 649,499)){
 					GameState.buildTower=1;
 					ThreadMoveTower mt=new ThreadMoveTower();
 					mt.start();	  
 				}
 				//Build triple gun
-				else if(GameState.money>=TripleGun.cost && Mouse.isButtonDown(0)&& Hud.isInRectangle(849, 999, 479, 330)){
+				else if(GameState.money>=500 && Mouse.isButtonDown(0)&& Hud.isInRectangle(849, 999, 479, 330)){
 					GameState.buildTower=2;
 					ThreadMoveTower mt=new ThreadMoveTower();
 					mt.start();	  
@@ -352,7 +366,7 @@ public class Refactored extends BaseWindow
 						GameState.numberOfBubbles = 15;
 						Bubble.safetyDistance=25;
 						Bubble.speed = 1.3f;
-						GameState.towerGuns = GameState.startingTowers();
+						GameState.towers = GameState.startingTowers();
 
 					}
 					if(Mouse.getY()>=Hud.menuitemsy[3] && Mouse.getY()<=Hud.menuitemsy[2]){
@@ -378,7 +392,7 @@ public class Refactored extends BaseWindow
 	private void nextLevel(){
 		GameState.lvl++;
 		GameState.state = 1;
-		//TODO
+
 		//Define harder level
 		if(GameState.lvl%3==0){
 			GameState.numberOfBubbles*=1.1; //We increase number of balloons

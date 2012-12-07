@@ -10,14 +10,18 @@ import objects.Model3D;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector2f;
 
+import threads.PopBubbles;
+
 
 //Class for saving object tower
 public class Tower extends Model3D {
 	
-	public static int shootingSpeed;
+	public int shootingSpeed=1000;
 	public float shootingRadius;
 	public static int cost;
 	public float cW=WIDTH;
+	public boolean shooting=true;
+	public PopBubbles shoot=null;
 	GLModel m_Obj = null;
 	
 	public Tower(float w) {
@@ -53,10 +57,12 @@ public class Tower extends Model3D {
 			    //Draw .obj tower
 			    GL11.glColor3f(1f,1f,1f);
 			    glEnable(GL_CULL_FACE);
+			    glEnable(GL11.GL_TEXTURE_2D);
 			    m_Obj.render();
 			    
 //			    shooting range of tower
-			    GL11.glDisable(GL11.GL_LIGHTING);
+			    if(GameState.lighting)
+			    	GL11.glDisable(GL11.GL_LIGHTING);
 			    GL11.glBegin(GL11.GL_LINE_LOOP);
 			    GL11.glColor3f(0,0,0);		//BLACK COLOR for radius of tower
 			    float DEG2RAD = 3.14159f/180.f;
@@ -68,10 +74,11 @@ public class Tower extends Model3D {
 			    }
 			    GL11.glEnd();
 			    GL11.glPopMatrix();
-			    GL11.glEnable(GL11.GL_LIGHTING);
+			    if(GameState.lighting)
+			    	GL11.glEnable(GL11.GL_LIGHTING);
 		  }
 	  }
-	public void popBubble(){	//Check whether there is a bubble in his radius and pops it
+	public boolean popBubble(){	//Check whether there is a bubble in his radius and pops it, and returns whether it pops bloon
 		for (Bubble b : GameState.bubbles){
 			if(b.show){	//If not popped yet or not gone out of visible area
 				float x = b.m_nX-this.m_nX;
@@ -82,10 +89,11 @@ public class Tower extends Model3D {
 					rotateOnShoot(b);
 					b.show=false;	//If we popped one bubble we quit function
 					GameState.money+=10; //For every bloon we add money
-					return;
+					return true;
 				}
 			}
 		}
+		return false;
 		
 		
 	}
@@ -95,6 +103,9 @@ public class Tower extends Model3D {
 		toBubble.normalise();
 		//Calculating rotation with polar coordinates tan function
 		this.m_rY=(float)Math.toDegrees(Math.atan2(toBubble.y, -toBubble.x))+90; 
+		
+	}
+	public void shootingThread(){
 		
 	}
 

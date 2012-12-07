@@ -56,19 +56,21 @@ public Terrain(float w) {
     GL11.glColor3f(1, 1, 1);
     
     //right
+    GL11.glNormal3f(-1, 0, 0);
     GL11.glTexCoord2f(0, 0); GL11.glVertex3f( tW,0.0f,0.0f);    // lower right vertex
     GL11.glTexCoord2f(1, 0);GL11.glVertex3f( tW,0.0f, tW);    // upper right vertex
     GL11.glTexCoord2f(1, 1);GL11.glVertex3f( tW, tW, tW);    // upper left vertex
     GL11.glTexCoord2f(0, 1);GL11.glVertex3f( tW, tW,0.0f);    // lower left vertex
 
     //left
+    GL11.glNormal3f(1, 0, 0);
     GL11.glTexCoord2f(0, 0);GL11.glVertex3f(0.0f,0.0f,0.0f);    // lower right vertex
     GL11.glTexCoord2f(1, 0);GL11.glVertex3f(0.0f, tW,0.0f);    // lower left vertex
     GL11.glTexCoord2f(1, 1);GL11.glVertex3f(0.0f, tW, tW);    // upper left vertex
     GL11.glTexCoord2f(0, 1);GL11.glVertex3f(0.0f,0.0f, tW);    // upper right vertex
    
     //back
-    
+    GL11.glNormal3f(0, 0, 1);
     GL11.glTexCoord2f(0, 0);GL11.glVertex3f(0.0f,0.0f,0.0f);    // lower right vertex
     GL11.glTexCoord2f(1, 0);GL11.glVertex3f( tW,0.0f,0.0f);    // upper right vertex
     GL11.glTexCoord2f(1, 1);GL11.glVertex3f( tW, tW,0.0f);    // lower left vertex
@@ -76,12 +78,14 @@ public Terrain(float w) {
   
     
     //front
+    GL11.glNormal3f(0, 0, -1);
     GL11.glTexCoord2f(0, 0);GL11.glVertex3f(0.0f,0.0f, tW);    // lower right vertex
     GL11.glTexCoord2f(1, 0);GL11.glVertex3f(0.0f, tW, tW);    // upper right vertex
     GL11.glTexCoord2f(1, 1);GL11.glVertex3f( tW, tW, tW);    // lower left vertex
     GL11.glTexCoord2f(0, 1);GL11.glVertex3f( tW,0.0f, tW);    // upper left vertex
     
     //top
+    GL11.glNormal3f(0, -1, 0);
     GL11.glTexCoord2f(0, 0);GL11.glVertex3f(0.0f, tW, tW);    // lower right vertex
     GL11.glTexCoord2f(1, 0);GL11.glVertex3f(0.0f, tW,0.0f);    // upper right vertex
     GL11.glTexCoord2f(1, 1);GL11.glVertex3f( tW, tW,0.0f);    // lower left vertex
@@ -91,6 +95,7 @@ public Terrain(float w) {
     GL11.glDisable(GL11.GL_TEXTURE_2D);
 
     //bottom
+    GL11.glNormal3f(0, 1, 0);
     GL11.glEnable(GL11.GL_TEXTURE_2D);
     GL11.glBindTexture(GL11.GL_TEXTURE_2D, Bitmap.font.get(3));
     GL11.glBegin(GL11.GL_QUADS);

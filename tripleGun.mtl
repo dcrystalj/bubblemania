@@ -1,25 +1,33 @@
-#
-## Alias OBJ Material File
-# Exported from SketchUp, (c) 2000-2012 Trimble Navigation Limited
-
-newmtl Material3
-Ka 0.000000 0.000000 0.000000
-Kd 0.137255 0.145098 0.419608
-Ks 0.330000 0.330000 0.330000
-map_Kd tripleGun/Material3.jpg
-
-newmtl Color_D06
-Ka 0.000000 0.000000 0.000000
-Kd 0.800000 0.600000 0.000000
-Ks 0.330000 0.330000 0.330000
-
 newmtl Color_007
-Ka 0.000000 0.000000 0.000000
-Kd 0.227451 0.227451 0.227451
-Ks 0.330000 0.330000 0.330000
-
+illum 4
+Kd 0.23 0.23 0.23
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.33 0.33 0.33
+Ns 0.06
+newmtl Color_D06
+illum 4
+Kd 0.80 0.60 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.33 0.33 0.33
+Ns 0.06
 newmtl FrontColor
-Ka 0.000000 0.000000 0.000000
-Kd 1.000000 1.000000 1.000000
-Ks 0.330000 0.330000 0.330000
-
+illum 4
+Kd 1.00 1.00 1.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.33 0.33 0.33
+Ns 0.06
+newmtl Material3
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Material3.jpg
+Ni 1.00
+Ks 0.33 0.33 0.33
+Ns 0.06

@@ -1,5 +1,6 @@
 package towers;
 
+import threads.PopBubbles;
 import glmodel.GLModel;
 
 public class TowerGun extends Tower {
@@ -10,6 +11,7 @@ public class TowerGun extends Tower {
 		shootingSpeed=600;
 		shootingRadius = 60;
 		cost=200;
+		shoot=new PopBubbles(this);
 		try {
 			m_Obj = new GLModel("towerGun.obj");
 		}
