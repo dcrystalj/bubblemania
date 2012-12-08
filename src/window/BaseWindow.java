@@ -59,6 +59,7 @@ public class BaseWindow
       // update window contents and process input messages
       Display.update();
     }
+    GameState.resetObjects();
     GameState.running=false;
   }
 

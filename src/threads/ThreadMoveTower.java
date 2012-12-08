@@ -33,8 +33,12 @@ public class ThreadMoveTower extends Thread {
 		while (move) {
 			//Hide cursor
 			Mouse.setGrabbed(true);
-			//We move tower according to mouse, starting in center
-			Refactored.newTower.setPosition(Mouse.getX()-222, 0, 672-Mouse.getY());
+			int posX=Mouse.getX()-222;
+			int posZ=672-Mouse.getY();
+			if(GameState.isPlaceFree(posX,0,posZ)){
+				//We move tower according to mouse, starting in center
+				Refactored.newTower.setPosition(posX, 0, posZ);
+			}
 			//We build it with right button on mouse
 			if(Mouse.isButtonDown(1))
 				move=false;

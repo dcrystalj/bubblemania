@@ -220,7 +220,7 @@ public class Refactored extends BaseWindow
 					0.0f, 1.0f,  0.0f);
 
 			//draw terrain
-			glColor3f(1,1,1);
+//			glColor3f(1,1,1);
 			GameState.t_bg.render3D();
 			GameState.startObject.render3D();
 			GameState.endObject.render3D();
@@ -233,7 +233,9 @@ public class Refactored extends BaseWindow
 			//Draw towerGuns
 			for (Tower t : GameState.towers)
 				t.render3D();
-			
+			//Render new tower if we are building it
+			if(newTower!=null)
+				newTower.render3D();
 			glEnable(GL_CULL_FACE);
 			if(GameState.state==2){ //level done
 				Hud.renderFrameLvlDone();
@@ -256,8 +258,6 @@ public class Refactored extends BaseWindow
 					ThreadMoveTower mt=new ThreadMoveTower();
 					mt.start();	  
 				}
-				if(newTower!=null)
-					newTower.render3D();
 				
 
 			}

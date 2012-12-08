@@ -3,6 +3,7 @@ package main;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Vector;
 
 import objects.Bubble;
 import objects.BubblePath;
@@ -91,7 +92,6 @@ public class GameState {
 	@SuppressWarnings("deprecation")
 	public static void resetObjects(){
 		//Delete all bubbles and towers
-		running=false;
 		stopShooting();
 		if(moveBubbles!=null)
 			moveBubbles.stop();
@@ -122,4 +122,31 @@ public class GameState {
 		towersStart.add(to);
 		return towersStart;
 	}
+	//Returns if the place is free to build new tower
+	public static boolean isPlaceFree(int posX, int posY, int posZ) {
+		int towerRadius=8; //Tower hold place in shape of a circle, with this radius
+		//If tower is out of world
+		if(posX<0+towerRadius || posX>500-towerRadius || posZ<0+towerRadius || posZ>500-towerRadius)
+			return false;
+		//Starting position
+		if(posX<120 && posZ<150)
+			return false;	
+		//Ending position
+		if(posX>440 && posZ>440)
+			return false;	
+		Vector3f vT=new Vector3f(posX,posY,posZ);
+		for(Tower t : towers){
+			Vector3f v=new Vector3f(t.m_nX,t.m_nY,t.m_nZ);
+			float dst=distanceBetween(vT,v);
+			if(dst<towerRadius*2)
+				return false;
+			
+		}
+		
+		return true;
+	}
+	public static float distanceBetween(Vector3f v1, Vector3f v2){
+		  //We DO NOT consider y coordinates
+		  return (float)Math.sqrt(Math.pow(v1.x-v2.x,2)+Math.pow(v1.z-v2.z,2));
+	  }
 }
