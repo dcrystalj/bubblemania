@@ -16,8 +16,6 @@ import static org.lwjgl.opengl.GL11.*;
 import text.Bitmap;
 import threads.ThreadMoveTower;
 import towers.Tower;
-import towers.TowerGun;
-import towers.TripleGun;
 import HUD.*;
 import window.BaseWindow;
 
@@ -51,11 +49,11 @@ public class Refactored extends BaseWindow
 		if(GameState.lighting){
 			GL11.glEnable(GL11.GL_LIGHTING);
 			GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, allocFloats(new float[] { 450f, 450f, 450f, 1f}));
-			GL11.glLight(GL11.GL_LIGHT0, GL11.GL_AMBIENT, allocFloats(new float[] { 1f, 1f, 1f, 1f}));
-//			GL11.glLight(GL11.GL_LIGHT0, GL11.GL_DIFFUSE , allocFloats(new float[] { 0.5f, 0.5f, 0.5f, 1f}));
+			GL11.glLight(GL11.GL_LIGHT0, GL11.GL_AMBIENT, allocFloats(new float[] { 0.8f, 1f, 0.8f, 1f}));
+			GL11.glLight(GL11.GL_LIGHT0, GL11.GL_DIFFUSE , allocFloats(new float[] { 4f, 4f, 4f, 3f}));
 
-			//		GL11.glMaterialf(GL_FRONT, GL_SHININESS, 10.0f); // Shininess between 0 and 128
-			//		GL11.glLight(GL11.GL_LIGHT0, GL11.GL_SPECULAR, allocFloats(new float[] { 0.5f, 0.5f, 0.5f, 1f}));
+			GL11.glMaterialf(GL_FRONT, GL_SHININESS, 10.0f); // Shininess between 0 and 128
+			GL11.glLight(GL11.GL_LIGHT0, GL11.GL_SPECULAR, allocFloats(new float[] { 0.5f, 0.5f, 0.5f, 1f}));
 			//
 			// smooth shading - Gouraud
 			GL11.glShadeModel(GL11.GL_SMOOTH);
@@ -88,7 +86,6 @@ public class Refactored extends BaseWindow
 	 */
 	protected void initializeModels()
 	{
-
 	    // textures
 	    // enable 2D textures 
 	    GL11.glEnable(GL11.GL_TEXTURE_2D);
@@ -149,7 +146,8 @@ public class Refactored extends BaseWindow
 	    	Hud.t_3item.charPos[1]=300;
 	    	GameState.standardObjectsDrawing=false;
 	    }
-	    GameState.startingObjects();
+	    if(GameState.state>0)
+	    	GameState.startingObjects();
 
 	}
 
@@ -159,8 +157,6 @@ public class Refactored extends BaseWindow
 
 	protected void resetView()
 	{
-		// clear color and depth buffer
-		glClear(GL_COLOR_BUFFER_BIT);
 
 		if(GameState.lives<=0){
 			GameState.running=false;
@@ -171,6 +167,8 @@ public class Refactored extends BaseWindow
 		}
 	}
 	protected boolean allBublesAreOut(){
+		if(GameState.state==0)	//if we are still in menu
+			return false;
 		for (Bubble b : GameState.bubbles){
 			if(b.show)
 				return false;
@@ -183,11 +181,13 @@ public class Refactored extends BaseWindow
 
 	protected void renderFrame()
 	{
+		//		 clear color and depth buffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		// Reset transformations
 		glLoadIdentity();
 		if(GameState.state==0){
 			Hud.renderFrameMainMenu();
+			
 		}
 		else{
 			//draw text
@@ -225,11 +225,6 @@ public class Refactored extends BaseWindow
 			GameState.startObject.render3D();
 			GameState.endObject.render3D();
 			
-			
-			//draw beginning and ending of bubbles
-//			glDisable(GL_CULL_FACE);
-//			GameState.c_begin.render3D();
-//			GameState.c_end.render3D();
 			//Draw path
 			GameState.bubblesPath.render3D();
 			//Draw bubbles
@@ -263,6 +258,7 @@ public class Refactored extends BaseWindow
 				}
 				if(newTower!=null)
 					newTower.render3D();
+				
 
 			}
 		}

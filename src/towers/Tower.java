@@ -23,6 +23,7 @@ public class Tower extends Model3D {
 	public boolean shooting=true;
 	public PopBubbles shoot=null;
 	GLModel m_Obj = null;
+	public boolean building=false;
 	
 	public Tower(float w) {
 		super(w);
@@ -73,6 +74,19 @@ public class Tower extends Model3D {
 			       GL11.glVertex3f((float)Math.cos(degInRad)*(shootingRadius-3)+cW/2, 1, (float)Math.sin(degInRad)*(shootingRadius-3)+cW/2);
 			    }
 			    GL11.glEnd();
+			    
+			    //Draw red circle above tower to know which tower we are building
+			    if(building){
+			    	GL11.glBegin(GL11.GL_LINE_LOOP);
+			    	GL11.glColor3f(1,0,0);		//BLACK COLOR for radius of tower
+			    	for (int i=0; i<360; i++)
+			    	{
+			    		float degInRad = i*DEG2RAD;
+			    		GL11.glVertex3f((float)Math.cos(degInRad)*5+cW/2, 20, (float)Math.sin(degInRad)*5+cW/2);
+			    		GL11.glVertex3f((float)Math.cos(degInRad)*2+cW/2, 20, (float)Math.sin(degInRad)*2+cW/2);
+			    	}
+			    	GL11.glEnd();
+			    }
 			    GL11.glPopMatrix();
 			    if(GameState.lighting)
 			    	GL11.glEnable(GL11.GL_LIGHTING);
@@ -89,6 +103,7 @@ public class Tower extends Model3D {
 					rotateOnShoot(b);
 					b.show=false;	//If we popped one bubble we quit function
 					GameState.money+=10; //For every bloon we add money
+					GameState.poppedBubbles++;
 					return true;
 				}
 			}
@@ -105,9 +120,5 @@ public class Tower extends Model3D {
 		this.m_rY=(float)Math.toDegrees(Math.atan2(toBubble.y, -toBubble.x))+90; 
 		
 	}
-	public void shootingThread(){
-		
-	}
-
 	
 }

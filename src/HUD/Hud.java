@@ -7,14 +7,10 @@ import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
 import main.GameState;
 import main.Refactored;
 
-import objects.Terrain;
-
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import text.Bitmap;
-import towers.TowerGun;
-import towers.TripleGun;
 
 //Head Up Display
 public class Hud {
@@ -120,10 +116,12 @@ public class Hud {
 		  t_towerprice = new Bitmap();
 		  t_towerprice.charPos[0]  =(int)(w-t_1item.textWidth("500$", 20)-margin);
 		  t_towerprice.charPos[1] = yFirstImage-picHeight-20;  
+		  glColor3f(1,0.1f,0.1f);
 		  t_towerprice.renderString("500$", 20);
 		  
 		  t_towerprice.charPos[0]  =(int)(w-t_1item.textWidth("200$", 20)-margin);
 		  t_towerprice.charPos[1] = yFirstImage;  
+		  glColor3f(1,0.1f,0.1f);
 		  t_towerprice.renderString("200$", 20);
 		  
 		  //draw images

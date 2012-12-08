@@ -5,6 +5,7 @@ package threads;
 import main.GameState;
 import main.Refactored;
 
+import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Mouse;
 
 import towers.TowerGun;
@@ -20,12 +21,19 @@ public class ThreadMoveTower extends Thread {
 			Refactored.newTower=new TowerGun(10);
 		else 
 			Refactored.newTower=new TripleGun(10);
-		Mouse.setCursorPosition(222, 672);
+		//For drawing marking circle above
+		Refactored.newTower.building=true;
+		try {
+			Mouse.create();
+		} catch (LWJGLException e) {
+			e.printStackTrace();
+		}
+		Mouse.setCursorPosition(222+230, 672-230);
 
-		Mouse.setGrabbed(true);
 		while (move) {
-//			System.out.println(Mouse.getX()+","+Mouse.getY());
-			//QWe move tower according to mouse
+			//Hide cursor
+			Mouse.setGrabbed(true);
+			//We move tower according to mouse, starting in center
 			Refactored.newTower.setPosition(Mouse.getX()-222, 0, 672-Mouse.getY());
 			//We build it with right button on mouse
 			if(Mouse.isButtonDown(1))
@@ -33,6 +41,7 @@ public class ThreadMoveTower extends Thread {
 		}
 		
 		GameState.towers.add(Refactored.newTower);
+		Refactored.newTower.building=false;
 		Refactored.newTower=null;
 		
 		//We bought tower on desired position, towerGun
