@@ -1,7 +1,10 @@
 package main;
 
 
+import java.awt.Polygon;
+import java.awt.Rectangle;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Set;
 import java.util.Vector;
 
@@ -41,6 +44,7 @@ public class GameState {
 	public static Vector3f endPoint;
 	public static BubblePath bubblesPath;
 	public static BubblePath path;
+	public static LinkedList<Polygon> pathPoly; //Used for determing whether the tower is on path
 
 	//Other objects and variables
 	public static float WIDTH=500;	//BaseWindow width
@@ -142,6 +146,10 @@ public class GameState {
 				return false;
 			
 		}
+		//Checking path
+		for(Polygon p : GameState.pathPoly)
+			if(p.contains(posX, posZ))
+				return false;
 		
 		return true;
 	}

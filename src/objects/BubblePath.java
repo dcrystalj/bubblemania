@@ -1,6 +1,9 @@
 package objects;
 
+import java.awt.Polygon;
 import java.util.LinkedList;
+
+import main.GameState;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
@@ -21,6 +24,8 @@ public class BubblePath extends Model3D{
 		path.add(new Vector3f(end.x-20,height,start.z+250));
 		end.y=height;
 		path.add(end);
+		//We create polygon path, for building towers
+		createListPolygon();
 	}
 	public Vector3f get(int index){	//Returns point on path
 		return path.get(index);
@@ -61,7 +66,6 @@ public class BubblePath extends Model3D{
 	    GL11.glEnable(GL11.GL_BLEND);
 	    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 	    GL11.glColor4f(0.8f, 0.8f, 0.8f,0.50f);
-	    
 	    for(int i=0; i<path.size()-1;i++){
 	    	Vector3f v1=path.get(i);
 	    	Vector3f v2=path.get(i+1);
@@ -77,10 +81,43 @@ public class BubblePath extends Model3D{
 		    	GL11.glVertex3f( v2.x+pathWidth/2, 0.008f, v2.z+pathWidth/2);    // lower right vertex
 			    GL11.glVertex3f(  v1.x+pathWidth/2, 0.008f, v1.z-pathWidth/2);    // upper right vertex
 	    	}
-	    	
 	    }
 	    GL11.glDisable(GL11.GL_BLEND);
 	    GL11.glEnd();
 	    
+	  }
+	  //Create list of polygons for collision detection when building tower
+	  public void createListPolygon(){
+		  GameState.pathPoly=new LinkedList<Polygon>();
+		  for(int i=0; i<path.size()-1;i++){
+		    	Vector3f v1=path.get(i);
+		    	Vector3f v2=path.get(i+1);
+
+		    	int[] x=new int[4];
+		    	int[] y=new int[4];
+		    	if(i%2==0){
+		    		x[0]=(int)(v1.x-pathWidth/2);
+		    		x[1]=(int)(v1.x-pathWidth/2);
+		    		x[2]=(int)(v2.x+pathWidth/2);
+		    		x[3]=(int)(v2.x+pathWidth/2);
+
+		    		y[0]=(int)(v1.z-pathWidth/2);
+		    		y[1]=(int)(v1.z+pathWidth/2);
+		    		y[2]=(int)(v2.z+pathWidth/2);
+		    		y[3]=(int)(v2.z-pathWidth/2);
+		    	}
+		    	else{
+		    		x[0]=(int)(v1.x-pathWidth/2);
+		    		x[1]=(int)(v2.x-pathWidth/2);
+		    		x[2]=(int)(v2.x+pathWidth/2);
+		    		x[3]=(int)(v1.x+pathWidth/2);
+
+		    		y[0]=(int)(v1.z-pathWidth/2);
+		    		y[1]=(int)(v2.z+pathWidth/2);
+		    		y[2]=(int)(v2.z+pathWidth/2);
+		    		y[3]=(int)(v1.z-pathWidth/2);
+		    	}
+		    	GameState.pathPoly.add(new Polygon(x,y,4));
+		  }
 	  }
 }

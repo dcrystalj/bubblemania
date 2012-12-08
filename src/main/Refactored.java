@@ -190,6 +190,7 @@ public class Refactored extends BaseWindow
 			
 		}
 		else{
+			
 			//draw text
 			if(GameState.state!=4){
 				Hud.startHUD();
@@ -218,13 +219,11 @@ public class Refactored extends BaseWindow
 					x, y,  z,
 					x+lx, y+ly,  z+lz,
 					0.0f, 1.0f,  0.0f);
-
 			//draw terrain
-//			glColor3f(1,1,1);
 			GameState.t_bg.render3D();
 			GameState.startObject.render3D();
 			GameState.endObject.render3D();
-			
+
 			//Draw path
 			GameState.bubblesPath.render3D();
 			//Draw bubbles
@@ -233,6 +232,7 @@ public class Refactored extends BaseWindow
 			//Draw towerGuns
 			for (Tower t : GameState.towers)
 				t.render3D();
+			
 			//Render new tower if we are building it
 			if(newTower!=null)
 				newTower.render3D();

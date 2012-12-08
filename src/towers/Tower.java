@@ -30,7 +30,7 @@ public class Tower extends Model3D {
 	}
 
 	@Override
-	public synchronized void render3D()
+	public void render3D()
 	  {
 		  if(show){
 			// model view stack 
