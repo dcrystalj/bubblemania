@@ -13,7 +13,7 @@ public class Bitmap
   float fw = 0.065f, dx = 0.010f, fh = 0.13f, ff = 0.65f;
  
   public Bitmap() {
-    font = Texture.loadTextures2D(new String[] { "font.png", "towerGun.png", "tripleGun.png", "grass.jpg", "cloud.jpg","jajlands1_bk.jpg","jajlands1_dn.jpg","jajlands1_ft.jpg","jajlands1_lf.jpg","jajlands1_rt.jpg","jajlands1_up.jpg","path.jpg" });
+    font = Texture.loadTextures2D(new String[] { "textures/font.png", "textures/towerGun.png", "textures/tripleGun.png", "textures/grass.jpg", "textures/cloud.jpg","textures/jajlands1_bk.jpg","textures/jajlands1_dn.jpg","textures/jajlands1_ft.jpg","textures/jajlands1_lf.jpg","textures/jajlands1_rt.jpg","textures/jajlands1_up.jpg","textures/path.jpg" });
     charPos[0]=10;
     charPos[1]=650;
   }

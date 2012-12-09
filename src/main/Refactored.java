@@ -46,9 +46,9 @@ public class Refactored extends BaseWindow
 		// enable culling of back sides of polygons
 		glEnable(GL_CULL_FACE);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
-//		Lightning
-//		GL11.glEnable(GL11.GL_COLOR_MATERIAL);
-//		//Later disabled for drawing shooting range an HUD
+		//Lightning
+
+		//Later disabled for drawing shooting range an HUD
 		if(GameState.lighting){
 			GL11.glEnable(GL11.GL_LIGHTING);
 			GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, allocFloats(new float[] { 450f, 450f, 450f, 1f}));
@@ -101,13 +101,13 @@ public class Refactored extends BaseWindow
 	    	GameState.c_begin= new Cube(WIDTH);
 	    	GameState.c_end = new Cube(WIDTH);
 	    	//Starting object
-	    	GameState.startObject=new Obj3D("Kugle.obj");
+	    	GameState.startObject=new Obj3D("objects3D/startPoint/start.obj");
 	    	GameState.startObject.m_nX=80;
 	    	GameState.startObject.m_nZ=80;
 	    	GameState.startObject.m_nY=10;
 	    	GameState.startObject.setScaling(7, 7, 7);
 	    	//Ending object
-	    	GameState.endObject=new Obj3D("endTree.obj");
+	    	GameState.endObject=new Obj3D("objects3D/endTree/endTree.obj");
 	    	GameState.endObject.m_nX=460;
 	    	GameState.endObject.m_nZ=480;
 	    	GameState.endObject.m_nY=0.02f;
@@ -366,7 +366,6 @@ public class Refactored extends BaseWindow
 					if(Mouse.getY()>=Hud.menuitemsy[1] && Mouse.getY()<=Hud.menuitemsy[0]){ //second button
 
 						GameState.state = 1;
-						initializeModels();
 						scale = 1;
 						speed=0.5f*10; x=WIDTH/2;y=WIDTH/4;z=WIDTH; lx=-x;ly=-y;lz=-z; angley=0; angle=-0.1f ;
 						GameState.lives=30;
@@ -375,7 +374,10 @@ public class Refactored extends BaseWindow
 						GameState.numberOfBubbles = 15;
 						Bubble.safetyDistance=25;
 						Bubble.speed = 1.3f;
-						GameState.towers = GameState.startingTowers();
+						GameState.resetObjects();
+						GameState.startingObjects();
+						GameState.resetObjects();
+						initializeModels();
 
 					}
 					if(Mouse.getY()>=Hud.menuitemsy[3] && Mouse.getY()<=Hud.menuitemsy[2]){
@@ -404,12 +406,12 @@ public class Refactored extends BaseWindow
 
 		//Define harder level
 		if(GameState.lvl%3==0){
-			GameState.numberOfBubbles*=1.1; //We increase number of balloons
-			Bubble.speed*=1.2f;
+			GameState.numberOfBubbles*=1.13; //We increase number of balloons
+			Bubble.speed*=1.12f;
 		}
 		else if(GameState.lvl%3==1){
-			Bubble.safetyDistance*=0.8;
-			Bubble.speed*=1.2f;
+			Bubble.safetyDistance*=0.87;
+			Bubble.speed*=1.12f;
 		}
 		else Bubble.speed*=1.2f;
 

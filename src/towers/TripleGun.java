@@ -13,7 +13,7 @@ public class TripleGun extends Tower {
 		cost=100;
 		shoot=new PopBubbles(this);
 		try {
-			m_Obj = new GLModel("tripleGun.obj");
+			m_Obj = new GLModel("objects3D/tripleGun/tripleGun.obj");
 		}
 		catch(Exception e)
 		{

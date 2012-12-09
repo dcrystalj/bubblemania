@@ -6,7 +6,7 @@ import javax.sound.sampled.*;
 // To play sound using Clip, the process need to be alive.
 // Hence, we use a Swing application.
 public class Audioapp {
-   public String[] music = new String []{"balloonpop.wav","gangnam.wav"};
+   public String[] music = new String []{"sounds/balloonpop.wav","sounds/gangnam.wav"};
    // Constructor
    public Audioapp(int i) {
    

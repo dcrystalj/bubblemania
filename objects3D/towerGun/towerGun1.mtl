@@ -2,15 +2,34 @@
 ## Alias OBJ Material File
 # Exported from SketchUp, (c) 2000-2012 Trimble Navigation Limited
 
+newmtl Metal_Steel_Textured_White
+Ka 0.000000 0.000000 0.000000
+Kd 0.749020 0.749020 0.749020
+Ks 0.330000 0.330000 0.330000
+map_Kd towerGun1/Metal_Steel_Textured_White.jpg
+
+newmtl Material1
+Ka 0.000000 0.000000 0.000000
+Kd 0.325490 0.447059 0.223529
+Ks 0.330000 0.330000 0.330000
+map_Kd towerGun1/Material1.jpg
+
 newmtl Color_006
 Ka 0.000000 0.000000 0.000000
 Kd 0.337255 0.337255 0.337255
 Ks 0.330000 0.330000 0.330000
 
-newmtl Color_E14
+newmtl Metal_Steel_Textured
 Ka 0.000000 0.000000 0.000000
-Kd 0.600000 0.600000 0.356863
+Kd 0.415686 0.431373 0.482353
 Ks 0.330000 0.330000 0.330000
+map_Kd towerGun1/Metal_Steel_Textured.jpg
+
+newmtl Metal_Rough
+Ka 0.000000 0.000000 0.000000
+Kd 0.600000 0.615686 0.627451
+Ks 0.330000 0.330000 0.330000
+map_Kd towerGun1/Metal_Rough.jpg
 
 newmtl Color_E15
 Ka 0.000000 0.000000 0.000000
