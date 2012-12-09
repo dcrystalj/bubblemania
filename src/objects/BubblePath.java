@@ -8,6 +8,8 @@ import main.GameState;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 
+import text.Bitmap;
+
 public class BubblePath extends Model3D{
 	LinkedList<Vector3f> path;	//list of point on path for bubbles
 	float pathWidth=30;
@@ -62,28 +64,32 @@ public class BubblePath extends Model3D{
 	  
 	  private void renderModel()
 	  {
-	    GL11.glBegin(GL11.GL_QUADS); // draw independent quads
-	    GL11.glEnable(GL11.GL_BLEND);
-	    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-	    GL11.glColor4f(0.8f, 0.8f, 0.8f,0.50f);
+	    
+//	    GL11.glColor4f(0.8f, 0.8f, 0.8f,0.50f);
+	    GL11.glColor4f(1,1,1,1);	
+
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, Bitmap.font.get(11));
+		GL11.glBegin(GL11.GL_QUADS);
 	    for(int i=0; i<path.size()-1;i++){
 	    	Vector3f v1=path.get(i);
 	    	Vector3f v2=path.get(i+1);
 	    	if(i%2==0){
-		    	GL11.glVertex3f( v1.x-pathWidth/2, 0.008f, v1.z-pathWidth/2);    // upper left vertex
-		    	GL11.glVertex3f(  v1.x-pathWidth/2, 0.008f, v1.z+pathWidth/2);    // lower left vertex
-		    	GL11.glVertex3f( v2.x+pathWidth/2, 0.008f, v2.z+pathWidth/2);    // lower right vertex
-			    GL11.glVertex3f(  v2.x+pathWidth/2, 0.008f, v2.z-pathWidth/2);    // upper right vertex
+	    		GL11.glTexCoord2f(0, 0);GL11.glVertex3f( v1.x-pathWidth/2, 0.008f, v1.z-pathWidth/2);    // upper left vertex
+	    		GL11.glTexCoord2f(3, 0);GL11.glVertex3f(  v1.x-pathWidth/2, 0.008f, v1.z+pathWidth/2);    // lower left vertex
+	    		GL11.glTexCoord2f(3, 3);GL11.glVertex3f( v2.x+pathWidth/2, 0.008f, v2.z+pathWidth/2);    // lower right vertex
+	    		GL11.glTexCoord2f(0, 3);GL11.glVertex3f(  v2.x+pathWidth/2, 0.008f, v2.z-pathWidth/2);    // upper right vertex
 	    	}
 	    	else{
-	    		GL11.glVertex3f( v1.x-pathWidth/2, 0.008f, v1.z-pathWidth/2);    // upper left vertex
-		    	GL11.glVertex3f(  v2.x-pathWidth/2, 0.008f, v2.z+pathWidth/2);    // lower left vertex
-		    	GL11.glVertex3f( v2.x+pathWidth/2, 0.008f, v2.z+pathWidth/2);    // lower right vertex
-			    GL11.glVertex3f(  v1.x+pathWidth/2, 0.008f, v1.z-pathWidth/2);    // upper right vertex
+	    		GL11.glTexCoord2f(0, 0);GL11.glVertex3f( v1.x-pathWidth/2, 0.008f, v1.z-pathWidth/2);    // upper left vertex
+	    		GL11.glTexCoord2f(3, 0);GL11.glVertex3f(  v2.x-pathWidth/2, 0.008f, v2.z+pathWidth/2);    // lower left vertex
+	    		GL11.glTexCoord2f(3, 3);GL11.glVertex3f( v2.x+pathWidth/2, 0.008f, v2.z+pathWidth/2);    // lower right vertex
+	    		GL11.glTexCoord2f(0, 3);GL11.glVertex3f(  v1.x+pathWidth/2, 0.008f, v1.z-pathWidth/2);    // upper right vertex
 	    	}
 	    }
-	    GL11.glDisable(GL11.GL_BLEND);
 	    GL11.glEnd();
+	    GL11.glDisable(GL11.GL_TEXTURE_2D);
+	    GL11.glDisable(GL11.GL_BLEND);
 	    
 	  }
 	  //Create list of polygons for collision detection when building tower

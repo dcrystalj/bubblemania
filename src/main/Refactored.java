@@ -13,6 +13,7 @@ import org.lwjgl.util.glu.GLU;
 import org.lwjgl.util.vector.Vector3f;
 import static org.lwjgl.opengl.GL11.*;
 
+import sound.Audioapp;
 import text.Bitmap;
 import threads.ThreadMoveTower;
 import towers.Tower;
@@ -28,7 +29,7 @@ public class Refactored extends BaseWindow
 	public static final int maxLookUp = 85;
 	public static final int maxLookDown = -85;
 	public static Tower newTower=null;
-
+	public static boolean showBuyHud=true;
 	int xOrigin = -1;
 
 	/**
@@ -36,6 +37,8 @@ public class Refactored extends BaseWindow
 	 */
 	protected void setupView()
 	{    
+
+		new Audioapp(1); ///play main music
 		
 		initializeModels();
 		// enable depth buffer (off by default)
@@ -124,11 +127,12 @@ public class Refactored extends BaseWindow
 	    	Hud.t_money = new Bitmap();
 	    	Hud.t_lives = new Bitmap();
 	    	Hud.t_lvl = new Bitmap();
+	    	Hud.t_popped = new Bitmap();
 	    	Hud.t_bubblesThisLvl = new Bitmap();
 	    	Hud.t_lives.charPos[1]+=30;
 	    	Hud.t_lvl.charPos[1]+=60;
 	    	Hud.t_bubblesThisLvl.charPos[1]+=90;
-
+	    	Hud.t_popped.charPos[1]-=30;
 	    	//set menu text
 	    	Hud.t_1item = new Bitmap();
 	    	Hud.t_2item = new Bitmap();
@@ -234,19 +238,26 @@ public class Refactored extends BaseWindow
 				Hud.renderFrameGameOver();
 			}
 			else if(GameState.state==4){
-				Hud.renderFrameBuy();
-				Hud.t_money.renderString("Money:"+GameState.money,20);
+				if(showBuyHud){
+					Hud.renderFrameBuy();
+					Hud.t_money.renderString("Money:"+GameState.money,20);
+				}
+				//show next button Hud
+				Hud.renderFrameBuyNextBtn();
+				
 				//Build towerGun
 				if(GameState.money>=200 && Mouse.isButtonDown(0)&& Hud.isInRectangle(849, 999, 649,499)){
 					GameState.buildTower=1;
 					ThreadMoveTower mt=new ThreadMoveTower();
-					mt.start();	  
+					mt.start();
+					showBuyHud=false;
 				}
 				//Build triple gun
 				else if(GameState.money>=500 && Mouse.isButtonDown(0)&& Hud.isInRectangle(849, 999, 479, 330)){
 					GameState.buildTower=2;
 					ThreadMoveTower mt=new ThreadMoveTower();
 					mt.start();	  
+					showBuyHud=false;
 				}
 				
 
@@ -258,6 +269,7 @@ public class Refactored extends BaseWindow
 				Hud.t_money.renderString("Money:"+GameState.money,20);
 				Hud.t_lives.renderString("Lives:"+GameState.lives,20);
 				Hud.t_lvl.renderString("Level:"+GameState.lvl,20);		
+				Hud.t_popped.renderString("Popped:"+GameState.poppedBubbles,20);		
 				Hud.t_bubblesThisLvl.renderString("Bloons attributes for this level: number="+GameState.numberOfBubbles+", speed=" +
 						""+Math.round(Bubble.speed*100.0)/100.0+", distance between="+Bubble.safetyDistance,20);	
 				Hud.endHUD();
@@ -341,7 +353,7 @@ public class Refactored extends BaseWindow
 						GameState.state = 4;
 						x=WIDTH/2; y=800; z=WIDTH/2;
 						angle=0; angley=-(float) (Math.PI/2-0.001);
-						System.out.println(GameState.state);
+						showBuyHud=true;
 					}
 					else if(Mouse.getY()>=Hud.menuitemsy[5] && Mouse.getY()<=Hud.menuitemsy[4]){ //third button
 						nextLevel();

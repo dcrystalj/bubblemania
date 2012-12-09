@@ -25,8 +25,7 @@ public Terrain(float w) {
   
   private void renderModel()
   {
-//	  GL11.glPushMatrix();
-	  GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
+	GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
 	GL11.glEnable(GL11.GL_TEXTURE_2D);
 	GL11.glDisable(GL11.GL_DEPTH_TEST);
 	GL11.glDisable(GL11.GL_LIGHTING);
@@ -34,6 +33,12 @@ public Terrain(float w) {
 	GL11.glColor4f(1,1,1,1);
 	
 	GL11.glBindTexture(GL11.GL_TEXTURE_2D, Bitmap.font.get(9));
+	GL11.glTexParameteri(GL11.GL_TEXTURE_2D,GL11.GL_TEXTURE_WRAP_S,GL11.GL_CLAMP); 
+	GL11.glTexParameteri( 
+			GL11.GL_TEXTURE_2D, 
+			GL11.GL_TEXTURE_WRAP_T, 
+			GL11.GL_CLAMP 
+	); 
     GL11.glBegin(GL11.GL_QUADS); // draw independent triangles
 
     //right
@@ -111,6 +116,6 @@ public Terrain(float w) {
     
     GL11.glDisable(GL11.GL_TEXTURE_2D);
     GL11.glPopAttrib();
-//    GL11.glPopMatrix();
+    GL11.glEnable(GL11.GL_LIGHTING);
   }
 }

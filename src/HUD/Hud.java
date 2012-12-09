@@ -14,7 +14,7 @@ import text.Bitmap;
 
 //Head Up Display
 public class Hud {
-	public static Bitmap t_money, t_lives, t_1item, t_2item, t_3item, t_lvl, t_gameover, t_choose, t_finishedlvl, t_bubblesThisLvl, p_pic1, t_towerprice;
+	public static Bitmap t_money, t_lives, t_1item, t_2item, t_3item, t_lvl, t_gameover, t_choose, t_finishedlvl, t_bubblesThisLvl, p_pic1, t_towerprice,t_popped;
 	public static int[] menuitemsx= {240,760};
 	public static int[] menuitemsy= {580,500,480,400,380,300};
 	
@@ -107,6 +107,7 @@ public class Hud {
 		  int margin=25;
 		  int pass=200;
 		  int yFirstImage=500;
+		  GL11.glColor4f(0.9f, 0.9f, 0.9f,1f);
 		  t_choose = new Bitmap();
 		  t_choose.charPos[0] = (int)(w-t_1item.textWidth("Choose tower", 20)-margin);
 		  t_choose.charPos[1] = yFirstImage+picHeight+20;  
@@ -142,24 +143,40 @@ public class Hud {
 		  GL11.glEnd();
 
 
-		  glDisable(GL_BLEND);
+		  glDisable(GL_BLEND);  
+		  endHUD();
+		
+	}
+	
+	public static void renderFrameBuyNextBtn() {
+		  startHUD();  
+		  int w=1024;
+			  
+		  GL11.glBegin(GL11.GL_QUADS);
 		  GL11.glColor4f(1.0f, 0.0f, 0.0f,1f);
-		  t_choose.charPos[0] = (int)(w/2-t_1item.textWidth("Next level", 30)/2);
-		  t_choose.charPos[1] = 20;  
-		  t_choose.renderString("Next level", 30);
+		   
+		  glEnable (GL_BLEND);
+		  glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		  GL11.glColor4f(1.0f, 0.0f, 0.0f,0.1f);
 		  //next level button
 		  GL11.glBegin(GL11.GL_QUADS);
-		  GL11.glColor4f(1.0f, 0.0f, 0.0f,0.5f);
 		  GL11.glVertex2f(menuitemsx[0], 10);
 		  GL11.glVertex2f(menuitemsx[1], 10);
 		  GL11.glVertex2f(menuitemsx[1], 60);
 		  GL11.glVertex2f(menuitemsx[0], 60);
 		  GL11.glEnd();
-		  glDisable(GL_BLEND);
+		  
+		  GL11.glColor4f(1.0f, 1.0f, 1.0f,1f);
+		  t_choose.charPos[0] = (int)(w/2-t_1item.textWidth("Next level", 30)/2);
+		  t_choose.charPos[1] = 20;  
+		  t_choose.renderString("Next level", 30);
 		  
 		  endHUD();
 		
 	}
+	
+	
 	public static void startHUD() {
 		if(GameState.lighting)
 			GL11.glDisable(GL11.GL_LIGHTING);

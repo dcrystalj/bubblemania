@@ -2,6 +2,7 @@ package towers;
 
 import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
 import static org.lwjgl.opengl.GL11.glEnable;
+
 import glmodel.GLModel;
 import main.*;	//Import of main package
 import objects.Bubble;
@@ -10,6 +11,7 @@ import objects.Model3D;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector2f;
 
+import sound.Audioapp;
 import threads.PopBubbles;
 
 
@@ -104,6 +106,9 @@ public class Tower extends Model3D {
 					b.show=false;	//If we popped one bubble we quit function
 					GameState.money+=10; //For every bloon we add money
 					GameState.poppedBubbles++;
+					
+					//sound
+					new Audioapp(0);
 					return true;
 				}
 			}
