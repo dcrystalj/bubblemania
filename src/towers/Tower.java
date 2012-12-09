@@ -56,14 +56,13 @@ public class Tower extends Model3D {
 			      GL11.glScalef(m_sX, m_sY, m_sZ);
 			    
 			    GL11.glTranslatef(-WIDTH/2+deltax, -WIDTH/2+deltay, -WIDTH/2+deltaz);
-//			    GL11.glColor3f(0.7f,0.7f,0.7f);		//BLACK COLOR for radius of tower
 			    //Draw .obj tower
-			    GL11.glColor3f(1f,1f,1f);
+			    GL11.glColor3f(0.6f,0.6f,0.6f);
 			    glEnable(GL_CULL_FACE);
 			    glEnable(GL11.GL_TEXTURE_2D);
 			    m_Obj.render();
 			    
-//			    shooting range of tower
+			    //shooting range of tower
 			    if(GameState.lighting)
 			    	GL11.glDisable(GL11.GL_LIGHTING);
 			    GL11.glBegin(GL11.GL_LINE_LOOP);

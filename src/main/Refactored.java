@@ -220,6 +220,9 @@ public class Refactored extends BaseWindow
 
 			//Draw path
 			GameState.bubblesPath.render3D();
+			//Render new tower if we are building it
+			if(newTower!=null)
+				newTower.render3D();
 			//Draw bubbles
 			for (Bubble b : GameState.bubbles)
 				b.render3D();
@@ -227,9 +230,6 @@ public class Refactored extends BaseWindow
 			for (Tower t : GameState.towers)
 				t.render3D();
 			
-			//Render new tower if we are building it
-			if(newTower!=null)
-				newTower.render3D();
 			glEnable(GL_CULL_FACE);
 			if(GameState.state==2){ //level done
 				Hud.renderFrameLvlDone();
