@@ -66,7 +66,7 @@ public class Refactored extends BaseWindow
 		// setup projection matrix stack
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
-		GLU.gluPerspective(45, 1024 / (float)768, 20.0f, 1200.0f);
+		GLU.gluPerspective(45, 1024 / (float)768, 20.0f, 3200.0f);
 
 
 
@@ -191,29 +191,19 @@ public class Refactored extends BaseWindow
 		}
 		else{
 			
-			//draw text
-			if(GameState.state!=4){
-				Hud.startHUD();
-				GL11.glColor3f(1,1,1);
-				Hud.t_money.renderString("Money:"+GameState.money,20);
-				Hud.t_lives.renderString("Lives:"+GameState.lives,20);
-				Hud.t_lvl.renderString("Level:"+GameState.lvl,20);		
-				Hud.t_bubblesThisLvl.renderString("Bloons attributes for this level: number="+GameState.numberOfBubbles+", speed=" +
-						""+Math.round(Bubble.speed*100.0)/100.0+", distance between="+Bubble.safetyDistance,20);	
-				Hud.endHUD();
-			}
-			if(x>=WIDTH-30)
-				x=WIDTH-30;
-			if(y>=WIDTH-30 && GameState.state != 4)
-				y=WIDTH-30;
-			if(z>=WIDTH-30)
-				z=WIDTH-30;
-			if(x<=30)
-				x=30;
-			if(y<=30)
+			//camera collision detection
+			if(x>WIDTH+100)
+				x=WIDTH+100;
+			if(y>WIDTH+100 && GameState.state != 4)
+				y=WIDTH+100;
+			if(z>WIDTH+100)
+				z=WIDTH+100;
+			if(x<-100)
+				x=-100;
+			if(y<30)
 				y=30;
-			if(z<=30)
-				z=30;
+			if(z<-100)
+				z=-100;
 			// Set the camera
 			GLU.gluLookAt(
 					x, y,  z,
@@ -260,6 +250,17 @@ public class Refactored extends BaseWindow
 				}
 				
 
+			}
+			//draw text
+			if(GameState.state!=4){
+				Hud.startHUD();
+				GL11.glColor3f(1,1,1);
+				Hud.t_money.renderString("Money:"+GameState.money,20);
+				Hud.t_lives.renderString("Lives:"+GameState.lives,20);
+				Hud.t_lvl.renderString("Level:"+GameState.lvl,20);		
+				Hud.t_bubblesThisLvl.renderString("Bloons attributes for this level: number="+GameState.numberOfBubbles+", speed=" +
+						""+Math.round(Bubble.speed*100.0)/100.0+", distance between="+Bubble.safetyDistance,20);	
+				Hud.endHUD();
 			}
 		}
 

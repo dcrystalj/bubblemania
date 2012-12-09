@@ -17,95 +17,100 @@ public Terrain(float w) {
   {
     // model view stack 
     GL11.glMatrixMode(GL11.GL_MODELVIEW);
-   /* 
-    // save current matrix
-    GL11.glPushMatrix();
-    
-    // TRANSLATE 
-    GL11.glTranslatef(m_nX, m_nY, m_nZ);
-    
-    // ROTATE and SCALE
-    GL11.glTranslatef(tW/2,tW/2,tW/2);
-    if (m_rZ!=0)
-      GL11.glRotatef(m_rZ, 0, 0, 1);
-    if (m_rY!=0)
-      GL11.glRotatef(m_rY, 0, 1, 0);
-    if (m_rX!=0)
-      GL11.glRotatef(m_rX, 1, 0, 0);
-    if (m_sX!=1 || m_sY!=1 || m_sZ!=1)
-      GL11.glScalef(m_sX, m_sY, m_sZ);
-    GL11.glTranslatef(-tW/2,-tW/2,-tW/2);
-    
 
-
-    System.out.println("terain x "+ m_nX +"   "+ m_nY +"  "+ m_nZ);
-*/
     renderModel();
 
-    GL11.glPopMatrix();
-    
-    
     // discard current matrix
   }
   
   private void renderModel()
   {
+//	  GL11.glPushMatrix();
+	  GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
 	GL11.glEnable(GL11.GL_TEXTURE_2D);
-	GL11.glBindTexture(GL11.GL_TEXTURE_2D, Bitmap.font.get(4));
+	GL11.glDisable(GL11.GL_DEPTH_TEST);
+	GL11.glDisable(GL11.GL_LIGHTING);
+	GL11.glDisable(GL11.GL_BLEND);
+	GL11.glColor4f(1,1,1,1);
+	
+	GL11.glBindTexture(GL11.GL_TEXTURE_2D, Bitmap.font.get(9));
     GL11.glBegin(GL11.GL_QUADS); // draw independent triangles
-    GL11.glColor3f(1, 1, 1);
-    
+
     //right
     GL11.glNormal3f(-1, 0, 0);
-    GL11.glTexCoord2f(0, 0); GL11.glVertex3f( tW,0.0f,0.0f);    // lower right vertex
-    GL11.glTexCoord2f(1, 0);GL11.glVertex3f( tW,0.0f, tW);    // upper right vertex
-    GL11.glTexCoord2f(1, 1);GL11.glVertex3f( tW, tW, tW);    // upper left vertex
-    GL11.glTexCoord2f(0, 1);GL11.glVertex3f( tW, tW,0.0f);    // lower left vertex
-
+    GL11.glTexCoord2f(0, 0); GL11.glVertex3f(2*tW,-tW,-tW);    // lower right vertex
+    GL11.glTexCoord2f(1, 0);GL11.glVertex3f(2*tW,-tW,2*tW);    // upper right vertex
+    GL11.glTexCoord2f(1, 1);GL11.glVertex3f(2*tW,2*tW,2*tW);    // upper left vertex
+    GL11.glTexCoord2f(0, 1);GL11.glVertex3f(2*tW,2*tW,-tW);    // lower left vertex
+    GL11.glEnd();
+    
+    GL11.glBindTexture(GL11.GL_TEXTURE_2D, Bitmap.font.get(8));
+    GL11.glBegin(GL11.GL_QUADS); // draw independent triangles
     //left
     GL11.glNormal3f(1, 0, 0);
-    GL11.glTexCoord2f(0, 0);GL11.glVertex3f(0.0f,0.0f,0.0f);    // lower right vertex
-    GL11.glTexCoord2f(1, 0);GL11.glVertex3f(0.0f, tW,0.0f);    // lower left vertex
-    GL11.glTexCoord2f(1, 1);GL11.glVertex3f(0.0f, tW, tW);    // upper left vertex
-    GL11.glTexCoord2f(0, 1);GL11.glVertex3f(0.0f,0.0f, tW);    // upper right vertex
-   
+    GL11.glTexCoord2f(0, 0);GL11.glVertex3f(-tW,-tW,-tW);    // lower right vertex
+    GL11.glTexCoord2f(1, 0);GL11.glVertex3f(-tW,2*tW,-tW);    // lower left vertex
+    GL11.glTexCoord2f(1, 1);GL11.glVertex3f(-tW,2*tW,2*tW);    // upper left vertex
+    GL11.glTexCoord2f(0, 1);GL11.glVertex3f(-tW,-tW,2*tW);    // upper right vertex
+    GL11.glEnd();
+    
+    GL11.glBindTexture(GL11.GL_TEXTURE_2D, Bitmap.font.get(7));
+    GL11.glBegin(GL11.GL_QUADS); // draw independent triangles
     //back
     GL11.glNormal3f(0, 0, 1);
-    GL11.glTexCoord2f(0, 0);GL11.glVertex3f(0.0f,0.0f,0.0f);    // lower right vertex
-    GL11.glTexCoord2f(1, 0);GL11.glVertex3f( tW,0.0f,0.0f);    // upper right vertex
-    GL11.glTexCoord2f(1, 1);GL11.glVertex3f( tW, tW,0.0f);    // lower left vertex
-    GL11.glTexCoord2f(0, 1);GL11.glVertex3f(0.0f, tW,0.0f);    // upper left vertex
-  
+    GL11.glTexCoord2f(0, 0);GL11.glVertex3f(-tW,-tW,-tW);    // lower right vertex
+    GL11.glTexCoord2f(1, 0);GL11.glVertex3f(2*tW,-tW,-tW);    // upper right vertex
+    GL11.glTexCoord2f(1, 1);GL11.glVertex3f(2*tW,2*tW,-tW);    // lower left vertex
+    GL11.glTexCoord2f(0, 1);GL11.glVertex3f(-tW,2*tW,-tW);    // upper left vertex
+    GL11.glEnd();
+    
+    GL11.glBindTexture(GL11.GL_TEXTURE_2D, Bitmap.font.get(5));
+    GL11.glBegin(GL11.GL_QUADS); // draw independent triangles
     
     //front
     GL11.glNormal3f(0, 0, -1);
-    GL11.glTexCoord2f(0, 0);GL11.glVertex3f(0.0f,0.0f, tW);    // lower right vertex
-    GL11.glTexCoord2f(1, 0);GL11.glVertex3f(0.0f, tW, tW);    // upper right vertex
-    GL11.glTexCoord2f(1, 1);GL11.glVertex3f( tW, tW, tW);    // lower left vertex
-    GL11.glTexCoord2f(0, 1);GL11.glVertex3f( tW,0.0f, tW);    // upper left vertex
-    
-    //top
-    GL11.glNormal3f(0, -1, 0);
-    GL11.glTexCoord2f(0, 0);GL11.glVertex3f(0.0f, tW, tW);    // lower right vertex
-    GL11.glTexCoord2f(1, 0);GL11.glVertex3f(0.0f, tW,0.0f);    // upper right vertex
-    GL11.glTexCoord2f(1, 1);GL11.glVertex3f( tW, tW,0.0f);    // lower left vertex
-    GL11.glTexCoord2f(0, 1);GL11.glVertex3f( tW, tW, tW);    // upper left vertex
-    
+    GL11.glTexCoord2f(0, 0);GL11.glVertex3f(-tW,-tW,2*tW);    // lower right vertex
+    GL11.glTexCoord2f(1, 0);GL11.glVertex3f(-tW,2*tW,2*tW);    // upper right vertex
+    GL11.glTexCoord2f(1, 1);GL11.glVertex3f(2*tW,2*tW,2*tW);    // lower left vertex
+    GL11.glTexCoord2f(0, 1);GL11.glVertex3f(2*tW,-tW,2*tW);    // upper left vertex
     GL11.glEnd();
-    GL11.glDisable(GL11.GL_TEXTURE_2D);
+    
+    GL11.glBindTexture(GL11.GL_TEXTURE_2D, Bitmap.font.get(10));
+    GL11.glBegin(GL11.GL_QUADS); // draw independent triangles
+    //top
+    
+    GL11.glNormal3f(0, -1, 0);
+    GL11.glTexCoord2f(0, 0);GL11.glVertex3f(-tW,2*tW,2*tW);    // lower right vertex
+    GL11.glTexCoord2f(1, 0);GL11.glVertex3f(-tW,2*tW,-tW);    // upper right vertex
+    GL11.glTexCoord2f(1, 1);GL11.glVertex3f(2*tW,2*tW,-tW);    // lower left vertex
+    GL11.glTexCoord2f(0, 1);GL11.glVertex3f(2*tW,2*tW,2*tW);    // upper left vertex
+    GL11.glEnd();
 
     //bottom
     GL11.glNormal3f(0, 1, 0);
-    GL11.glEnable(GL11.GL_TEXTURE_2D);
-    GL11.glBindTexture(GL11.GL_TEXTURE_2D, Bitmap.font.get(3));
+    GL11.glBindTexture(GL11.GL_TEXTURE_2D, Bitmap.font.get(6));
     GL11.glBegin(GL11.GL_QUADS);
     GL11.glColor3f(1, 1, 1f);
-    GL11.glTexCoord2f(0, 0);  	GL11.glVertex3f(0.0f,0.0f,0.0f);    // lower right vertex
-    GL11.glTexCoord2f(4, 0);	GL11.glVertex3f(0.0f,0.0f, tW);    // lower left vertex
-    GL11.glTexCoord2f(4, 4);	GL11.glVertex3f( tW,0.0f, tW);    // upper left vertex
-    GL11.glTexCoord2f(0, 4);	GL11.glVertex3f( tW,0.0f,0.0f);    // upper right vertex
+    GL11.glTexCoord2f(0, 0);  	GL11.glVertex3f(-tW,-tW,-tW);    // lower right vertex
+    GL11.glTexCoord2f(4, 0);	GL11.glVertex3f(-tW,-tW,2*tW);    // lower left vertex
+    GL11.glTexCoord2f(4, 4);	GL11.glVertex3f(2*tW,-tW,2*tW);    // upper left vertex
+    GL11.glTexCoord2f(0, 4);	GL11.glVertex3f(2*tW,-tW,-tW);    // upper right vertex
     GL11.glEnd();
-    GL11.glDisable(GL11.GL_TEXTURE_2D);
     
+    //bottom
+
+    GL11.glColor4f(1,1,1,0.2f);
+    GL11.glNormal3f(0, 1, 0);
+    GL11.glBindTexture(GL11.GL_TEXTURE_2D, Bitmap.font.get(3));
+    GL11.glBegin(GL11.GL_QUADS);
+    GL11.glTexCoord2f(0, 0);  	GL11.glVertex3f(-tW,0,-tW);    // lower right vertex
+    GL11.glTexCoord2f(4, 0);	GL11.glVertex3f(-tW,0,2*tW);    // lower left vertex
+    GL11.glTexCoord2f(4, 4);	GL11.glVertex3f(2*tW,0,2*tW);    // upper left vertex
+    GL11.glTexCoord2f(0, 4);	GL11.glVertex3f(2*tW,0,-tW);    // upper right vertex
+    GL11.glEnd();
+    
+    GL11.glDisable(GL11.GL_TEXTURE_2D);
+    GL11.glPopAttrib();
+//    GL11.glPopMatrix();
   }
 }

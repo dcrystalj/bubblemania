@@ -10,6 +10,7 @@ public class ThreadMoveBubbles extends Thread {
 		while (GameState.running) {
 			try {
 				for (Bubble b : GameState.bubbles){
+					b.isOutAtStart(GameState.t_bg);
 					b.move();
 					if(GameState.state==1)
 						b.move();

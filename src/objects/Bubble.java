@@ -9,10 +9,11 @@ public class Bubble extends Model3D
 {
   private Sphere s = new Sphere();
   public float radius = 1;
-  public float[] color = {0.1f,0.1f, 1};
+  public float[] color = {0.1f,0.1f, 1, 1};
   public static float safetyDistance=25;	//Distance between this and next bubble
   public int checkpoint=0;  //checkPoint, which is next point on path
   public static float speed=1.3f;	//Speed of a bubble
+  public boolean atStart=true;
 
   public Bubble(float r) {
 	  super(r);
@@ -63,7 +64,7 @@ public class Bubble extends Model3D
 
   public void render3D()
   {
-	  if(show){
+	  if(show && !atStart){
 		  // model view stack 
 		  GL11.glMatrixMode(GL11.GL_MODELVIEW);
 
@@ -94,13 +95,13 @@ public class Bubble extends Model3D
 
   private void renderModel()
   {
-    GL11.glColor3f(color[0], color[1], color[2]);
+    GL11.glColor4f(color[0], color[1], color[2],color[3]);
     s.draw(radius, 64, 64);
   }
   //Method is checking whether the bubble gets out of visible terrain area, terrain
   public boolean isOut(Terrain t){
 	  //TODO
-	  if(m_nX>t.m_nX+t.tW) //Checking x is not optimal
+	  if(m_nX>t.m_nX+t.tW) //Checking x is not optimal for not finishing level at start =)
 		  return true;
 	  if(m_nY<t.m_nY || m_nY>t.m_nY+t.tW)
 	      return true;
@@ -109,5 +110,14 @@ public class Bubble extends Model3D
 	  return false;
 	       
   }
+	public void isOutAtStart(Terrain t) {
+		if(m_nX<t.m_nX || m_nX>t.m_nX+t.tW){ 
+			  this.atStart=true;
+			  return;
+		}
+		if(m_nZ<t.m_nZ || m_nZ>t.m_nZ+t.tW)
+			this.atStart=true;;
+		this.atStart=false;
+	}
 
 }
